@@ -176,7 +176,6 @@ native bool:STAMM_AddFeatureText(level, const String:description[]);
 stock STAMM_LoadTranslation()
 {
 	decl String:basename[64];
-	decl String:path[PLATFORM_MAX_PATH + 1];
 
 	STAMM_GetBasename(basename, sizeof(basename));
 	
