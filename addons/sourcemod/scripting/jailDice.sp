@@ -390,8 +390,6 @@ public Action Timer_Dice(Handle timer, DataPack pack)
 			{
 				EmitSoundToClientAny(client, POSITIVE_SOUND);
 			}
-
-			CPrintToChat(client, "[DEBUG] Type: %s");
 		}
 		else
 		{
