@@ -1646,8 +1646,10 @@ public void Delayed_RoundStart(any dontBroadcast)
 	{
 		GetEntPropString(entindex, Prop_Data, "m_iName", name, sizeof(name));
 		
-		if (StrContains("rank", name, false))
+		if (StrContains("rank_", name, false) != -1)
+		{
 			SDKHook(entindex, SDKHook_SetTransmit, RankHide);
+		}
 	}
 	while ((entindex = FindEntityByClassname(entindex, "prop_dynamic")) != -1)
 	{
