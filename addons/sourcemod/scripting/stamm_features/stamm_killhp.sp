@@ -114,8 +114,14 @@ public PlayerDeath(Handle:event, String:name[], bool:dontBroadcast)
 		if (STAMM_HaveClientFeature(attacker) && !IsClientInLastRequest(attacker))
 		{
 			new oldHP = GetClientHealth(attacker);
+
+			if (oldHP > GetConVarInt(g_hMaxHP))
+			{
+				return;
+			}
+
 			new newHP = oldHP + GetConVarInt(g_hHP);
-			
+
 			// Only if not higher than max Health
 			if (newHP > GetConVarInt(g_hMaxHP))
 			{
