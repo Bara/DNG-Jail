@@ -25,6 +25,7 @@
 
 // Icnludes
 #include <sourcemod>
+#include <sdktools>
 #include <dng-jail>
 #include <stamm>
 #include <cstrike>
@@ -54,6 +55,8 @@ public OnPluginStart()
 {
 	HookEvent("player_connect", Event_PlayerConnect, EventHookMode_Pre);
 	HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);
+	
+	CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
 }
 
 public Action:Event_PlayerConnect(Event event, const String:event_name[], bool:dontBroadcast)
@@ -149,5 +152,5 @@ public STAMM_OnClientReady(client)
 		CPrintToChatAll("%s %t", tag, "WelcomeMessage", name);
 	}
 	else
-		CPrintToChatAll("%s %s%N %shat das Spiel betreten.", OUTBREAK, SPECIAL, client, TEXT);
+		CPrintToChatAll("%s %s%N %shat das Spiel betreten.", SPECIAL, client, TEXT);
 }

@@ -88,7 +88,7 @@ public OnPluginStart()
 	AutoExecConfig_SetCreateFile(true);
 	
 	g_hHP = AutoExecConfig_CreateConVar("killhp_hp", "5", "HP a VIP gets every kill");
-	g_hMaxHP = AutoExecConfig_CreateConVar("killhp_maxhp", "200", "Max HP for this feature");
+	g_hMaxHP = AutoExecConfig_CreateConVar("killhp_maxhp", "120", "Max HP for this feature");
 	
 	AutoExecConfig_CleanFile();
 	AutoExecConfig_ExecuteFile();
