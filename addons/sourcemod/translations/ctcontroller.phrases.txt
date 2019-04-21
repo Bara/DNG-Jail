@@ -1,0 +1,155 @@
+"Phrases"
+{
+	"VERCT - Usage"
+	{
+		"en"		"[SM] Usage: sm_verct <#userid|name>"
+		"de"		"[SM] Benutzung: sm_verct <#userid|name>"
+	}
+	
+	"VERTMPCT - Usage"
+	{
+		"en"		"[SM] Usage: sm_vertmpct <#userid|name>"
+		"de"		"[SM] Benutzung: sm_vertmpct <#userid|name>"
+	}
+	
+	"CTBAN - Usage"
+	{
+		"en"		"[SM] Usage: sm_ctban <#userid|name> <Rounds> [Reason]"
+		"de"		"[SM] Benutzung: sm_ctban <#userid|name> <Runden> [Grund]"
+	}
+	
+	"CTUNBAN - Usage"
+	{
+		"en"		"[SM] Usage: sm_ctban <#userid|name>"
+		"de"		"[SM] Benutzung: sm_ctban <#userid|name>"
+	}
+	
+	"Banned Player"
+	{
+		"#format"	"{1:N}"
+		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}is banned from the ct team!"
+		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist vom CT-Team gebannt!"
+	}
+	
+	"Already Banned Player"
+	{
+		"#format"	"{1:N}"
+		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}is already banned from the ct team!"
+		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist bereits vom CT-Team gebannt!"
+	}
+	
+	"Isnot Banned Player"
+	{
+		"#format"	"{1:N}"
+		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}isn't banned from the ct team!"
+		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist nicht vom CT-Team gebannt!"
+	}
+	
+	"Verify Player"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was verified by {darkred}{2}!"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde von {darkred}{2} {lightgreen}verifiziert!"
+	}
+	
+	"UnVerify Player"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was unverified by {darkred}{2}!"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist durch {darkred}{2} {lightgreen} nicht mehr verifiziert!"
+	}
+	
+	"Tmp Verify Player"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was temporarilyverified by {darkred}{2}!"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde von {darkred}{2} {lightgreen} temporär verifiziert!"
+	}
+	
+	"Tmp UnVerify Player"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was unverified by {darkred}{2}!"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist durch {darkred}{2} {lightgreen} nicht mehr verifiziert!"
+	}
+	
+	"CTBan Player"
+	{
+		"#format"	"{1:N},{2:N},{3:s}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned by {darkred}{2}! (Reason: {3})"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+	}
+	
+	"UnCTBan Player"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct unbanned by {darkred}{2}!"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist nun nicht mehr vom CT-Team gebannt durch {darkred}{2}!"
+	}
+	
+	"Menu: Verify List"
+	{
+		"en"		"CT Verify List"
+		"de"		"CT Verify Liste"
+	}
+	
+	"Menu: No players"
+	{
+		"en"		"No ct verified player found!"
+		"de"		"Keine CT verifizierte Spieler gefunden!"
+	}
+	
+	"Menu: CTBan List"
+	{
+		"en"		"CT Banlist"
+		"de"		"CT Banliste"
+	}
+	
+	"Menu: No ctban players"
+	{
+		"en"		"No ct banned player found!"
+		"de"		"Keine CT gebannten Spieler gefunden!"
+	}
+	
+	"Menu: Close"
+	{
+		"en"		"Close"
+		"de"		"Schließen"
+	}
+
+	"AdminMenu: Main"
+	{
+		"en"		"CT Controller"
+		"de"		"CT Controller"
+	}
+
+	"AdminMenu: Verify"
+	{
+		"en"		"Verify player"
+		"de"		"Spieler verifizieren"
+	}
+
+	"AdminMenu: Temp Verify"
+	{
+		"en"		"Temporally verify player"
+		"de"		"Spieler temporär verifizieren"
+	}
+
+	"AdminMenu: CTBan"
+	{
+		"en"		"CTBan player"
+		"de"		"Spieler CT bannen"
+	}
+
+	"AdminMenu: CTUnBan"
+	{
+		"en"		"CTUnban player"
+		"de"		"Spieler CT enbannen"
+	}
+
+	"AdminMenu: ChoosePlayer"
+	{
+		"en"		"Choose a player"
+		"de"		"Wähle ein Spieler"
+	}
+}
