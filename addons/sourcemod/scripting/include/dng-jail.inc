@@ -165,7 +165,7 @@ stock bool HasFlags(int client, AdminFlag flags[16])
     if (iFlags & ADMFLAG_ROOT)
         return true;
     
-    for (new i = 0; i < sizeof(flags); i++)
+    for (int i = 0; i < sizeof(flags); i++)
         if (iFlags & FlagToBit(flags[i]))
             return true;
     
@@ -179,7 +179,7 @@ stock int GetRandomPlayer(int team)
     int[] clients = new int[MaxClients + 1];
     int clientCount;
     
-    for (new i = 1; i <= MaxClients; i++)
+    for (int i = 1; i <= MaxClients; i++)
         if (IsClientValid(i) && (GetClientTeam(i) == team) && IsPlayerAlive(i))
             clients[clientCount++] = i;
     

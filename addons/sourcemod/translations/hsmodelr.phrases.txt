@@ -1,0 +1,18 @@
+﻿"Phrases"
+{
+    "LR Started"
+    {
+        "#format"    "{1:s},{2:s},{3:N},{4:N}"
+        "en"        "{1} Headshot Mode ({2}) gegen {3} und {4} gestartet."
+    }
+    "LR WIN"
+    {
+        "#format"    "{1:s},{2:N},{3:N}"
+        "en"        "{1} {2} hat gegen {3} gewonnen!"
+    }
+    "PLAYER SELECT"
+    {
+        "#format"    "{1:s},{2:N}"
+        "en"        "{1} Der Spieler {2} hat dich als Gegner ausgewählt."
+    }
+}

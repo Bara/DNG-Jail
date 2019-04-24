@@ -1,0 +1,25 @@
+"Phrases"
+{
+    "LR Name"
+    {
+        "de"        "HE Battle"
+        "en"        "HE Battle"
+    }
+    "LR Start"
+    {
+        "#format"   "{1:N},{2:N}"
+        "de"        "{1} has challenged {2} to a HE Battle."
+        "en"        "{1} nimmt gegen {2}, HE Battle."
+    }
+    "LR No Winner"
+    {
+        "de"        "HE Battle LR was aborted. There is no winner :("
+        "en"        "HE Battle abgebrochen, keiner gewinnt."
+    }
+    "LR Winner"
+    {
+        "#format"   "{1:N}"
+        "de"        "{1} has won the LR, you may now kill the n00b within the cage :)"
+        "en"        "{1} hat gewonnen."
+    }
+}

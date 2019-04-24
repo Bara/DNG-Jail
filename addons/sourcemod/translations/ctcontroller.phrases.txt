@@ -73,11 +73,25 @@
 		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist durch {darkred}{2} {lightgreen} nicht mehr verifiziert!"
 	}
 	
-	"CTBan Player"
+	"CTBan Player Perma"
 	{
 		"#format"	"{1:N},{2:N},{3:s}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned by {darkred}{2}! (Reason: {3})"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was {darkred}permanently {lightgreen}ct banned by {darkred}{2}! (Reason: {3})"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde {darkred}dauerhaft {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+	}
+
+	"CTBan Player Round"
+	{
+		"#format"	"{1:N},{2:N},{3:s}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned for {darkred}1 round {lightgreen}by {darkred}{2}! (Reason: {3})"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde für {darkred}1 Runde {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+	}
+
+	"CTBan Player Rounds"
+	{
+		"#format"	"{1:N},{2:N},{3:s},{4:d}"
+		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned for {darkred}{4} rounds {lightgreen}by {darkred}{2}! (Reason: {3})"
+		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde für {darkred}{4} Runden {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
 	}
 	
 	"UnCTBan Player"
