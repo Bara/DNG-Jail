@@ -1,8 +1,8 @@
-bool g_bLrStamm = false;
+static bool g_bValidRound = false;
 
-Handle g_hLrTimer = null;
+static Handle g_hTimer = null;
 
-bool g_bInRound[MAXPLAYERS + 1] =  { false, ... };
+static bool g_bInRound[MAXPLAYERS + 1] =  { false, ... };
 
 
 void LrStammpunkte_RoundStart()
@@ -17,7 +17,7 @@ void LrStammpunkte_RoundStart()
 		}
 	}
 	
-	g_hLrTimer = CreateTimer(240.0, LrTimer);
+	g_hTimer = CreateTimer(240.0, LrTimer);
 }
 
 void LrStammpunkte_RoundEnd()
@@ -38,9 +38,9 @@ void ResetClientLrStammpunkte(int client)
 
 public Action LrTimer(Handle timer)
 {
-	g_bLrStamm = true;
+	g_bValidRound = true;
 	
-	g_hLrTimer = null;
+	g_hTimer = null;
 	return Plugin_Stop;
 }
 
@@ -74,21 +74,33 @@ void LrStammpunkte_PlayerDeath()
 	
 	if(iPlayerCount >= iMinPlayers && GetAlivePlayers() == 1)
 	{
-		if(g_bLrStamm)
+		if(g_bValidRound)
 		{
-			CPrintToChatAll("%s%N %serhält %s10 Bonus Stammpunkte%s, da er der letzte Überlebende ist.", SPECIAL, GetLastAlivePlayer(), TEXT, SPECIAL, TEXT);
-			STAMM_AddClientPoints(GetLastAlivePlayer(), 10);	
+			int client = GetLastAlivePlayer();
+			if ((g_cLRPointsMode.IntValue == 1 || g_cLRPointsMode.IntValue == 2) && g_cLRPointsStammpoints.IntValue > 0)
+			{
+				CPrintToChatAll("%s%N %serhält %s%d Stammpunkte%s, da er der letzte Überlebende ist.", SPECIAL, client, TEXT, SPECIAL, g_cLRPointsStammpoints.IntValue, TEXT);
+				STAMM_AddClientPoints(client, g_cLRPointsStammpoints.IntValue);	
+			}
+
+#if defined _store_included
+			if ((g_cLRPointsMode.IntValue == 0 || g_cLRPointsMode.IntValue == 2) && g_cLRPointsStoreCredits.IntValue > 0)
+			{
+				CPrintToChatAll("%s%N %serhält %s%d Credits%s, da er der letzte Überlebende ist.", SPECIAL, client, TEXT, SPECIAL, g_cLRPointsStoreCredits.IntValue, TEXT);
+				Store_SetClientCredits(client, Store_GetClientCredits(client) + g_cLRPointsStoreCredits.IntValue);	
+			}
+#endif
 		}
 		else
 		{
-			CPrintToChatAll("Die Runde muss eine bestimmte Zeit lang sein und es müssen mind. 5 Spieler auf dem Server spielen, um 10 Stammpunkte zu bekommen.");
+			CPrintToChatAll("Die Runde muss mindestens 4 Minuten laufen und es müssen mind. 5 Spieler auf dem Server spielen, um extra Store Credits und/oder Stammpunkte zu bekommen.");
 		}
 	}
 }
 
 void ResetLrStammpunkte()
 {
-	g_bLrStamm = false;
+	g_bValidRound = false;
 
-	delete g_hLrTimer;
+	delete g_hTimer;
 }

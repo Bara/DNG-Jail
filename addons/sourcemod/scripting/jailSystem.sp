@@ -16,6 +16,9 @@
 #include <stamm>
 #include <glow>
 
+#undef REQUIRED_PLUGIN
+#include <store>
+
 #pragma newdecls required
 
 #define PL_NAME "jailSystem"
@@ -34,6 +37,11 @@ ConVar g_cEnableFreedayTeams = null;
 ConVar g_cEnableShowDamage = null;
 ConVar g_cEnableVoiceMenu = null;
 ConVar g_cEnableLRPoints = null;
+ConVar g_cLRPointsMode = null;
+#if defined _store_included
+ConVar g_cLRPointsStoreCredits = null;
+#endif
+ConVar g_cLRPointsStammpoints = null;
 ConVar g_cEnableExtraPointsCT = null;
 ConVar g_cEnableExtraPointsTag = null;
 ConVar g_cEnableNewBeacon = null;
@@ -76,6 +84,11 @@ public Plugin myinfo =
 
 public void OnPluginStart()
 {
+#if defined _store_included
+	// Fix warning with store.inc
+	if (g_cvarChatTag) {}
+#endif
+
 	MySQL_OnPluginStart();
 	Teamdamage_OnPluginStart();
 	Freekill_OnPluginStart();
@@ -129,6 +142,12 @@ public void OnPluginStart()
 	g_cEnableExtraPointsTag = AutoExecConfig_CreateConVar("jailsystem_enable_extra_points_tag", "1", "Enable Extra Points for Tag (Name/Clantag)?", _, true, 0.0, true, 1.0);
 	g_cEnableNewBeacon = AutoExecConfig_CreateConVar("jailsystem_enable_newBeacon", "1", "Enable Beacon for new Players?", _, true, 0.0, true, 1.0);
 	g_cNewBeaconPoints = AutoExecConfig_CreateConVar("jailsystem_newBeacon_points", "240", "Until how much points will get a player the glow effect?");
+	g_cLRPointsMode = AutoExecConfig_CreateConVar("jailsystem_lr_points_mode", "0", "Which points the player get after won lr? ( 0 - Store Credits, 1 - Stammpoints, 2 - Both", _, true, 0.0, true, 2.0);
+#if defined _store_included
+	g_cLRPointsStoreCredits = AutoExecConfig_CreateConVar("jailsystem_lr_points_store_credits", "10", "How much store credits after lr win? ( 0 = Disabled)");
+#endif
+	g_cLRPointsStammpoints = AutoExecConfig_CreateConVar("jailsystem_lr_points_stammpoints", "10", "How much stammpoints after lr win? ( 0 = Disabled)");
+
 	AutoExecConfig_ExecuteFile();
 	AutoExecConfig_CleanFile();
 	
