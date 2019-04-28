@@ -23,6 +23,8 @@
 
 #define PL_NAME "Jail"
 
+bool g_bStore = false;
+
 Handle g_hOnMySQLConnect = null;
 Database g_dDB = null;
 
@@ -68,6 +70,9 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	g_hOnMySQLConnect = CreateGlobalForward("Jail_OnMySQLCOnnect", ET_Ignore, Param_Cell);
 	
 	CreateNative("Jail_GetDatabase", Native_GetDatabase);
+
+	MarkNativeAsOptional("Store_GetClientCredits");
+	MarkNativeAsOptional("Store_SetClientCredits");
 	
 	RegPluginLibrary("jail");
 	
@@ -75,7 +80,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 }
 public Plugin myinfo =
 {
-	name = "Jail", 
+	name = "Jail - Collection of jail functions", 
 	author = "Bara", 
 	description = "", 
 	version = "1.0", 
@@ -158,6 +163,11 @@ public void OnPluginStart()
 	}
 
 	CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
+}
+
+public void OnAllPluginsLoaded()
+{
+	g_bStore = LibraryExists("store_zephyrus");
 }
 
 public void OnMapStart()

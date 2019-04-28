@@ -55,7 +55,7 @@ Handle g_hTimer[MAXPLAYERS + 1] = {null, ...};
 
 public Plugin myinfo =
 {
-	name = "Jail Dice", 
+	name = "Dice - Dice that includes CT and 2 T dices", 
 	author = "Bara", 
 	description = "", 
 	version = "1.0", 
