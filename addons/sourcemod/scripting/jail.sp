@@ -12,7 +12,7 @@
 #include <menu-stocks>
 #include <multicolors>
 #include <lastrequest>
-#include <jailDice>
+#include <dice>
 #include <stamm>
 #include <glow>
 

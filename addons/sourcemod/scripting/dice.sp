@@ -50,8 +50,8 @@ bool g_bHosties = false;
 bool g_bBusy[MAXPLAYERS + 1] = {false, ...};
 Handle g_hTimer[MAXPLAYERS + 1] = {null, ...};
 
-#include "jailDice/tDice.sp"
-#include "jailDice/ctDice.sp"
+#include "dice/t.sp"
+#include "dice/ct.sp"
 
 public Plugin myinfo =
 {
@@ -68,7 +68,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("Dice_HasClientBhop", Native_HasClientBhop);
 	CreateNative("Dice_LoseAll", Native_LoseAll);
 	
-	RegPluginLibrary("jailDice");
+	RegPluginLibrary("dice");
 	
 	return APLRes_Success;
 }
