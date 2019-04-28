@@ -21,7 +21,7 @@
 
 #pragma newdecls required
 
-#define PL_NAME "jailSystem"
+#define PL_NAME "Jail"
 
 Handle g_hOnMySQLConnect = null;
 Database g_dDB = null;
@@ -47,36 +47,36 @@ ConVar g_cEnableExtraPointsTag = null;
 ConVar g_cEnableNewBeacon = null;
 ConVar g_cNewBeaconPoints = null;
 
-#include "jailSystem/jailSystem_ergeben.sp"
-#include "jailSystem/jailSystem_verweigern.sp"
-#include "jailSystem/jailSystem_freedayteams.sp"
-#include "jailSystem/jailSystem_teamdamage.sp"
-#include "jailSystem/jailSystem_freeday.sp"
-#include "jailSystem/jailSystem_freekill.sp"
-#include "jailSystem/jailSystem_spawnweapons.sp"
-#include "jailSystem/jailSystem_kill.sp"
-#include "jailSystem/jailSystem_showdamage.sp"
-#include "jailSystem/jailSystem_lrStammpunkte.sp"
-#include "jailSystem/jailSystem_extraStammpunkte.sp"
-#include "jailSystem/jailSystem_newBeacon.sp"
-#include "jailSystem/jailSystem_mysql.sp"
-#include "jailSystem/jailSystem_ctboost.sp"
-#include "jailSystem/jailSystem_voicemenu.sp"
+#include "jail/ergeben.sp"
+#include "jail/verweigern.sp"
+#include "jail/freedayteams.sp"
+#include "jail/teamdamage.sp"
+#include "jail/freeday.sp"
+#include "jail/freekill.sp"
+#include "jail/spawnweapons.sp"
+#include "jail/kill.sp"
+#include "jail/showdamage.sp"
+#include "jail/lrStammpunkte.sp"
+#include "jail/extraStammpunkte.sp"
+#include "jail/newBeacon.sp"
+#include "jail/mysql.sp"
+#include "jail/ctboost.sp"
+#include "jail/voicemenu.sp"
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	g_hOnMySQLConnect = CreateGlobalForward("jailSystem_OnMySQLCOnnect", ET_Ignore, Param_Cell);
+	g_hOnMySQLConnect = CreateGlobalForward("Jail_OnMySQLCOnnect", ET_Ignore, Param_Cell);
 	
-	CreateNative("jailSystem_GetDatabase", Native_GetDatabase);
+	CreateNative("Jail_GetDatabase", Native_GetDatabase);
 	
-	RegPluginLibrary("jailSystem");
+	RegPluginLibrary("jail");
 	
 	return APLRes_Success;
 }
 public Plugin myinfo =
 {
-	name = "JailSystem", 
-	author = "Bara & Dive", 
+	name = "Jail", 
+	author = "Bara", 
 	description = "", 
 	version = "1.0", 
 	url = "github.com/Bara"
@@ -127,26 +127,26 @@ public void OnPluginStart()
 	
 	AutoExecConfig_SetCreateDirectory(true);
 	AutoExecConfig_SetCreateFile(true);
-	AutoExecConfig_SetFile("jailSystem");
-	g_cEnableCTBoost = AutoExecConfig_CreateConVar("jailsystem_enable_ctboost", "1", "Enable CT Boost?", _, true, 0.0, true, 1.0);
-	g_cCTBoostHealth = AutoExecConfig_CreateConVar("jailsystem_enable_ctboost_health", "1", "Enable Health CT Boost?", _, true, 0.0, true, 1.0);
-	g_cCTBoostHealthMulti = AutoExecConfig_CreateConVar("jailsystem_ctboot_health_multi", "10.2842", "Faktor for CT Boost Health");
-	g_cCTBoostArmor = AutoExecConfig_CreateConVar("jailsystem_enable_armor", "1", "Enable Armor CT Boost?", _, true, 0.0, true, 1.0);
-	g_cCTBoostHelm = AutoExecConfig_CreateConVar("jailsystem_enable_helm", "1", "Enable Helm CT Boost?", _, true, 0.0, true, 1.0);
-	g_cEnableFreeday = AutoExecConfig_CreateConVar("jailsystem_enable_freeday", "1", "Enable Freeday?", _, true, 0.0, true, 1.0);
-	g_cEnableFreedayTeams = AutoExecConfig_CreateConVar("jailsystem_enable_freeday_teams", "1", "Enable Freeday Teams?", _, true, 0.0, true, 1.0);
-	g_cEnableShowDamage = AutoExecConfig_CreateConVar("jailsystem_enable_showdamage", "1", "Enable Show Damage?", _, true, 0.0, true, 1.0);
-	g_cEnableVoiceMenu = AutoExecConfig_CreateConVar("jailsystem_enable_voicemenu", "1", "Enable Voice Menu?", _, true, 0.0, true, 1.0);
-	g_cEnableLRPoints = AutoExecConfig_CreateConVar("jailsystem_enable_lr_points", "1", "Enable LR Points?", _, true, 0.0, true, 1.0);
-	g_cEnableExtraPointsCT = AutoExecConfig_CreateConVar("jailsystem_enable_extra_points_name", "1", "Enable Extra Points as CT?", _, true, 0.0, true, 1.0);
-	g_cEnableExtraPointsTag = AutoExecConfig_CreateConVar("jailsystem_enable_extra_points_tag", "1", "Enable Extra Points for Tag (Name/Clantag)?", _, true, 0.0, true, 1.0);
-	g_cEnableNewBeacon = AutoExecConfig_CreateConVar("jailsystem_enable_newBeacon", "1", "Enable Beacon for new Players?", _, true, 0.0, true, 1.0);
-	g_cNewBeaconPoints = AutoExecConfig_CreateConVar("jailsystem_newBeacon_points", "240", "Until how much points will get a player the glow effect?");
-	g_cLRPointsMode = AutoExecConfig_CreateConVar("jailsystem_lr_points_mode", "0", "Which points the player get after won lr? ( 0 - Store Credits, 1 - Stammpoints, 2 - Both", _, true, 0.0, true, 2.0);
+	AutoExecConfig_SetFile("jail");
+	g_cEnableCTBoost = AutoExecConfig_CreateConVar("jail_enable_ctboost", "1", "Enable CT Boost?", _, true, 0.0, true, 1.0);
+	g_cCTBoostHealth = AutoExecConfig_CreateConVar("jail_enable_ctboost_health", "1", "Enable Health CT Boost?", _, true, 0.0, true, 1.0);
+	g_cCTBoostHealthMulti = AutoExecConfig_CreateConVar("jail_ctboot_health_multi", "10.2842", "Faktor for CT Boost Health");
+	g_cCTBoostArmor = AutoExecConfig_CreateConVar("jail_enable_armor", "1", "Enable Armor CT Boost?", _, true, 0.0, true, 1.0);
+	g_cCTBoostHelm = AutoExecConfig_CreateConVar("jail_enable_helm", "1", "Enable Helm CT Boost?", _, true, 0.0, true, 1.0);
+	g_cEnableFreeday = AutoExecConfig_CreateConVar("jail_enable_freeday", "1", "Enable Freeday?", _, true, 0.0, true, 1.0);
+	g_cEnableFreedayTeams = AutoExecConfig_CreateConVar("jail_enable_freeday_teams", "1", "Enable Freeday Teams?", _, true, 0.0, true, 1.0);
+	g_cEnableShowDamage = AutoExecConfig_CreateConVar("jail_enable_showdamage", "1", "Enable Show Damage?", _, true, 0.0, true, 1.0);
+	g_cEnableVoiceMenu = AutoExecConfig_CreateConVar("jail_enable_voicemenu", "1", "Enable Voice Menu?", _, true, 0.0, true, 1.0);
+	g_cEnableLRPoints = AutoExecConfig_CreateConVar("jail_enable_lr_points", "1", "Enable LR Points?", _, true, 0.0, true, 1.0);
+	g_cEnableExtraPointsCT = AutoExecConfig_CreateConVar("jail_enable_extra_points_name", "1", "Enable Extra Points as CT?", _, true, 0.0, true, 1.0);
+	g_cEnableExtraPointsTag = AutoExecConfig_CreateConVar("jail_enable_extra_points_tag", "1", "Enable Extra Points for Tag (Name/Clantag)?", _, true, 0.0, true, 1.0);
+	g_cEnableNewBeacon = AutoExecConfig_CreateConVar("jail_enable_newBeacon", "1", "Enable Beacon for new Players?", _, true, 0.0, true, 1.0);
+	g_cNewBeaconPoints = AutoExecConfig_CreateConVar("jail_newBeacon_points", "240", "Until how much points will get a player the glow effect?");
+	g_cLRPointsMode = AutoExecConfig_CreateConVar("jail_lr_points_mode", "0", "Which points the player get after won lr? ( 0 - Store Credits, 1 - Stammpoints, 2 - Both", _, true, 0.0, true, 2.0);
 #if defined _store_included
-	g_cLRPointsStoreCredits = AutoExecConfig_CreateConVar("jailsystem_lr_points_store_credits", "10", "How much store credits after lr win? ( 0 = Disabled)");
+	g_cLRPointsStoreCredits = AutoExecConfig_CreateConVar("jail_lr_points_store_credits", "10", "How much store credits after lr win? ( 0 = Disabled)");
 #endif
-	g_cLRPointsStammpoints = AutoExecConfig_CreateConVar("jailsystem_lr_points_stammpoints", "10", "How much stammpoints after lr win? ( 0 = Disabled)");
+	g_cLRPointsStammpoints = AutoExecConfig_CreateConVar("jail_lr_points_stammpoints", "10", "How much stammpoints after lr win? ( 0 = Disabled)");
 
 	AutoExecConfig_ExecuteFile();
 	AutoExecConfig_CleanFile();

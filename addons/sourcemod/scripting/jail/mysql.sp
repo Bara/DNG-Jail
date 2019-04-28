@@ -1,13 +1,13 @@
 void MySQL_OnPluginStart()
 {
-	SQL_TConnect(sqlConnect, "jailSystem");
+	SQL_TConnect(sqlConnect, "jail");
 }
 
 public void sqlConnect(Handle owner, Handle hndl, const char[] error, any data)
 {
 	if(hndl == null)
 	{
-		SetFailState("[%s] (sqlConnect) Can't connect to database: \"jailSystem\"", PL_NAME);
+		SetFailState("[%s] (sqlConnect) Can't connect to database: \"jail\"", PL_NAME);
 		return;
 	}
 	
