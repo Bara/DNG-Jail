@@ -6,7 +6,7 @@
 #include <sdkhooks>
 #include <multicolors>
 #include <dng-jail>
-#include <jailSystem>
+#include <jail>
 #include <emitsoundany>
 
 #undef REQUIRE_PLUGIN
@@ -122,7 +122,7 @@ public void OnMapStart()
 	AddFileToDownloadsTable("sound/" ... POSITIVE_SOUND);
 }
 
-public void jailSystem_OnMySQLCOnnect(Database database)
+public void Jail_OnMySQLCOnnect(Database database)
 {
 	g_dDB = database;
 	
@@ -172,9 +172,9 @@ void AddDiceToMySQL(int client, int dice, const char[] option)
 	
 	if (g_dDB == null)
 	{
-		if (jailSystem_GetDatabase() != null)
+		if (Jail_GetDatabase() != null)
 		{
-			g_dDB = jailSystem_GetDatabase();
+			g_dDB = Jail_GetDatabase();
 		}
 		else
 		{
