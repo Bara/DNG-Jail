@@ -1,6 +1,6 @@
 void DatabaseInit()
 {
-    SQL_TConnect(OnDatabaseConnected, "playtimetracker", ++g_iSequence);
+    SQL_TConnect(OnDatabaseConnected, "player_analytics", ++g_iSequence);
 }
 
 public void OnDatabaseConnected(Handle owner, Handle hndl, const char[] error, any data)
