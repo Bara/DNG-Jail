@@ -243,11 +243,30 @@ public Action Timer_HandleConnect(Handle timer, any userid) {
 		GeoipCountry(ip, country_name, sizeof(country_name));
 	} */
 
-	GeoipCity(ip, city, sizeof(city));
-	GeoipRegion(ip, region, sizeof(region));
-	GeoipCountry(ip, country_name, sizeof(country_name));
-	GeoipCode2(ip, country_code);
-	GeoipCode3(ip, country_code3);
+	if (!GeoipCity(ip, city, sizeof(city)))
+	{
+		LogError("GeoipCity returns false for \"%L\"", client);
+	}
+
+	if (!GeoipRegion(ip, region, sizeof(region)))
+	{
+		LogError("GeoipRegion returns false for \"%L\"", client);
+	}
+
+	if (!GeoipCountry(ip, country_name, sizeof(country_name)))
+	{
+		LogError("GeoipCountry returns false for \"%L\"", client);
+	}
+
+	if (!GeoipCode2(ip, country_code))
+	{
+		LogError("GeoipCode2 returns false for \"%L\"", client);
+	}
+
+	if (!GeoipCode3(ip, country_code3))
+	{
+		LogError("GeoipCode3 returns false for \"%L\"", client);
+	}
 	
 	strcopy(buffers[2], sizeof(buffers[]), city);
 	strcopy(buffers[3], sizeof(buffers[]), region);
