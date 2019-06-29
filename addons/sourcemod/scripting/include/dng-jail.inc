@@ -18,6 +18,7 @@
 #define LoopClients(%1) for(int %1 = 1; %1 <= MaxClients; %1++) if(IsClientValid(%1))
 #define LoopAllClients(%1) for(int %1 = 1; %1 <= MaxClients; %1++) if(IsClientValid(%1, true))
 
+#include <sdktools>
 #include <cstrike>
 #include <multicolors>
 
