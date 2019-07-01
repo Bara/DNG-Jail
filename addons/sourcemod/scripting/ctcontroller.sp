@@ -12,6 +12,8 @@
 #include <autoexecconfig>
 #include <calladmin>
 #include <SteamWorks>
+#include <hide>
+#include <zombie>
 
 #pragma newdecls required
 
@@ -230,6 +232,11 @@ public Action Command_CheckValid(int client, int args)
 
 public Action Command_CheckJoin(int client, const char[] command, int args)
 {
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
+		return Plugin_Continue;
+	}
+
 	if(IsClientValid(client))
 	{
 		char sTeam[2];

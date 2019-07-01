@@ -15,6 +15,8 @@
 #include <dice>
 #include <stamm>
 #include <glow>
+#include <hide>
+#include <zombie>
 
 #undef REQUIRED_PLUGIN
 #include <store>
@@ -238,9 +240,12 @@ public Action PlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 		ResetFreekill(client);
 		VoiceMenu_ResetSettings(client);
 
-		Spawnweapons_PlayerSpawn(client);
-		NewBeacon_PlayerSpawn(client);
-		CTBoost_PlayerSpawn(client);
+		if (!Zombie_IsActive() && !Hide_IsActive())
+		{
+			Spawnweapons_PlayerSpawn(client);
+			NewBeacon_PlayerSpawn(client);
+			CTBoost_PlayerSpawn(client);
+		}
 	}
 }
 
