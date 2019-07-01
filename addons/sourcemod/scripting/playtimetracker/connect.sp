@@ -25,13 +25,13 @@ public void OnDatabaseConnected(Handle owner, Handle hndl, const char[] error, a
     SQL_SetCharset(g_hSQL, "utf8mb4");
     SQL_TQuery(g_hSQL, Query_DoNothing, "SET NAMES 'utf8mb4';");
     
-    char sDefaultCharset[32]/*, sQuery[1024]*/;
+    char sDefaultCharset[128], sQuery[1024];
     strcopy(sDefaultCharset, sizeof(sDefaultCharset), " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
     
     // Create table query
     
-    /* Format(sQuery, sizeof(sQuery), "CREATE TABLE IF NOT EXISTS `playtimetracker` (`id` int unsigned not null PRIMARY KEY AUTO_INCREMENT,`steamid` varchar(32) UNIQUE NOT NULL, `playername` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL, `time_t` int NOT NULL, `time_ct` int NOT NULL, `time_total` int NOT NULL)%s", sDefaultCharset);
-    SQL_TQuery(g_hSQL, Query_DoNothing, sQuery); */
+    Format(sQuery, sizeof(sQuery), "CREATE TABLE IF NOT EXISTS `playtimetracker` (`id` int unsigned not null PRIMARY KEY AUTO_INCREMENT,`steamid` varchar(32) UNIQUE NOT NULL, `playername` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL, `time_t` int NOT NULL, `time_ct` int NOT NULL, `time_total` int NOT NULL)%s", sDefaultCharset);
+    SQL_TQuery(g_hSQL, Query_DoNothing, sQuery);
     
     if (g_bLateLoaded)
         LoopClients(iClient)

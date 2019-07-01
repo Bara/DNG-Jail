@@ -35,7 +35,7 @@ public Action Command_ergeben(int client, int args)
 				for(int i = CS_SLOT_PRIMARY; i <= CS_SLOT_C4; i++)
 				{
 					int index = -1;
-					while((index = GetPlayerWeaponSlot(client, i)) != -1)
+					while ( (index = GetPlayerWeaponSlot(client, i) ) != -1)
 					{
 						SafeRemoveWeapon(client, index);
 					}
