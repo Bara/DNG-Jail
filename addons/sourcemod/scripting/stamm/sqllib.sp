@@ -108,6 +108,7 @@ sqllib_LoadDB()
 		// Create new table 
 		if (driver != INVALID_HANDLE && StrEqual(ident, "mysql"))
 		{
+			SQL_SetCharset(sqllib_db, "utf8mb4");
 			Format(query, sizeof(query), g_sCreateTableQueryMySQL, g_sTableName, GetTime());
 		}
 		else
