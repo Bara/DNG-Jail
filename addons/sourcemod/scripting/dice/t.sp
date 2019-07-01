@@ -1,8 +1,13 @@
-int tDiceOne(int client, Panel panel)
+int tDiceOne(int client, Panel panel, int option = -1)
 {
     SetRandomSeed(GetTime() * 100 * GetRandomInt(2, 9));
     
     int iNumber = GetRandomInt(1, 100);
+
+    if (option != -1)
+    {
+        iNumber = option;
+    }
     
     char sOption[32];
     
@@ -123,13 +128,18 @@ int tDiceOne(int client, Panel panel)
     return type;
 }
 
-int tDiceTwo(int client, Panel panel)
+int tDiceTwo(int client, Panel panel, int option = -1)
 {
     char sOption[32];
     
     SetRandomSeed(GetTime() * 100 * GetRandomInt(2, 9));
     
     int iNumber = GetRandomInt(1, 100);
+
+    if (option != -1)
+    {
+        iNumber = option;
+    }
     
     // Types: 0 - Negative, 1 - Neutral, 2 - Positive
     int type = -1;
@@ -247,7 +257,7 @@ int tDiceTwo(int client, Panel panel)
         // selbstmordattentäter
         ForcePlayerSuicide(client);
 
-        CPrintToChat(client, "Zur Seite mit dir...!");
+        Format(sText, sizeof(sText), "Zur Seite mit dir...!");
         Format(sOption, sizeof(sOption), "slay");
         type = 0;
     }

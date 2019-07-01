@@ -1,8 +1,13 @@
-int ctDiceOne(int client, Panel panel)
+int ctDiceOne(int client, Panel panel, int option = -1)
 {
     SetRandomSeed(GetTime() * 100 * GetRandomInt(2, 9));
 
     int iNumber = GetRandomInt(1, 100);
+
+    if (option != -1)
+    {
+        iNumber = option;
+    }
     
     char sOption[32];
 
