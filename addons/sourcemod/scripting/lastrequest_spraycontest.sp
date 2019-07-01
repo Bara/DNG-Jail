@@ -131,7 +131,7 @@ void StartLR(Handle hArray, int inArray)
 	
 	g_bRunning = true;
 	
-	CPrintToChatAll("%s %N spielt gegen %N Spray Contest %s.", g_iLRPrisoner, g_iLRGuard, sContest);
+	CPrintToChatAll("%N spielt gegen %N Spray Contest %s.", g_iLRPrisoner, g_iLRGuard, sContest);
 	
 	CPrintToChat(g_iLRPrisoner, "{darkred}Dein Spray ist für dieses Spiel ein Schacht!");
 	CPrintToChat(g_iLRGuard, "{darkred}Dein Spray ist für dieses Spiel ein Schacht!");
