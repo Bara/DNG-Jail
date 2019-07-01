@@ -42,7 +42,7 @@ public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
 	{
 		LogMessage("[VALID ROUND] Start: %d, End: %d, Started: %d", g_iRoundStart, GetTime(), g_bRoundStarted);
 
-		CPrintToChatAll("{darkred}[CT-Controller] {lightgreen}Dies war eine {lightblue}valide Runde{lightgreen}!");
+		CPrintToChatAll("{default}Dies war eine {lightblue}valide Runde{default}!");
 		
 		LoopClients(client)
 		{

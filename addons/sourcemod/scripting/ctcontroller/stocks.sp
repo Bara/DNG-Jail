@@ -9,7 +9,9 @@ void CreateTable()
 	Format(sQuery, sizeof(sQuery), "CREATE TABLE IF NOT EXISTS `ct_controller` ( `id` INT NOT NULL AUTO_INCREMENT, `name` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL, `communityid` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL, `verify` tinyint(1) DEFAULT 0, `verifyAdmin` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '', `banned` tinyint(1) DEFAULT 0, `rounds` int(11) DEFAULT 0, `banAdmin` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '', `banReason` text COLLATE utf8mb4_unicode_ci DEFAULT '', `unbanAdmin` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '', PRIMARY KEY (`id`), UNIQUE KEY (`communityid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 	
 	g_dDB.Query(sqlCreateTable, sQuery);
 }
@@ -109,7 +111,9 @@ void LoadClient(int client)
 	Format(sQuery, sizeof(sQuery), "SELECT verify, banned, rounds, banReason FROM ct_controller WHERE communityid = \"%s\" ORDER BY id DESC LIMIT 1;", g_sClientID[client]);
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 	
 	g_dDB.Query(sqlLoadClient, sQuery, GetClientUserId(client));
 }
@@ -128,7 +132,9 @@ void VerifyClient(int target, int admin)
 	g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `ct_controller` (`communityid`, `name`, `verify`, `verifyAdmin`) VALUES (\"%s\", \"%N\", 1, \"%s\") ON DUPLICATE KEY UPDATE name = \"%N\", verify = '1', verifyAdmin = \"%s\";", sID, target, sAID, target, sAID);
 
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 
 	CT_LogAction(admin, target, sID, "verify", 1, -1, "", sAID);
 	g_dDB.Query(sqlVeriyClient, sQuery, GetClientUserId(target));
@@ -156,7 +162,9 @@ void UnVerifyClient(int target, int admin)
 	g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `ct_controller` (`communityid`, `name`, `verify`) VALUES (\"%s\", \"%N\", 0) ON DUPLICATE KEY UPDATE name = \"%N\", verify = '0';", sID, target, target);
 
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 
 	CT_LogAction(admin, target, sID, "verify", 0, -1, "", sAID);
 	g_dDB.Query(sqlVeriyClient, sQuery, GetClientUserId(target));
@@ -228,7 +236,9 @@ void BanCTClient(int target, int admin, int rounds, const char[] sReason)
 	Format(sQuery, sizeof(sQuery), "INSERT INTO `ct_controller` (`communityid`, `name`, `banned`, `rounds`, `banAdmin`, `banReason`) VALUES (\"%s\", \"%N\", 1, %d, \"%s\", \"%s\") ON DUPLICATE KEY UPDATE name = \"%N\", banned = '1', rounds = %d, banAdmin = \"%s\", banReason = \"%s\", verify = '0';", sID, target, rounds, sAID, sReason, target, rounds, sAID, sReason);
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 		
 	CT_LogAction(admin, target, sID, "ctban", 1, rounds, sReason, sAID);
 	g_dDB.Query(sqlCTBanClient, sQuery, GetClientUserId(target));
@@ -306,7 +316,9 @@ void UnBanCTClient(int target, int admin)
 	Format(sQuery, sizeof(sQuery), "INSERT INTO `ct_controller` (`communityid`, `name`, `banned`) VALUES (\"%s\", \"%N\", 0) ON DUPLICATE KEY UPDATE name = \"%N\", banned = '0', unbanAdmin = \"%s\";", sID, target, target, sAID);
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 		
 	CT_LogAction(admin, target, sID, "ctunban", 0, -1, "", sAID);
 	g_dDB.Query(sqlCTUnBanClient, sQuery, GetClientUserId(target));
@@ -317,16 +329,24 @@ void UnBanCTClient(int target, int admin)
 	if (IsClientValid(admin))
 	{
 		for (int i = 1; i <= MaxClients; i++)
+		{
 			if(IsClientValid(i))
+			{
 				CPrintToChat(i, "%T", "UnCTBan Player", i, target, admin);
+			}
+		}
 		
 		LogMessage("\"%L\" was ct unbanned \"%L\"", admin, target);
 	}
 	else
 	{
 		for (int i = 1; i <= MaxClients; i++)
+		{
 			if(IsClientValid(i))
-				CPrintToChat(i, "{darkred}[CT-Controller] {lightblue}%N {lightgreen}ist nun {lightblue}nicht mehr {lightgreen}vom CT-Team gebannt!", target);
+			{
+				CPrintToChat(i, "{lightblue}%N {default}ist nun {lightblue}nicht mehr {default}vom CT-Team gebannt!", target);
+			}
+		}
 		
 		LogMessage("\"%L\" was ct unbanned", target);
 	}
@@ -361,7 +381,7 @@ bool IsValidCT(int client, bool blockMessage = false)
 		if (!blockMessage)
 		{
 			LogMessage("\"%L\" tried to join ct! (Rejected: g_bBanned is true)", client);
-			CPrintToChat(client, "Sie sind vom CT-Team {lightblue}gebannt{lightgreen}. Melde dich dafür bitte {lightblue}im Forum{lightgreen}.");
+			CPrintToChat(client, "{default}Sie sind vom CT-Team {lightblue}gebannt{default}. Melde dich dafür bitte {lightblue}im Forum{default}.");
 		}
 		return false;
 	}
@@ -371,7 +391,7 @@ bool IsValidCT(int client, bool blockMessage = false)
 		if (!blockMessage)
 		{
 			LogMessage("\"%L\" tried to join ct! (Rejected: SourceComms_GetClientMuteType != bNot)", client);
-			CPrintToChat(client, "{lightblue}Stummgeschaltene Spieler {lightgreen}können kein CT spielen. Melde dich dafür bitte {lightblue}im Forum{lightgreen}.");
+			CPrintToChat(client, "{lightblue}Stummgeschaltene Spieler {default}können kein CT spielen. Melde dich dafür bitte {lightblue}im Forum{default}.");
 		}
 		return false;
 	}
@@ -381,24 +401,26 @@ bool IsValidCT(int client, bool blockMessage = false)
 		return true;
 	}
 	
-	if (!g_bVerify[client])
+	if (!g_bVerify[client] && STAMM_GetClientPoints(client) < g_cStammPoints.IntValue)
 	{
 		if (!blockMessage)
 		{
-			LogMessage("\"%L\" tried to join ct! (Rejected: g_bVerify is false", client);
-			CPrintToChat(client, "Sie sind {lightblue}nicht freigeschaltet{lightgreen}! Melde dich dafür bitte {lightblue}im Forum{lightgreen}.");
-		}
-		return false;
-	}
+			if (STAMM_GetClientPoints(client) < g_cStammPoints.IntValue)
+			{
+				LogMessage("\"%L\" tried to join ct! (Rejected: g_bVerify is false", client);
+				CPrintToChat(client, "{default}Sie sind {lightblue}nicht freigeschaltet{default}! Melde dich dafür bitte {lightblue}im Forum{default}.");
 
-	if (STAMM_GetClientPoints(client) < g_cStammPoints.IntValue)
-	{
-		if (!blockMessage)
-		{
-			LogMessage("\"%L\" tried to join ct! (Rejected: STAMM_GetClientPoints (%d))", client, STAMM_GetClientPoints(client));
-			CPrintToChat(client, "Sie haben {lightblue}nicht genügend Stammpunkte{lightgreen}! Vorausgesetzt sind{lightblue} %d Stammpunkte{lightgreen}.", g_cStammPoints.IntValue);
+				return false;
+			}
+
+			if (!g_bVerify[client])
+			{
+				LogMessage("\"%L\" tried to join ct! (Rejected: STAMM_GetClientPoints (%d))", client, STAMM_GetClientPoints(client));
+				CPrintToChat(client, "{default}Sie haben {lightblue}nicht genügend Stammpunkte{default}! Vorausgesetzt sind{lightblue} %d Stammpunkte{default}.", g_cStammPoints.IntValue);
+
+				return false;
+			}
 		}
-		return false;
 	}
 	
 	return true;
@@ -410,9 +432,13 @@ void CT_LogAction(int admin, int target, const char[] communityid, const char[] 
 	if (!StrEqual(adminid, "0", false))
 	{
 		if(StrEqual(action, "ctban", false))
+		{
 			LogAction(admin, target, "\"%L\" %s \"%L\" (Rounds: %d, Reason: %s)", admin, action, target, rounds, reason);
+		}
 		else
+		{
 			LogAction(admin, target, "\"%L\" %s \"%L\"", admin, action, target);
+		}
 	}
 	else
 	{
@@ -424,7 +450,9 @@ void CT_LogAction(int admin, int target, const char[] communityid, const char[] 
 	g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `ct_controller_logs` (`communityid`, `name`, `action`, `value`, `rounds`, `reason`, `adminid`, `date`) VALUES (\"%s\", \"%N\", \"%s\", '%d', '%d', \"%s\", \"%s\", UNIX_TIMESTAMP());", communityid, target, action, value, rounds, reason, adminid);
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 	
 	g_dDB.Query(sqlInsertLog, sQuery);
 }
@@ -432,8 +460,13 @@ void CT_LogAction(int admin, int target, const char[] communityid, const char[] 
 bool preIsClientValid(int client)
 {
 	if (client > 0 && client <= MaxClients)
+	{
 		if(IsClientInGame(client) && !IsFakeClient(client) && !IsClientSourceTV(client))
+		{
 			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -465,7 +498,7 @@ void UpdateCTBan(int client)
 		
 		SetRounds(client, g_iRounds[client]);
 		
-		CPrintToChat(client, "{darkred}[CT-Controller] {lightgreen}Du bist noch {lightblue}%d %s {lightgreen}vom CT-Team gebannt!", g_iRounds[client], sRound);
+		CPrintToChat(client, "{default}Du bist noch {lightblue}%d %s {default}vom CT-Team gebannt!", g_iRounds[client], sRound);
 		
 		return;
 	}
@@ -486,7 +519,9 @@ void SetRounds(int client, int rounds)
 	Format(sQuery, sizeof(sQuery), "UPDATE ct_controller SET rounds = %d WHERE communityid = \"%s\" AND banned = 1 ORDER BY id DESC LIMIT 1;", rounds, sID);
 	
 	if(bLogMessage && bDebug)
+	{
 		LogMessage(sQuery);
+	}
 	
 	g_dDB.Query(sqlUpdateRounds, sQuery);
 }

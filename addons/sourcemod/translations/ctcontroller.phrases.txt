@@ -27,78 +27,78 @@
 	"Banned Player"
 	{
 		"#format"	"{1:N}"
-		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}is banned from the ct team!"
-		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist vom CT-Team gebannt!"
+		"en"		"{default}Player {lightblue}{1} {default}is banned from the ct team!"
+		"de"		"{default}Spieler {lightblue}{1} {default}ist vom CT-Team gebannt!"
 	}
 	
 	"Already Banned Player"
 	{
 		"#format"	"{1:N}"
-		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}is already banned from the ct team!"
-		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist bereits vom CT-Team gebannt!"
+		"en"		"{default}Player {lightblue}{1} {default}is already banned from the ct team!"
+		"de"		"{default}Spieler {lightblue}{1} {default}ist bereits vom CT-Team gebannt!"
 	}
 	
 	"Isnot Banned Player"
 	{
 		"#format"	"{1:N}"
-		"en"		"{green}[CT-Controller] {lightgreen}Player {darkred}{1} {lightgreen}isn't banned from the ct team!"
-		"de"		"{green}[CT-Controller] {lightgreen}Spieler {darkred}{1} {lightgreen}ist nicht vom CT-Team gebannt!"
+		"en"		"{default}Player {lightblue}{1} {default}isn't banned from the ct team!"
+		"de"		"{default}Spieler {lightblue}{1} {default}ist nicht vom CT-Team gebannt!"
 	}
 	
 	"Verify Player"
 	{
 		"#format"	"{1:N},{2:N}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was verified by {darkred}{2}!"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde von {darkred}{2} {lightgreen}verifiziert!"
+		"en"		"{lightblue}{1} {default}was verified by {lightblue}{2}!"
+		"de"		"{lightblue}{1} {default}wurde von {lightblue}{2} {default}verifiziert!"
 	}
 	
 	"UnVerify Player"
 	{
 		"#format"	"{1:N},{2:N}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was unverified by {darkred}{2}!"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist durch {darkred}{2} {lightgreen} nicht mehr verifiziert!"
+		"en"		"{lightblue}{1} {default}was unverified by {lightblue}{2}!"
+		"de"		"{lightblue}{1} {default}ist durch {lightblue}{2} {default} nicht mehr verifiziert!"
 	}
 	
 	"Tmp Verify Player"
 	{
 		"#format"	"{1:N},{2:N}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was temporarilyverified by {darkred}{2}!"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde von {darkred}{2} {lightgreen} temporär verifiziert!"
+		"en"		"{lightblue}{1} {default}was temporarilyverified by {lightblue}{2}!"
+		"de"		"{lightblue}{1} {default}wurde von {lightblue}{2} {default} temporär verifiziert!"
 	}
 	
 	"Tmp UnVerify Player"
 	{
 		"#format"	"{1:N},{2:N}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was unverified by {darkred}{2}!"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist durch {darkred}{2} {lightgreen} nicht mehr verifiziert!"
+		"en"		"{lightblue}{1} {default}was unverified by {lightblue}{2}!"
+		"de"		"{lightblue}{1} {default}ist durch {lightblue}{2} {default} nicht mehr verifiziert!"
 	}
 	
 	"CTBan Player Perma"
 	{
 		"#format"	"{1:N},{2:N},{3:s}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was {darkred}permanently {lightgreen}ct banned by {darkred}{2}! (Reason: {3})"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde {darkred}dauerhaft {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+		"en"		"{lightblue}{1} {default}was {lightblue}permanently {default}ct banned by {lightblue}{2}! (Reason: {3})"
+		"de"		"{lightblue}{1} {default}wurde {lightblue}dauerhaft {default}vom CT-Team gebannt durch {lightblue}{2}! (Grund: {3})"
 	}
 
 	"CTBan Player Round"
 	{
 		"#format"	"{1:N},{2:N},{3:s}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned for {darkred}1 round {lightgreen}by {darkred}{2}! (Reason: {3})"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde für {darkred}1 Runde {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+		"en"		"{lightblue}{1} {default}was ct banned for {lightblue}1 round {default}by {lightblue}{2}! (Reason: {3})"
+		"de"		"{lightblue}{1} {default}wurde für {lightblue}1 Runde {default}vom CT-Team gebannt durch {lightblue}{2}! (Grund: {3})"
 	}
 
 	"CTBan Player Rounds"
 	{
 		"#format"	"{1:N},{2:N},{3:s},{4:d}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct banned for {darkred}{4} rounds {lightgreen}by {darkred}{2}! (Reason: {3})"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}wurde für {darkred}{4} Runden {lightgreen}vom CT-Team gebannt durch {darkred}{2}! (Grund: {3})"
+		"en"		"{lightblue}{1} {default}was ct banned for {lightblue}{4} rounds {default}by {lightblue}{2}! (Reason: {3})"
+		"de"		"{lightblue}{1} {default}wurde für {lightblue}{4} Runden {default}vom CT-Team gebannt durch {lightblue}{2}! (Grund: {3})"
 	}
 	
 	"UnCTBan Player"
 	{
 		"#format"	"{1:N},{2:N}"
-		"en"		"{green}[CT-Controller] {darkred}{1} {lightgreen}was ct unbanned by {darkred}{2}!"
-		"de"		"{green}[CT-Controller] {darkred}{1} {lightgreen}ist nun nicht mehr vom CT-Team gebannt durch {darkred}{2}!"
+		"en"		"{lightblue}{1} {default}was ct unbanned by {lightblue}{2}!"
+		"de"		"{lightblue}{1} {default}ist nun nicht mehr vom CT-Team gebannt durch {lightblue}{2}!"
 	}
 	
 	"Menu: Verify List"

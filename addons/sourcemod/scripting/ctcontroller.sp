@@ -54,7 +54,6 @@ char g_sSymbols[25][1] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
 #include "ctcontroller/sql.sp"
 #include "ctcontroller/stocks.sp"
 #include "ctcontroller/commands.sp"
-#include "ctcontroller/adminmenu.sp"
 #include "ctcontroller/validround.sp"
 
 public Plugin myinfo =
