@@ -133,11 +133,44 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) reroll");
         type = 2;
     }
-    else if (iNumber >= 85 && iNumber <= 100)
+    else if (iNumber >= 85 && iNumber <= 98)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
+    }
+    else if (iNumber >= 99 && iNumber <= 100)
+    {
+        bool bSkip = false;
+
+        int iWeapon = GetPlayerWeaponSlot(client, 11);
+        if(iWeapon != -1)
+        {
+            if(IsValidEdict(iWeapon) && IsValidEntity(iWeapon))
+            {
+                char sClass[128];
+                GetEntityClassname(iWeapon, sClass, sizeof(sClass));
+
+                if(StrEqual(sClass, "weapon_shield", false))
+                {
+                    Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
+                    Format(sOption, sizeof(sOption), "(ct) nothing");
+
+                    type = 1;
+
+                    bSkip = true;
+                }
+            }
+        }
+
+        if (!bSkip)
+        {
+            GivePlayerItem(client, "weapon_shield");
+            
+            Format(sText, sizeof(sText), "Du hast durch den CT Würfel %ein Schield%s gewürfelt.", SPECIAL, TEXT);
+            Format(sOption, sizeof(sOption), "(ct) shield");
+            type = 2;
+        }
     }
 
     AddDiceToMySQL(client, 1, sOption);
