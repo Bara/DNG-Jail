@@ -43,6 +43,8 @@
 #include <multicolors>
 #include <emitsoundany>
 #include <dng-jail>
+#include <hide>
+#include <zombie>
 
 #pragma newdecls required
 

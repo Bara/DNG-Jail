@@ -51,11 +51,20 @@ int SpawnNPC(char name[64], char model[512], char defAni[64], float pos[3], floa
 
 public Action NPC_Touch(int npc, int client)
 {
-	if (!IsClientValid(client) || !IsPlayerAlive(client))
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
 		return;
+	}
+
+	if (!IsClientValid(client) || !IsPlayerAlive(client))
+	{
+		return;
+	}
 	
 	if (npc == g_iTriggerDJ)
+	{
 		NPCTouchDj(client);
+	}
 }
 
 void NPCTouchDj(int client)

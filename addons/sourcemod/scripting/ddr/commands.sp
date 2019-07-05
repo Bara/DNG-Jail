@@ -1,5 +1,10 @@
 public Action cmd_stop(int client, int args)
 {
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
+		return;
+	}
+
 	if (g_iPlayers[client][INGAME])
 	{
 		if (g_bAllowStop)
@@ -13,6 +18,11 @@ public Action cmd_stop(int client, int args)
 
 public Action cmd_reset(int client, int args)
 {
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
+		return Plugin_Handled;
+	}
+	
 	if (!DNG_HasFlags(client, "b") && (GetClientTeam(client) != CS_TEAM_CT || !IsPlayerAlive(client)))
 	{
 		return Plugin_Handled;
@@ -30,6 +40,11 @@ public Action cmd_reset(int client, int args)
 
 public Action cmd_start(int client, int args)
 {
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
+		return Plugin_Handled;
+	}
+	
 	if (!DNG_HasFlags(client, "b") && (GetClientTeam(client) != CS_TEAM_CT || !IsPlayerAlive(client)))
 	{
 		return Plugin_Handled;
@@ -43,6 +58,11 @@ public Action cmd_start(int client, int args)
 
 public Action cmd_stopm(int client, int args)
 {
+	if (Hide_IsActive() || Zombie_IsActive())
+	{
+		return;
+	}
+	
 	if (g_iLastPlayedId != -1)
 	{
 		char sPath[256];
