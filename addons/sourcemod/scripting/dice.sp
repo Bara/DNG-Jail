@@ -9,6 +9,9 @@
 #include <jail>
 #include <emitsoundany>
 #include <autoexecconfig>
+#include <hide>
+#include <zombie>
+#include <knockout>
 
 #undef REQUIRE_PLUGIN
 #include <lastrequest>
@@ -300,10 +303,20 @@ public Action Command_Dice(int client, int args)
         iOption = StringToInt(sOption);
     }
 
+    if (Hide_IsActive() || Zombie_IsActive())
+    {
+        return Plugin_Handled;
+    }
+
     if(IsClientValid(client))
     {
         if(IsPlayerAlive(client))
         {
+            if (Jail_IsClientCapitulate(client) || IsClientKnockout(client))
+            {
+                return Plugin_Handled;
+            }
+            
             int team = GetClientTeam(client);
             
             if(g_iCount[client] <= 1 && team == CS_TEAM_T || g_iCount[client] == 0 && team == CS_TEAM_CT)
