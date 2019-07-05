@@ -91,3 +91,10 @@ void ResetErgeben(int client)
 	g_bErgeben[client] = false;
 	delete g_hErgebenTimer[client];
 }
+
+public int Native_IsCapitulate(Handle plugin, int numParams)
+{
+	int client = GetNativeCell(1);
+
+	return g_bErgeben[client];
+}

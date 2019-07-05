@@ -8,6 +8,8 @@ forward void Jail_OnMySQLCOnnect(Database database);
 
 native Database Jail_GetDatabase();
 
+native bool Jail_IsClientCapitulate(int client);
+
 public SharedPlugin __pl_jail = 
 {
 	name = "jail",
@@ -23,5 +25,6 @@ public SharedPlugin __pl_jail =
 public void __pl_jail_SetNTVOptional()
 {
 	MarkNativeAsOptional("Jail_GetDatabase");
+	MarkNativeAsOptional("Jail_IsClientCapitulate");
 }
 #endif

@@ -72,6 +72,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	g_hOnMySQLConnect = CreateGlobalForward("Jail_OnMySQLCOnnect", ET_Ignore, Param_Cell);
 	
 	CreateNative("Jail_GetDatabase", Native_GetDatabase);
+	CreateNative("Jail_IsClientCapitulate", Native_IsCapitulate);
 
 	MarkNativeAsOptional("Store_GetClientCredits");
 	MarkNativeAsOptional("Store_SetClientCredits");
