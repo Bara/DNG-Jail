@@ -83,7 +83,7 @@ void LrStammpunkte_PlayerDeath()
 				STAMM_AddClientPoints(client, g_cLRPointsStammpoints.IntValue);	
 			}
 
-#if defined _store_included
+#if defined _Store_INCLUDED
 			if (g_bStore && ((g_cLRPointsMode.IntValue == 0 || g_cLRPointsMode.IntValue == 2) && g_cLRPointsStoreCredits.IntValue > 0))
 			{
 				CPrintToChatAll("%s%N %serhält %s%d Credits%s, da er der letzte Überlebende ist.", SPECIAL, client, TEXT, SPECIAL, g_cLRPointsStoreCredits.IntValue, TEXT);
