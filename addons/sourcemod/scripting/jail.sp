@@ -170,7 +170,7 @@ public void OnPluginStart()
 
 public void OnAllPluginsLoaded()
 {
-	g_bStore = LibraryExists("store_zephyrus");
+	g_bStore = LibraryExists("store");
 }
 
 public void OnMapStart()
