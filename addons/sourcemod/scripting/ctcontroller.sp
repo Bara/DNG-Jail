@@ -14,6 +14,7 @@
 #include <SteamWorks>
 #include <hide>
 #include <zombie>
+#include <knockout>
 
 #pragma newdecls required
 

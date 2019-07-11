@@ -386,7 +386,7 @@ bool IsValidCT(int client, bool blockMessage = false)
 		return false;
 	}
 	
-	if(SourceComms_GetClientMuteType(client) != bNot)
+	if(!IsClientKnockout(client) && SourceComms_GetClientMuteType(client) != bNot)
 	{
 		if (!blockMessage)
 		{
