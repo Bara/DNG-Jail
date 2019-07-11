@@ -13,26 +13,6 @@ void NewBeacon_OnClientCookiesCached(int client)
 	g_bHide[client] = view_as<bool>(StringToInt(sBuffer));
 }
 
-void NewBeacon_PlayerSpawn(int client)
-{
-	if (!g_cEnableNewBeacon.BoolValue)
-	{
-		return;
-	}
-	
-	CreateTimer(3.0, Timer_GlowAd, GetClientUserId(client));
-}
-
-public Action Timer_GlowAd(Handle timer, any userid)
-{
-	int client = GetClientOfUserId(userid);
-
-	if (IsClientValid(client) && STAMM_GetClientPoints(client) <= g_cNewBeaconPoints.IntValue)
-	{
-		CPrintToChat(client, "Du kannst mit %s!Noob %sdein Glow de/aktivieren.", SPECIAL, TEXT);
-	}
-}
-
 public Action Command_Noob(int client, int args)
 {
 	if (!g_cEnableNewBeacon.BoolValue)

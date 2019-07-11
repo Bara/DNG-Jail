@@ -112,8 +112,6 @@ public void OnPluginStart()
 	RegConsoleCmd("sm_fk", Command_freekill);
 	RegConsoleCmd("sm_noob", Command_Noob);
 	
-	RegAdminCmd("sm_fixws", Command_FixWS, ADMFLAG_GENERIC);
-	
 	Handle hCvar = FindConVar("mp_teammates_are_enemies");
 	int flags = GetConVarFlags(hCvar);
 	flags &= ~FCVAR_NOTIFY;
@@ -122,11 +120,11 @@ public void OnPluginStart()
 	
 	RegAdminCmd("sm_fkban", Command_fkBan, ADMFLAG_GENERIC);
 	
-	HookEvent("round_start", RoundStart);
-	HookEvent("round_end", RoundEnd);
-	HookEvent("player_spawn", PlayerSpawn);
-	HookEvent("player_death", PlayerDeath);
-	HookEvent("player_hurt", PlayerHurt);
+	HookEvent("round_start", Event_RoundStart);
+	HookEvent("round_end", Event_RoundEnd);
+	HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Post);
+	HookEvent("player_death", Event_PlayerDeath);
+	HookEvent("player_hurt", Event_PlayerHurt);
 	
 	AutoExecConfig_SetCreateDirectory(true);
 	AutoExecConfig_SetCreateFile(true);
@@ -180,7 +178,7 @@ public void OnClientCookiesCached(int client)
 	NewBeacon_OnClientCookiesCached(client);
 }
 
-public Action RoundStart(Event event, const char[] name, bool dontBroadcast)
+public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	Freedayteams_RoundStart();
 	Freekill_RoundStart();
@@ -189,7 +187,7 @@ public Action RoundStart(Event event, const char[] name, bool dontBroadcast)
 #endif
 }
 
-public Action RoundEnd(Event event, const char[] name, bool dontBroadcast)
+public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
 	Teamdamage_RoundEnd();
 
@@ -207,24 +205,13 @@ public Action RoundEnd(Event event, const char[] name, bool dontBroadcast)
 	}
 }
 
-public Action Command_FixWS(int client, int args)
-{
-	ServerCommand("sm plugins unload CSGO_Items");
-	CreateTimer(0.3, Timer_FixWS, _, TIMER_FLAG_NO_MAPCHANGE);
-}
-
-public Action Timer_FixWS(Handle timer)
-{
-	ServerCommand("sm plugins load CSGO_Items");
-}
-
 public void OnClientPostAdminCheck(int client)
 {
 	if(IsClientValid(client) && g_dDB != null)
 		Freekill_GetStatus(client);
 }
 
-public Action PlayerSpawn(Event event, const char[] name, bool dontBroadcast)
+public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId(event.GetInt("userid"));
 	
@@ -239,13 +226,12 @@ public Action PlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 		if (!Zombie_IsActive() && !Hide_IsActive())
 		{
 			Spawnweapons_PlayerSpawn(client);
-			NewBeacon_PlayerSpawn(client);
 			CTBoost_PlayerSpawn(client);
 		}
 	}
 }
 
-public Action PlayerDeath(Event event, const char[] name, bool dontBroadcast)
+public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast)
 {
 #if defined _stamm_included
 	LrStammpunkte_PlayerDeath();
@@ -264,7 +250,7 @@ public Action PlayerDeath(Event event, const char[] name, bool dontBroadcast)
 	}
 }
 
-public Action PlayerHurt(Event event, const char[] name, bool dontBroadcast)
+public Action Event_PlayerHurt(Event event, const char[] name, bool dontBroadcast)
 {
 	int attacker = GetClientOfUserId(event.GetInt("attacker"));
 	
