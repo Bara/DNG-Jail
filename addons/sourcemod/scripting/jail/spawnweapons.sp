@@ -1,6 +1,6 @@
 // Alte Werte: 2.5 und 3.0
-#define TIME_WEAPONTIMER 1.0
-#define TIME_WEAPONUSETIMER 1.5
+#define TIME_WEAPONTIMER 0.1
+#define TIME_WEAPONUSETIMER 0.2
 
 Handle g_hWeaponTimer[MAXPLAYERS + 1] =  { null, ... };
 Handle g_hWeaponUseTimer[MAXPLAYERS + 1] =  { null, ... };
@@ -8,6 +8,8 @@ Handle g_hWeaponUseTimer[MAXPLAYERS + 1] =  { null, ... };
 bool g_bWeaponUse[MAXPLAYERS + 1] =  { false, ... };
 
 int g_iClip1 = -1;
+
+g_iCount[MAXPLAYERS + 1] = { -1, ...};
 
 void Spawnweapons_OnPluginStart()
 {
@@ -18,14 +20,35 @@ void Spawnweapons_OnPluginStart()
 	}
 }
 
+void Spawnweapons_RoundStart()
+{
+	LoopClients(i)
+	{
+		g_iCount[i] = 0;
+	}
+}
+
 void Spawnweapons_PlayerSpawn(int client)
 {
+	g_iCount[client]++;
+	
+	if (g_iCount[client] > 1)
+	{
+		return;
+	}
+
 	for(int i = CS_SLOT_PRIMARY; i <= CS_SLOT_C4; i++)
 	{
 		int index = -1;
 		while((index = GetPlayerWeaponSlot(client, i)) != -1)
 		{
-			SafeRemoveWeapon(client, index);
+			char sClass[32];
+			GetEntityClassname(index, sClass, sizeof(sClass));
+
+			if (StrContains(sClass, "knife", false) == -1 && StrContains(sClass, "bayonet", false) == -1 )
+			{
+				SafeRemoveWeapon(client, index);
+			}
 		}
 	}
 	
