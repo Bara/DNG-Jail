@@ -85,8 +85,8 @@ void StartLR(Handle hArray, int inArray)
     g_iLRPrisoner = GetArrayCell(hArray, inArray, view_as<int>(Block_Prisoner));
     g_iLRGuard = GetArrayCell(hArray, inArray, view_as<int>(Block_Guard));
     
-    g_iLRChair[g_iLRPrisoner] = SpawnChair(g_iLRPrisoner);
-    g_iLRChair[g_iLRGuard] = SpawnChair(g_iLRGuard);
+    g_iLRChair[g_iLRPrisoner] = SpawnChair(g_iLRPrisoner, GetEntityMoveType(g_iLRPrisoner));
+    g_iLRChair[g_iLRGuard] = SpawnChair(g_iLRGuard, GetEntityMoveType(g_iLRGuard));
 
     if (g_iLRChair[g_iLRPrisoner] == -1 || g_iLRChair[g_iLRGuard] == -1)
     {
@@ -121,14 +121,16 @@ public Action Command_Chair(int client, int args)
         return;
     }
 
-    SpawnChair(client);
+    SpawnChair(client, GetEntityMoveType(client));
 }
 
-int SpawnChair(int client)
+int SpawnChair(int client, MoveType type)
 {
     int iEnt = CreateEntityByName("prop_physics_multiplayer");
     if (iEnt != -1)
     {
+        SetEntityMoveType(client, MOVETYPE_NONE);
+
         float clientPos[3];
         GetClientAbsOrigin(client, clientPos);
         clientPos[0] += 40.0;
@@ -165,11 +167,15 @@ int SpawnChair(int client)
         else
         {
             AcceptEntityInput(iEnt, "kill");
+            SetEntityMoveType(client, type);
             return -1;
         }
+
+        SetEntityMoveType(client, type);
+        return iEnt;
     }
 
-    return iEnt;
+    return -1;
 }
 
 void ResetSettings()
