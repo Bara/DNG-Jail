@@ -11,9 +11,6 @@
 
 #pragma newdecls required
 
-// 111 - Schacht
-#define CONTESTSPRAY 111
-
 int g_iCurrentLR = -1;
 
 int g_iLRLow = -1;
@@ -117,8 +114,8 @@ void StartLR(Handle hArray, int inArray)
 	g_iGuardSpray = Sprays_GetClientSpray(g_iLRGuard);
 	
 	// Set contest spray
-	Sprays_SetClientSpray(g_iLRPrisoner, CONTESTSPRAY);
-	Sprays_SetClientSpray(g_iLRGuard, CONTESTSPRAY);
+	Sprays_SetSprayContest(g_iLRPrisoner);
+	Sprays_SetSprayContest(g_iLRGuard);
 	
 	char sContest[8];
 	if(g_iCurrentLR == g_iLRLow)
