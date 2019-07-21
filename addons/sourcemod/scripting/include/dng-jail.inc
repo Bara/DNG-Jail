@@ -199,6 +199,19 @@ stock void DNG_StripAllWeapons(int client)
     }
 }
 
+stock void RemoveAllWeapons(int client)
+{
+    for(int offset = 0; offset < 128; offset += 4)
+    {
+        int weapon = GetEntDataEnt2(client, FindSendPropInfo("CBasePlayer", "m_hMyWeapons") + offset);
+
+        if (IsValidEntity(weapon))
+        {
+            SafeRemoveWeapon(client, weapon);
+        }
+    }
+}
+
 stock bool SafeRemoveWeapon(int iClient, int iWeapon)
 {
     if (!IsValidEntity(iWeapon) || !IsValidEdict(iWeapon))

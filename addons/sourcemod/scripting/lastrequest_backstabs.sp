@@ -9,50 +9,20 @@
 #include <multicolors>
 #include <dng-jail>
 
-#define BS_VERSION "1.0.3"
-#define COLLISION_NOBLOCK 2
-#define COLLISION_BLOCK 5
+#define BS_VERSION "1.0.0"
 
 new g_LREntryNum;
 new LR_Player_Prisoner = -1;
 new LR_Player_Guard = -1;
 
-new g_iHealth;
-
 public Plugin:myinfo =
 {
 	name = "Last Request: Backstabs",
-	author = "Jason Bourne & Kolapsicle",
+	author = "Bara (Original authors: Jason Bourne and Kolapsicle)",
 	description = "Win the LR by backstabbing your opponent.",
 	version = BS_VERSION,
-	url = "https://forums.alliedmods.net/showthread.php?t=243262"
+	url = "github.com/Bara"
 };
-
-
-public OnPluginStart()
-{
-	g_iHealth = FindSendPropInfo("CCSPlayer", "m_iHealth");
-
-	if (g_iHealth == -1)
-	{
-		SetFailState("Error - Unable to get offset for CSSPlayer::m_iHealth");
-	}
-	
-	for(int i = 1; i <= MaxClients; i++)
-	{
-		if(IsClientValid(i))
-		{
-			SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
-		}
-	}
-
-	CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
-}
-
-public void OnClientPutInServer(int i)
-{
-	SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
-}
 
 public OnConfigsExecuted()
 {
@@ -69,7 +39,6 @@ public OnPluginEnd()
 {
 	RemoveLastRequestFromList(LR_Start, LR_Stop, "Backstab Knife");
 }
-
 
 public LR_Start(Handle:LR_Array, iIndexInArray)
 {
@@ -92,8 +61,8 @@ public LR_Start(Handle:LR_Array, iIndexInArray)
 		SetEntityHealth(LR_Player_Prisoner, 100);
 		SetEntityHealth(LR_Player_Guard, 100);
 		
-		StripAllWeapons(LR_Player_Prisoner);
-		StripAllWeapons(LR_Player_Guard);
+		RemoveAllWeapons(LR_Player_Prisoner);
+		RemoveAllWeapons(LR_Player_Guard);
 		
 		int iKnife = -1;
 		iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
@@ -105,9 +74,11 @@ public LR_Start(Handle:LR_Array, iIndexInArray)
 		
 		CPrintToChatAll("%N spielt gegen %N Backstab Knife", LR_Player_Prisoner, LR_Player_Guard);
 		CPrintToChatAll("Versuche deinen Gegner im Rücken zu messern!");
+
+		SDKHook(LR_Player_Prisoner, SDKHook_OnTakeDamage, OnTakeDamage);
+		SDKHook(LR_Player_Guard, SDKHook_OnTakeDamage, OnTakeDamage);
 	}
 }
-
 
 public LR_Stop(This_LR_Type, Player_Prisoner, Player_Guard)
 {
@@ -131,6 +102,9 @@ public LR_Stop(This_LR_Type, Player_Prisoner, Player_Guard)
 			}
 		}
 
+		SDKUnhook(LR_Player_Prisoner, SDKHook_OnTakeDamage, OnTakeDamage);
+		SDKUnhook(LR_Player_Guard, SDKHook_OnTakeDamage, OnTakeDamage);
+
 		LR_Player_Prisoner = -1;
 		LR_Player_Guard = -1;
 	}
@@ -142,22 +116,22 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
 	if(!IsClientValid(attacker) || !IsClientValid(victim))
 		return Plugin_Continue;
 	
-	if (LR_Player_Prisoner != -1)
+	if (LR_Player_Prisoner != -1 && LR_Player_Guard != -1)
 	{
 		char wname[64];
 		GetEdictClassname(weapon, wname, sizeof(wname));
 		
 		if(IsClientInGame(victim) && IsClientInGame(attacker))
 		{
-			if(IsClientInLastRequest(victim))
+			if(IsClientInLastRequest(victim) && IsClientInLastRequest(attacker))
 			{
-				if((StrContains(wname, "knife", false) == -1 || StrContains(wname, "bayonet", false) == -1) || (attacker != LR_Player_Prisoner && attacker != LR_Player_Guard) || (damage < 130))
+				if((StrContains(wname, "knife", false) == -1 || StrContains(wname, "bayonet", false) == -1) && damage > 110)
 				{
-					damage = 0.0;
+					damage = float(GetClientHealth(victim) + GetClientArmor(victim));
 					return Plugin_Changed;
 				}
 			}
-			else if(!IsClientInLastRequest(victim) && IsClientInLastRequest(attacker))
+			else
 			{
 				damage = 0.0;
 				return Plugin_Changed;
