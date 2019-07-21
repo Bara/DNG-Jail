@@ -90,6 +90,7 @@ void StartLR(Handle hArray, int inArray)
 
     if (g_iLRChair[g_iLRPrisoner] == -1 || g_iLRChair[g_iLRGuard] == -1)
     {
+        PrintToChatAll("Something went wrong with spawning chairs... LR will be resetted.");
         ResetSettings();
         CleanupLR(g_iLRPrisoner);
         return;
