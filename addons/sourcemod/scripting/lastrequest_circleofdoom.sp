@@ -140,8 +140,8 @@ public int CircleOfDoom_Start(Handle LR_Array, int iIndexInArray)
 		SetEntityHealth(LR_Player_Prisoner, 100);
 		SetEntityHealth(LR_Player_Guard, 100);
 		
-		StripAllWeapons(LR_Player_Prisoner);
-		StripAllWeapons(LR_Player_Guard);
+		RemoveAllWeapons(LR_Player_Prisoner);
+		RemoveAllWeapons(LR_Player_Guard);
 		
 		SDKHook(LR_Player_Prisoner, SDKHook_TraceAttack, OnTraceAttack);
 		SDKHook(LR_Player_Guard, SDKHook_TraceAttack, OnTraceAttack);
