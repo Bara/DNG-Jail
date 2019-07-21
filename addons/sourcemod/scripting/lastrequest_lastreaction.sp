@@ -16,7 +16,7 @@ int g_iCurrentLR = -1;
 int g_iLR = -1;
 int g_iLRPrisoner = -1;
 int g_iLRGuard = -1;
-int g_iCountdown = 3;
+int g_iCountdown = -1;
 
 bool g_bChat = false;
 
@@ -116,6 +116,7 @@ public Action Timer_Countdown(Handle timer)
 	}
 	else if (g_iCountdown == 1)
 	{
+		g_iCountdown--;
 		CPrintToChatAll("Last Reaction beginnt in 1 Sekunde");
 		return Plugin_Continue;
 	}
