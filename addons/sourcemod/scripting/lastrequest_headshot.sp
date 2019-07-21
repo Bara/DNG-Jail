@@ -11,16 +11,15 @@
 #pragma semicolon 1
 #define PLUGIN_VERSION "1.0.0"
 
-int g_LREntryNum;
-int This_LR_Type;
-int LR_Player_Prisoner;
-int LR_Player_Guard;
-Handle HSMenu;
+int g_iEntry = -1;
+int g_iType = -1;
+int g_iPrisoner = -1;
+int g_iGuard = -1;
 
 public Plugin myinfo = 
 {
 	name = "[Outbreak] LastRequest: HeadShot", 
-	author = "Bara (xShakedDev)", 
+	author = "Bara (Original author: xShakedDev)", 
 	description = "Boom... Headshot!", 
 	version = PLUGIN_VERSION, 
 	url = ""
@@ -29,19 +28,11 @@ public Plugin myinfo =
 public void OnPluginStart()
 {
 	LoadTranslations("hsmodelr.phrases");
-	HSMenu = CreateMenu(HSMenuHandler);
-	SetMenuTitle(HSMenu, "HeadShot Mode");
-	AddMenuItem(HSMenu, "M1", "AWP");
-	AddMenuItem(HSMenu, "M2", "Desert Eagle");
-	AddMenuItem(HSMenu, "M3", "USP");
-	AddMenuItem(HSMenu, "M4", "AK-47");
-	AddMenuItem(HSMenu, "M5", "M4A1-S");
-	SetMenuExitButton(HSMenu, false);
 
 	CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
 }
 
-public int HSMenuHandler(Handle menu, MenuAction action, int param1, int param2)
+public int Menu_MainMenu(Menu menu, MenuAction action, int param1, int param2)
 {
 	if (action == MenuAction_Select)
 	{
@@ -66,73 +57,77 @@ public int HSMenuHandler(Handle menu, MenuAction action, int param1, int param2)
 			LR_AfterMenu(4);
 		}
 	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
 }
 
 public void LR_AfterMenu(int weapon)
 {
-	SetEntityHealth(LR_Player_Prisoner, 999);
-	SetEntityHealth(LR_Player_Guard, 999);
-	StripAllWeapons(LR_Player_Prisoner);
-	StripAllWeapons(LR_Player_Guard);
-	CPrintToChat(LR_Player_Guard, "%t", "PLAYER SELECT", LR_Player_Prisoner);
-	int wep1;
-	int wep2;
-	char wpnname[32];
+	SetEntityHealth(g_iPrisoner, 999);
+	SetEntityHealth(g_iGuard, 999);
+	RemoveAllWeapons(g_iPrisoner);
+	RemoveAllWeapons(g_iGuard);
+	CPrintToChat(g_iGuard, "%t", "PLAYER SELECT", g_iPrisoner);
+	int iPWeapon;
+	int iPGuard;
+	char sWeapon[32];
 	switch (weapon)
 	{
 		case 0:
 		{
-			wep1 = GivePlayerItem(LR_Player_Prisoner, "weapon_awp");
-			wep2 = GivePlayerItem(LR_Player_Guard, "weapon_awp");
-			wpnname = "AWP";
-			CPrintToChatAll("%t", "LR Started", wpnname, LR_Player_Prisoner, LR_Player_Guard);
+			iPWeapon = GivePlayerItem(g_iPrisoner, "weapon_awp");
+			iPGuard = GivePlayerItem(g_iGuard, "weapon_awp");
+			sWeapon = "AWP";
 		}
 		case 1:
 		{
-			wep1 = GivePlayerItem(LR_Player_Prisoner, "weapon_deagle");
-			wep2 = GivePlayerItem(LR_Player_Guard, "weapon_deagle");
-			
-			wpnname = "DEAGLE";
-			CPrintToChatAll("%t", "LR Started", wpnname, LR_Player_Prisoner, LR_Player_Guard);
+			iPWeapon = GivePlayerItem(g_iPrisoner, "weapon_deagle");
+			iPGuard = GivePlayerItem(g_iGuard, "weapon_deagle");
+			sWeapon = "DEAGLE";
 		}
 		case 2:
 		{
-			wep1 = GivePlayerItem(LR_Player_Prisoner, "weapon_usp_silencer");
-			wep2 = GivePlayerItem(LR_Player_Guard, "weapon_usp_silencer");
-			
-			wpnname = "USP";
-			CPrintToChatAll("%t", "LR Started", wpnname, LR_Player_Prisoner, LR_Player_Guard);
+			iPWeapon = GivePlayerItem(g_iPrisoner, "weapon_usp_silencer");
+			iPGuard = GivePlayerItem(g_iGuard, "weapon_usp_silencer");
+			sWeapon = "USP";
 		}
 		case 3:
 		{
-			wep1 = GivePlayerItem(LR_Player_Prisoner, "weapon_ak47");
-			wep2 = GivePlayerItem(LR_Player_Guard, "weapon_ak47");
-			
-			wpnname = "AK-47";
-			CPrintToChatAll("%t", "LR Started", wpnname, LR_Player_Prisoner, LR_Player_Guard);
+			iPWeapon = GivePlayerItem(g_iPrisoner, "weapon_ak47");
+			iPGuard = GivePlayerItem(g_iGuard, "weapon_ak47");
+			sWeapon = "AK-47";
 		}
 		case 4:
 		{
-			wep1 = GivePlayerItem(LR_Player_Prisoner, "weapon_m4a1_silencer");
-			wep2 = GivePlayerItem(LR_Player_Guard, "weapon_m4a1_silencer");
-			
-			wpnname = "M4A1-S";
-			CPrintToChatAll("%t", "LR Started", wpnname, LR_Player_Prisoner, LR_Player_Guard);
+			iPWeapon = GivePlayerItem(g_iPrisoner, "weapon_m4a1_silencer");
+			iPGuard = GivePlayerItem(g_iGuard, "weapon_m4a1_silencer");
+			sWeapon = "M4A1-S";
 		}
 	}
-	SetEntProp(wep1, Prop_Send, "m_iClip1", 250);
-	SetEntProp(wep2, Prop_Send, "m_iClip1", 250);
-	InitializeLR(LR_Player_Prisoner);
+
+	EquipPlayerWeapon(g_iPrisoner, iPWeapon);
+	EquipPlayerWeapon(g_iGuard, iPGuard);
+
+	CPrintToChatAll("%t", "LR Started", sWeapon, g_iPrisoner, g_iGuard);
+
+	SetEntProp(iPWeapon, Prop_Send, "m_iClip1", 250);
+	SetEntProp(iPGuard, Prop_Send, "m_iClip1", 250);
+
+	InitializeLR(g_iPrisoner);
 }
 
 public Action OnTakeDamageAlive(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &ammotype, int hitbox, int HitGroup)
 {
-	if ((attacker == LR_Player_Prisoner || LR_Player_Guard) || (victim == LR_Player_Prisoner || LR_Player_Guard))
+	if ((attacker == g_iPrisoner || g_iGuard) || (victim == g_iPrisoner || g_iGuard))
 	{
 		if(damagetype & CS_DMG_HEADSHOT)
 		{
-			damage = float(GetClientHealth(victim));
+			damage = float(GetClientHealth(victim) + GetClientArmor(victim));
+
 			CPrintToChatAll("%t", "LR WIN", attacker, victim);
+			
 			return Plugin_Changed;
 		}
 		return Plugin_Handled;
@@ -145,7 +140,7 @@ public void OnConfigsExecuted()
 	static bool bAddedLR = false;
 	if (!bAddedLR)
 	{
-		g_LREntryNum = AddLastRequestToList(LR_Start, LR_Stop, "HeadShot Mode", false);
+		g_iEntry = AddLastRequestToList(LR_Start, LR_Stop, "HeadShot Mode", false);
 		bAddedLR = true;
 	}
 }
@@ -157,15 +152,15 @@ public void OnPluginEnd()
 
 public int LR_Start(Handle LR_Array, int iIndexInArray)
 {
-	This_LR_Type = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_LRType)); // get this lr from selection
-	if (This_LR_Type == g_LREntryNum)
+	g_iType = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_LRType)); // get this lr from selection
+	if (g_iType == g_iEntry)
 	{
-		LR_Player_Prisoner = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_Prisoner)); // get prisoner's id
-		LR_Player_Guard = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_Guard)); // get guard's id
+		g_iPrisoner = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_Prisoner)); // get prisoner's id
+		g_iGuard = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_Guard)); // get guard's id
 		
 		
-		SDKHook(LR_Player_Prisoner, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-		SDKHook(LR_Player_Guard, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+		SDKHook(g_iPrisoner, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+		SDKHook(g_iGuard, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
 		
 		int LR_Pack_Value = GetArrayCell(LR_Array, iIndexInArray, view_as<int>(Block_Global1));
 		switch (LR_Pack_Value)
@@ -176,14 +171,22 @@ public int LR_Start(Handle LR_Array, int iIndexInArray)
 			}
 		}
 		
-		DisplayMenu(HSMenu, LR_Player_Prisoner, 0);
+		Menu menu = new Menu(Menu_MainMenu);
+		menu.SetTitle("HeadShot Mode");
+		menu.AddItem("M1", "AWP");
+		menu.AddItem("M2", "Desert Eagle");
+		menu.AddItem("M3", "USP");
+		menu.AddItem("M4", "AK-47");
+		menu.AddItem("M5", "M4A1-S");
+		menu.ExitButton = false;
+		menu.Display(g_iPrisoner, 0);
 	}
 }
 
 public int LR_Stop(int Type, int Prisoner, int Guard)
 {
-	SDKUnhook(LR_Player_Prisoner, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-	SDKUnhook(LR_Player_Guard, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+	SDKUnhook(g_iPrisoner, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+	SDKUnhook(g_iGuard, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
 	
 	if (IsClientInGame(Prisoner))
 	{
@@ -191,7 +194,7 @@ public int LR_Stop(int Type, int Prisoner, int Guard)
 		{
 			SetEntityGravity(Prisoner, 1.0);
 			SetEntityHealth(Prisoner, 100);
-			StripAllWeapons(Prisoner);
+			RemoveAllWeapons(Prisoner);
 			GivePlayerItem(Prisoner, "weapon_knife");
 		}
 	}
@@ -201,7 +204,7 @@ public int LR_Stop(int Type, int Prisoner, int Guard)
 		{
 			SetEntityGravity(Guard, 1.0);
 			SetEntityHealth(Guard, 100);
-			StripAllWeapons(Guard);
+			RemoveAllWeapons(Guard);
 			GivePlayerItem(Guard, "weapon_knife");
 			GivePlayerItem(Guard, "weapon_ak47");
 		}
