@@ -90,7 +90,7 @@ public void OnPluginStart()
 
     AutoExecConfig_SetCreateDirectory(true);
     AutoExecConfig_SetCreateFile(true);
-    AutoExecConfig_SetFile("plugin.gloves");
+    AutoExecConfig_SetFile("plugin.dice");
     g_cDebug = AutoExecConfig_CreateConVar("dice_debug", "0", "Enable/Disable debug mode for dice", _, true, 0.0, true, 1.0);
     AutoExecConfig_ExecuteFile();
     AutoExecConfig_CleanFile();
