@@ -1,7 +1,6 @@
 #pragma semicolon 1
 
 #include <sourcemod>
-#include <geoip>
 #undef REQUIRE_EXTENSIONS
 #include <geoip>
 #include <SteamWorks>

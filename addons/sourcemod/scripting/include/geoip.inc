@@ -143,7 +143,7 @@ native bool GeoipCity(const char[] ip, char[] name, int maxlength, const char[] 
 public Extension __ext_geoip = 
 {
 	name = "GeoIP",
-	file = "geoip.ext",
+	file = "geoip2.ext",
 #if defined AUTOLOAD_EXTENSIONS
 	autoload = 1,
 #else
