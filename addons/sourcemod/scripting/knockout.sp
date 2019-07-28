@@ -79,10 +79,7 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
 {
     int client = GetClientOfUserId(event.GetInt("userid"));
     
-    if (IsClientValid(client))
-    {
-        g_bKnockout[client] = false;
-    }
+    g_bKnockout[client] = false;
 }
 
 public Action Command_Knockout(int client, int args)
@@ -136,6 +133,11 @@ public Action Command_Knockout(int client, int args)
 bool KnockoutPlayer(int client)
 {
     if (Hide_IsActive() || Zombie_IsActive())
+    {
+        return false;
+    }
+
+    if (IsFakeClient(client) || IsClientSourceTV(client))
     {
         return false;
     }
@@ -194,14 +196,7 @@ public Action Timer_FixMode(Handle timer, any userid)
 
 public Action OnWeaponCanUse(int client, int weapon)
 {
-    if(!IsClientInGame(client))
-    {
-        return Plugin_Continue;
-    }
-
-    int team = GetClientTeam(client);
-
-    if(team <= CS_TEAM_SPECTATOR)
+    if(!IsClientValid(client))
     {
         return Plugin_Continue;
     }
@@ -216,7 +211,7 @@ public Action OnWeaponCanUse(int client, int weapon)
 
 public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 {
-    if (IsValidEntity(weapon))
+    if (IsClientValid(attacker) && IsClientValid(victim) && IsValidEntity(weapon))
     {
         char sWeapon[32];
         GetEntityClassname(weapon, sWeapon, sizeof(sWeapon));
@@ -229,10 +224,12 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
                 return Plugin_Handled;
             }
         }
+
+        if(g_bKnockout[victim])
+        {
+            return Plugin_Handled;
+        }
     }
-    
-    if(g_bKnockout[victim])
-        return Plugin_Handled;
 
     return Plugin_Continue;
 }
@@ -245,11 +242,11 @@ public Action Timer_Delete(Handle timer, any userid)
     {
         int entity = g_iRagdoll[client];
     
-        if (entity != -1 && IsValidEntity(entity))
+        if (entity > 0 && IsValidEntity(entity))
             AcceptEntityInput(entity, "kill");
         
         int entity2 = EntRefToEntIndex(g_iCamera[client]);
-        if(entity2 != -1)
+        if(entity2 > 0 && IsValidEntity(entity))
             AcceptEntityInput(entity2, "kill");
         
         g_iCamera[client] = -1;
@@ -263,6 +260,7 @@ public Action Timer_Delete(Handle timer, any userid)
 public void Frame_WaitTick(any userid)
 {
     int client = GetClientOfUserId(userid);
+
     if (IsClientValid(client) && IsPlayerAlive(client))
     {
         SourceComms_SetClientMute(client, false);
