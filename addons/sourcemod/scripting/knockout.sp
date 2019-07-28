@@ -54,12 +54,9 @@ public void OnPluginStart()
 
     g_uFade = GetUserMessageId("Fade");
 
-    for(new i=1;i<=MaxClients;i++)
+    LoopClients(i)
     {
-        if(IsClientInGame(i))
-        {
-            OnClientPutInServer(i);
-        }
+        OnClientPutInServer(i);
     }
     
     RegAdminCmd("sm_knockout", Command_Knockout, ADMFLAG_GENERIC);
@@ -269,7 +266,7 @@ public void Frame_WaitTick(any userid)
     if (IsClientValid(client) && IsPlayerAlive(client))
     {
         SourceComms_SetClientMute(client, false);
-        SetEntData(client, g_iFreeze, FL_FAKECLIENT|FL_ONGROUND|FL_PARTIALGROUND, 4, true);
+        Entity_SetMoveable(client);
         SetClientViewEntity(client, client);
         g_iCamera[client] = false;
         PerformBlind(client, 0);
