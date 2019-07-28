@@ -45,6 +45,10 @@ public void OnClientAuthorized(int client, const char[] auth)
 public Action Command_ReloadWhitelist(int client, int args)
 {
     LoadList();
+
+    ReplyToCommand(client, "Whitelist reloaded!");
+
+    return Plugin_Handled;
 }
 
 void LoadList()
