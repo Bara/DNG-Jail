@@ -225,7 +225,18 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
         {
             if (!g_bKnockout[victim])
             {
-                KnockoutPlayer(victim);
+                bool bValid = true;
+
+                if (GetClientTeam(victim) == CS_TEAM_CT && GetClientTeam(victim) == GetClientTeam(attacker))
+                {
+                    bValid = false;
+                }
+
+                if (bValid)
+                {
+                    KnockoutPlayer(victim);
+                }
+
                 return Plugin_Handled;
             }
         }
