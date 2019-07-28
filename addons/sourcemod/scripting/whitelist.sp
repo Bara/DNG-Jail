@@ -21,7 +21,7 @@ public void OnPluginStart()
     FormatTime(sDate, sizeof(sDate), "%y%m%d");
     BuildPath(Path_SM, g_sLog, sizeof(g_sLog), "logs/whitelist_%s.log", sDate);
 
-    delete g_aWhitelist;
+    RegAdminCmd("sm_reload_whitelist", Command_ReloadWhitelist, ADMFLAG_ROOT);
 
     LoadList();
 }
@@ -42,8 +42,15 @@ public void OnClientAuthorized(int client, const char[] auth)
     }
 }
 
+public Action Command_ReloadWhitelist(int client, int args)
+{
+    LoadList();
+}
+
 void LoadList()
 {
+    delete g_aWhitelist;
+
     char sFile[PLATFORM_MAX_PATH + 1];
     BuildPath(Path_SM, sFile, sizeof(sFile), "configs/whitelist.ini");
 
