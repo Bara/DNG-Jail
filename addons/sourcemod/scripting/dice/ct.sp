@@ -25,7 +25,7 @@ int ctDiceOne(int client, Panel panel, int option = -1)
     else if(iNumber >= 8 && iNumber <= 11)
     {
         float fDamage = view_as<float>(RoundToNearest(GetRandomFloat(10.0, 30.0)));
-        g_fDamage[client] = (1.0 + (fDamage / 100.0));
+        g_fDamage[client] = 1.0 + (fDamage / 100.0);
 
         g_bCTMoreDamage[client] = true;
 
@@ -42,7 +42,7 @@ int ctDiceOne(int client, Panel panel, int option = -1)
     else if(iNumber >= 17 && iNumber <= 20)
     {
         float fDamage = view_as<float>(RoundToNearest(GetRandomFloat(5.0, 15.0)));
-        g_fDamage[client] = (1.0 + (fDamage / 100.0));
+        g_fDamage[client] = 1.0 + (fDamage / 100.0);
 
         g_bCTLessDamage[client] = true;
 
