@@ -1,0 +1,20 @@
+"Phrases"
+{
+	"Selected"
+	{
+		"en"	  	"[X]"
+	}
+	"RES_ON"
+	{
+		"en"	  	"Aktivieren"
+	}
+	"RES_OFF"
+	{
+		"en"	  	"Deaktivieren"
+	}
+	"mp3 print"
+	{
+		"#format"	"{1:s}"
+		"en" 		 "Aktuelle Datei: {green}{1}"
+	}
+}
