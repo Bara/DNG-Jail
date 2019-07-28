@@ -20,20 +20,21 @@ void Spawnweapons_OnPluginStart()
 
 void Spawnweapons_PlayerSpawn(int client)
 {
-	for(int i = CS_SLOT_PRIMARY; i <= CS_SLOT_C4; i++)
-	{
-		int index = -1;
-		while((index = GetPlayerWeaponSlot(client, i)) != -1)
-		{
-			char sClass[32];
-			GetEntityClassname(index, sClass, sizeof(sClass));
+	for(int offset = 0; offset < 128; offset += 4)
+    {
+        int weapon = GetEntDataEnt2(client, g_iMyWeapons + offset);
 
-			if (StrContains(sClass, "knife", false) == -1 && StrContains(sClass, "bayonet", false) == -1 )
-			{
-				SafeRemoveWeapon(client, index);
-			}
-		}
-	}
+        if (IsValidEntity(weapon))
+        {
+            char sClass[32];
+            GetEntityClassname(weapon, sClass, sizeof(sClass));
+
+            if (StrContains(sClass, "knife", false) == -1 && StrContains(sClass, "bayonet", false) == -1 )
+            {
+                SafeRemoveWeapon(client, weapon);
+            }
+        }
+    }
 	
 	g_bWeaponUse[client] = true;
 	SDKHook(client, SDKHook_WeaponCanUse, OnWeaponCanUseSpawn);
