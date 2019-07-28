@@ -18,7 +18,7 @@
 #include <hide>
 #include <zombie>
 
-#undef REQUIRED_PLUGIN
+#undef REQUIRE_PLUGIN
 #include <store>
 
 #pragma newdecls required
@@ -185,8 +185,6 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
 #if defined _stamm_included
 	LrStammpunkte_RoundStart();
 #endif
-
-	Spawnweapons_RoundStart();
 }
 
 public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)

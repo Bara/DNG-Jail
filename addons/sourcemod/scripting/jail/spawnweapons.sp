@@ -9,8 +9,6 @@ bool g_bWeaponUse[MAXPLAYERS + 1] =  { false, ... };
 
 int g_iClip1 = -1;
 
-g_iCount[MAXPLAYERS + 1] = { -1, ...};
-
 void Spawnweapons_OnPluginStart()
 {
 	g_iClip1 = FindSendPropInfo("CBaseCombatWeapon", "m_iClip1");
@@ -20,23 +18,8 @@ void Spawnweapons_OnPluginStart()
 	}
 }
 
-void Spawnweapons_RoundStart()
-{
-	LoopClients(i)
-	{
-		g_iCount[i] = 0;
-	}
-}
-
 void Spawnweapons_PlayerSpawn(int client)
 {
-	g_iCount[client]++;
-	
-	if (g_iCount[client] > 1)
-	{
-		return;
-	}
-
 	for(int i = CS_SLOT_PRIMARY; i <= CS_SLOT_C4; i++)
 	{
 		int index = -1;
