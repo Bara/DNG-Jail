@@ -30,11 +30,11 @@ ArrayList trSound;
 
 public Plugin myinfo =
 {
-	name = "[Outbreak] Round End Sounds",
+	name = "Round End Sounds",
 	author = "Bara",
 	description = "",
 	version = "1.0.0",
-	url = "outbreak-community.de"
+	url = "github.com/Bara"
 }
 
 public void OnPluginStart()
@@ -118,13 +118,13 @@ public void Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast)
 		{
 			if(!SamePath) 
 			{
-				PrintToServer("[Outbreak] TR_SOUNDS ERROR: Sounds not loaded.");
-				CPrintToChatAll("{green}[Outbreak] {default}TR_SOUNDS ERROR: Sounds not loaded.");
+				PrintToServer("[DNG] TR_SOUNDS ERROR: Sounds not loaded.");
+				CPrintToChatAll("{green}[DNG] {default}TR_SOUNDS ERROR: Sounds not loaded.");
 			}
 			else
 			{
-				PrintToServer("[Outbreak] SOUNDS ERROR: Sounds not loaded.");
-				CPrintToChatAll("{green}[Outbreak] {default}SOUNDS ERROR: Sounds not loaded.");
+				PrintToServer("[DNG] SOUNDS ERROR: Sounds not loaded.");
+				CPrintToChatAll("{green}[DNG] {default}SOUNDS ERROR: Sounds not loaded.");
 			}
 			return;
 		}
@@ -137,8 +137,8 @@ public void Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast)
 		}
 		else
 		{
-			PrintToServer("[Outbreak] CT_SOUNDS ERROR: Sounds not loaded.");
-			CPrintToChatAll("{green}[Outbreak] {default}CT_SOUNDS ERROR: Sounds not loaded.");
+			PrintToServer("[DNG] CT_SOUNDS ERROR: Sounds not loaded.");
+			CPrintToChatAll("{green}[DNG] {default}CT_SOUNDS ERROR: Sounds not loaded.");
 			return;
 		}
 	}
@@ -262,11 +262,11 @@ void RefreshSounds(int client)
 		SoundsTRSucess = (size > 0);
 		if(SoundsTRSucess)
 		{
-			ReplyToCommand(client, "[Outbreak] SOUNDS: %d sounds loaded.", size);
+			ReplyToCommand(client, "[DNG] SOUNDS: %d sounds loaded.", size);
 		}
 		else
 		{
-			ReplyToCommand(client, "[Outbreak] INVALID SOUND PATH.");
+			ReplyToCommand(client, "[DNG] INVALID SOUND PATH.");
 		}
 	}
 	else
@@ -275,22 +275,22 @@ void RefreshSounds(int client)
 		SoundsTRSucess = (size > 0);
 		if(SoundsTRSucess)
 		{
-			ReplyToCommand(client, "[Outbreak] TR_SOUNDS: %d sounds loaded.", size);
+			ReplyToCommand(client, "[DNG] TR_SOUNDS: %d sounds loaded.", size);
 		}
 		else
 		{
-			ReplyToCommand(client, "[Outbreak] INVALID TR SOUND PATH.");
+			ReplyToCommand(client, "[DNG] INVALID TR SOUND PATH.");
 		}
 		
 		size = LoadSoundsCT();
 		SoundsCTSucess = (size > 0);
 		if(SoundsCTSucess)
 		{
-			ReplyToCommand(client, "[Outbreak] CT_SOUNDS: %d sounds loaded.", size);
+			ReplyToCommand(client, "[DNG] CT_SOUNDS: %d sounds loaded.", size);
 		}
 		else
 		{
-			ReplyToCommand(client, "[Outbreak] INVALID CT SOUND PATH.");
+			ReplyToCommand(client, "[DNG] INVALID CT SOUND PATH.");
 		}
 	}
 }
@@ -396,7 +396,7 @@ void PlayMusicAll(char[] szSound)
 	
 	if(GetConVarInt(g_PlayPrint) == 1)
 	{
-		CPrintToChatAll("{green}[Outbreak] {default}%t", "mp3 print", szSound);
+		CPrintToChatAll("{green}[DNG] {default}%t", "mp3 print", szSound);
 	}
 }
 
