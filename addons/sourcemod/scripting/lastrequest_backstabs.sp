@@ -125,6 +125,12 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
 		{
 			if(IsClientInLastRequest(victim) && IsClientInLastRequest(attacker))
 			{
+				if (damage < 70)
+				{
+					damage = 0.0;
+					return Plugin_Changed;
+				}
+
 				if((StrContains(wname, "knife", false) == -1 || StrContains(wname, "bayonet", false) == -1) && damage > 110)
 				{
 					damage = float(GetClientHealth(victim) + GetClientArmor(victim));
