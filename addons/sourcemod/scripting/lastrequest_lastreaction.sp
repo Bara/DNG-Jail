@@ -101,22 +101,22 @@ void StartLR(Handle hArray, int inArray)
 
 public void Frame_StartCountdown(any data)
 {
-	CPrintToChatAll("Last Reaction beginnt in %s Sekunden", g_iCountdown);
+	CPrintToChatAll("Last Reaction beginnt in %d Sekunden", g_iCountdown);
 	CreateTimer(1.0, Timer_Countdown, _, TIMER_REPEAT);
 }
 
 public Action Timer_Countdown(Handle timer)
 {
+	g_iCountdown--;
+
 	if (g_iCountdown >= 2)
 	{
-		g_iCountdown--;
-		CPrintToChatAll("Last Reaction beginnt in %s Sekunden", g_iCountdown);
+		CPrintToChatAll("Last Reaction beginnt in %d Sekunden", g_iCountdown);
 		
 		return Plugin_Continue;
 	}
 	else if (g_iCountdown == 1)
 	{
-		g_iCountdown--;
 		CPrintToChatAll("Last Reaction beginnt in 1 Sekunde");
 		return Plugin_Continue;
 	}
@@ -146,48 +146,53 @@ public void Frame_StartLR(any data)
 		if (iOption == 0)
 		{
 			g_iButton = IN_JUMP;
-			CPrintToChatAll("Last Reaction... {lime}SPRINGEN");
+			CPrintToChatAll("Last Reaction... {lime}SPRINGEN {default}drücken!");
 		}
 		else if (iOption == 1)
 		{
 			g_iButton = IN_DUCK;
-			CPrintToChatAll("Last Reaction... {lime}DUCKEN");
+			CPrintToChatAll("Last Reaction... {lime}DUCKEN {default}drücken!");
 		}
 		else if (iOption == 2)
 		{
 			g_iButton = IN_ATTACK;
-			CPrintToChatAll("Last Reaction... {lime}LINKSKLICK");
+			CPrintToChatAll("Last Reaction... {lime}LINKSKLICK {default}drücken!");
 		}
 		else if (iOption == 3)
 		{
 			g_iButton = IN_ATTACK2;
-			CPrintToChatAll("Last Reaction... {lime}RECHTSKLICK");
+			CPrintToChatAll("Last Reaction... {lime}RECHTSKLICK {default}drücken!");
 		}
 		else if (iOption == 4)
 		{
 			g_iButton = IN_FORWARD;
-			CPrintToChatAll("Last Reaction... {lime}NACH VORNE LAUFEN");
+			CPrintToChatAll("Last Reaction... {lime}NACH VORNE LAUFEN {default}drücken!");
 		}
 		else if (iOption == 5)
 		{
 			g_iButton = IN_BACK;
-			CPrintToChatAll("Last Reaction... {lime}NACH HINTEN LAUFEN");
+			CPrintToChatAll("Last Reaction... {lime}NACH HINTEN LAUFEN {default}drücken!");
 		}
 		else if (iOption == 6)
 		{
 			g_iButton = IN_MOVERIGHT;
-			CPrintToChatAll("Last Reaction... {lime}NACH RECHTS LAUFEN");
+			CPrintToChatAll("Last Reaction... {lime}NACH RECHTS LAUFEN {default}drücken!");
 		}
 		else if (iOption == 7)
 		{
 			g_iButton = IN_MOVELEFT;
-			CPrintToChatAll("Last Reaction... {lime}NACH LINKS LAUFEN");
+			CPrintToChatAll("Last Reaction... {lime}NACH LINKS LAUFEN {default}drücken!");
 		}
 	}
 }
 
 void OnButtonPress(int client, int button)
 {
+	if (g_iButton == -1)
+	{
+		return;
+	}
+
 	if (IsClientValid(g_iLRPrisoner) && IsClientValid(g_iLRGuard))
 	{
 		if (IsPlayerAlive(g_iLRPrisoner) && IsPlayerAlive(g_iLRGuard))
