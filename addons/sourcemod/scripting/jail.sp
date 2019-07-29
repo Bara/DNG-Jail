@@ -53,6 +53,10 @@ ConVar g_cNewBeaconPoints = null;
 
 int g_iMyWeapons = -1;
 
+char g_sCMDs[][] = {"coverme", "takepoint", "holdpos", "regroup", "followme", "takingfire", "go", "fallback", "sticktog",
+	"getinpos", "stormfront", "report", "roger", "enemyspot", "needbackup", "sectorclear", "inposition", "reportingin",
+	"getout", "negative","enemydown", "compliment", "thanks", "cheer"};
+
 #include "jail/ergeben.sp"
 #include "jail/verweigern.sp"
 #include "jail/freedayteams.sp"
@@ -168,11 +172,22 @@ public void OnPluginStart()
     }
 
     CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
+
+    for(int i; i < sizeof(g_sCMDs); i++)
+	{
+		AddCommandListener(Command_Radio, g_sCMDs[i]);
+	}
 }
 
 public void OnAllPluginsLoaded()
 {
     g_bStore = LibraryExists("store");
+}
+
+public void OnConfigsExecuted()
+{
+	ConVar ignoreGrenade = FindConVar("sv_ignoregrenaderadio");
+	ignoreGrenade.SetInt(1);
 }
 
 public void OnMapStart()
@@ -280,6 +295,11 @@ public void OnClientDisconnect(int client)
     ResetSpawnweapons(client);
     ResetClientLrStammpunkte(client);
     NewBeacon_OnClientDisconnect(client);
+}
+
+public Action Command_Radio(int client, const char[] command, int args) 
+{
+	return Plugin_Handled;
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon)
