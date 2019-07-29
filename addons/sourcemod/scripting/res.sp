@@ -3,6 +3,7 @@
 #include <multicolors>
 #include <clientprefs>
 #include <cstrike>
+#include <emitsoundany>
 
 #pragma newdecls required // 2015 rules 
 #pragma semicolon 1
@@ -58,6 +59,7 @@ public void OnPluginStart()
 
 	RegAdminCmd("res_refresh", CommandLoad, ADMFLAG_SLAY);
 	RegConsoleCmd("res", Commamnd_RES);
+	RegAdminCmd("sm_playres", Command_PlayRes, ADMFLAG_ROOT);
 	
 	HookConVarChange(g_hTRPath, PathChange);
 	HookConVarChange(g_hCTPath, PathChange);
@@ -96,7 +98,7 @@ public void StopMapMusic()
 
 stock void Client_StopSound(int client, int entity, int channel, const char[] name)
 {
-	EmitSoundToClient(client, name, entity, channel, SNDLEVEL_NONE, SND_STOP, 0.0, SNDPITCH_NORMAL, _, _, _, true);
+	EmitSoundToClientAny(client, name, entity, channel, SNDLEVEL_NONE, SND_STOP, 0.0, SNDPITCH_NORMAL, _, _, _, true);
 }
 
 public void Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast)
@@ -174,7 +176,12 @@ public void Event_RoundStart(Handle event, const char[] name, bool dontBroadcast
 public void SoundCookieHandler(int client, CookieMenuAction action, any info, char[] buffer, int maxlen)
 {
 	Commamnd_RES(client, 0);
-} 
+}
+
+public Action Command_PlayRes(int client, int args)
+{
+	PlaySoundTR();
+}
 
 public Action Commamnd_RES(int client, int args)
 {
@@ -315,7 +322,7 @@ int LoadSoundsCT()
 				Format(soundname, sizeof(soundname), "sound/%s/%s", soundpath, name);
 				AddFileToDownloadsTable(soundname);
 				Format(soundname, sizeof(soundname), "%s/%s", soundpath, name);
-				PrecacheSound(soundname);
+				PrecacheSoundAny(soundname);
 				ctSound.PushString(soundname);
 			}
 		}
@@ -343,7 +350,7 @@ int LoadSoundsTR()
 				Format(soundname, sizeof(soundname), "sound/%s/%s", soundpath, name);
 				AddFileToDownloadsTable(soundname);
 				Format(soundname, sizeof(soundname), "%s/%s", soundpath, name);
-				PrecacheSound(soundname);
+				PrecacheSoundAny(soundname);
 				trSound.PushString(soundname);
 			}
 		}
@@ -385,18 +392,21 @@ void PlaySoundTR()
 
 void PlayMusicAll(char[] szSound)
 {
+	// Format(szSound, PLATFORM_MAX_PATH, "*%s", szSound);
+
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if(IsValidClient(i) && (GetConVarInt(g_ClientSettings) == 0 || GetIntCookie(i, g_hCookie) == 0)) //Adicionado versão v3.4
 		{
 			ClientCommand(i, "playgamesound Music.StopAllMusic");
-			ClientCommand(i, "play \"*%s\"", szSound);
+			// ClientCommand(i, "play \"*%s\"", szSound);
+			EmitSoundToClientAny(i, szSound, _, _, _, _, 0.2);
+
+			if(GetConVarInt(g_PlayPrint) == 1)
+			{
+				CPrintToChat(i, "{green}[DNG] {default}%t", "mp3 print", szSound);
+			}
 		}
-	}
-	
-	if(GetConVarInt(g_PlayPrint) == 1)
-	{
-		CPrintToChatAll("{green}[DNG] {default}%t", "mp3 print", szSound);
 	}
 }
 
