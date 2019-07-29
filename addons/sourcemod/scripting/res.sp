@@ -400,7 +400,7 @@ void PlayMusicAll(char[] szSound)
 		{
 			ClientCommand(i, "playgamesound Music.StopAllMusic");
 			// ClientCommand(i, "play \"*%s\"", szSound);
-			EmitSoundToClientAny(i, szSound, _, _, _, _, 0.2);
+			EmitSoundToClientAny(i, szSound, _, _, _, _, 0.4);
 
 			if(GetConVarInt(g_PlayPrint) == 1)
 			{
