@@ -180,8 +180,11 @@ int SpawnChair(int client, MoveType type)
 
 void ResetSettings()
 {
-    g_cPushscale.SetInt(g_iOldValue);
-    g_iOldValue = -1;
+    if (g_iOldValue != -1)
+    {
+        g_cPushscale.SetInt(g_iOldValue);
+        g_iOldValue = -1;
+    }
 
     g_bRunning = false;
 
