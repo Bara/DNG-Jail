@@ -36,15 +36,15 @@
 #pragma 	semicolon 					1
 
 // Constants
-#define 	PLUGIN_VERSION				"2.3.5E"
-#define 	MAX_DISPLAYNAME_SIZE		64
-#define 	MAX_DATAENTRY_SIZE			5
-#define 	SERVERTAG					"ENT_Hosties, LR"
+#define PLUGIN_VERSION "2.3.5E"
+#define MAX_DISPLAYNAME_SIZE 64
+#define MAX_DATAENTRY_SIZE 5
+#define SERVERTAG "ENT_Hosties, LR"
 
 // Note: you cannot safely turn these modules on and off yet. Use cvars to disable functionality.
 
 // Add ability to disable collisions for players
-#define	MODULE_NOBLOCK						1
+#define	MODULE_NOBLOCK 1
 // Add the last request system
 #define	MODULE_LASTREQUEST					1
 // Add a game description override

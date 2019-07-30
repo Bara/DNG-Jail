@@ -6104,6 +6104,8 @@ public RPSmenuHandler(Handle:menu, MenuAction:action, client, param2)
 							}
 						}
 		
+						LogMessage("Guard: %d, Prisoner: %d", RPS_Guard_Choice, RPS_Prisoner_Choice);
+
 						if (RPS_Prisoner_Choice == RPS_Guard_Choice) // tie
 						{
 							if (client == LR_Player_Prisoner)
