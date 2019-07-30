@@ -70,10 +70,10 @@ stock ShowOverlayToAll(const String:overlaypath[])
 
 stock StripAllWeapons(client)
 {
-	new wepIdx;
-	for (new i; i < 4; i++)
+	int wepIdx;
+	for (int i = CS_SLOT_PRIMARY; i < CS_SLOT_GRENADE+1; i++)
 	{
-		if ((wepIdx = GetPlayerWeaponSlot(client, i)) != -1)
+		while ((wepIdx = GetPlayerWeaponSlot(client, i)) != -1)
 		{
 			RemovePlayerItem(client, wepIdx);
 			AcceptEntityInput(wepIdx, "Kill");
