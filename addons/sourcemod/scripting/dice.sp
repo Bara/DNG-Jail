@@ -6,14 +6,14 @@
 #include <sdkhooks>
 #include <multicolors>
 #include <dng-jail>
-#include <jail>
 #include <emitsoundany>
 #include <autoexecconfig>
+
+#undef REQUIRE_PLUGIN
+#include <jail>
 #include <hide>
 #include <zombie>
 #include <knockout>
-
-#undef REQUIRE_PLUGIN
 #include <lastrequest>
 
 #pragma newdecls required
@@ -51,6 +51,11 @@ Handle g_hNoclip[MAXPLAYERS+1] =  { null, ... };
 Database g_dDB = null;
 
 bool g_bHosties = false;
+bool g_bJail = false;
+bool g_bHide = false;
+bool g_bZombie = false;
+bool g_bKnockout = false;
+
 bool g_bBusy[MAXPLAYERS + 1] = {false, ...};
 Handle g_hTimer[MAXPLAYERS + 1] = {null, ...};
 
@@ -100,8 +105,37 @@ public void OnPluginStart()
         SDKHook(i, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
     }
 
-    g_bHosties = LibraryExists("hosties");
     CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
+
+    g_bHosties = LibraryExists("hosties");
+    g_bJail = LibraryExists("jail");
+    g_bHide = LibraryExists("hide");
+    g_bZombie = LibraryExists("zombie");
+    g_bKnockout = LibraryExists("knockout");
+}
+
+public void OnAllPluginsLoaded()
+{
+    if(LibraryExists("hosties"))
+    {
+        g_bHosties = true;
+    }
+    else if(LibraryExists("jail"))
+    {
+        g_bJail = true;
+    }
+    else if(LibraryExists("hide"))
+    {
+        g_bHide = true;
+    }
+    else if(LibraryExists("zombie"))
+    {
+        g_bZombie = true;
+    }
+    else if(LibraryExists("knockout"))
+    {
+        g_bKnockout = true;
+    }
 }
 
 public void OnLibraryAdded(const char[] name)
@@ -110,6 +144,22 @@ public void OnLibraryAdded(const char[] name)
     {
         g_bHosties = true;
     }
+    else if (StrEqual(name, "jail"))
+    {
+        g_bJail = true;
+    }
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = true;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = true;
+    }
+    else if (StrEqual(name, "knockout"))
+    {
+        g_bKnockout = true;
+    }
 }
 
 public void OnLibraryRemoved(const char[] name)
@@ -117,6 +167,22 @@ public void OnLibraryRemoved(const char[] name)
     if (StrEqual(name, "hosties"))
     {
         g_bHosties = false;
+    }
+    else if (StrEqual(name, "jail"))
+    {
+        g_bJail = false;
+    }
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = false;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = false;
+    }
+    else if (StrEqual(name, "knockout"))
+    {
+        g_bKnockout = false;
     }
 }
 
@@ -183,7 +249,7 @@ void AddDiceToMySQL(int client, int dice, const char[] option)
     char sName[MAX_NAME_LENGTH];
     GetClientName(client, sName, sizeof(sName));
     
-    if (g_dDB == null)
+    if (g_bJail && g_dDB == null)
     {
         if (Jail_GetDatabase() != null)
         {
@@ -303,7 +369,7 @@ public Action Command_Dice(int client, int args)
         iOption = StringToInt(sOption);
     }
 
-    if (Hide_IsActive() || Zombie_IsActive())
+    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
     {
         return Plugin_Handled;
     }
@@ -312,7 +378,7 @@ public Action Command_Dice(int client, int args)
     {
         if(IsPlayerAlive(client))
         {
-            if (Jail_IsClientCapitulate(client) || IsClientKnockout(client))
+            if ((g_bJail && Jail_IsClientCapitulate(client)) || (g_bKnockout && IsClientKnockout(client)))
             {
                 return Plugin_Handled;
             }

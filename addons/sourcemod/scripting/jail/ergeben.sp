@@ -13,7 +13,7 @@ public Action Command_ergeben(int client, int args)
 		{
 			if(!g_bErgeben[client])
 			{
-				if (Dice_IsClientAssassine(client))
+				if (g_bDice && Dice_IsClientAssassine(client))
 				{
 					ForcePlayerSuicide(client);
 					CPrintToChatAll("%s%N %swollte sich als Assassine ergeben!", SPECIAL, client, TEXT);
@@ -30,7 +30,10 @@ public Action Command_ergeben(int client, int args)
 				
 				SDKHook(client, SDKHook_WeaponCanUse, OnWeaponCanUseErgeben);
 				
-				ChangeRebelStatus(client, false);
+				if (g_bHosties)
+				{
+					ChangeRebelStatus(client, false);
+				}
 				
 				for(int i = CS_SLOT_PRIMARY; i <= CS_SLOT_C4; i++)
 				{
@@ -64,8 +67,15 @@ public Action ErgebenTimer(Handle timer, any client)
 		
 		SDKUnhook(client, SDKHook_WeaponCanUse, OnWeaponCanUseErgeben);
 		g_bErgeben[client] = false;
+
+		bool bGive = true;
 		
-		if (!Dice_LoseAll(client))
+		if (g_bDice && Dice_LoseAll(client))
+		{
+			bGive = false;
+		}
+
+		if (bGive)
 		{
 			int iKnife = GivePlayerItem(client, "weapon_knife");
 			EquipPlayerWeapon(client, iKnife);

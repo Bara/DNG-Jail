@@ -11,6 +11,9 @@
 #include <emitsoundany>
 #include <menu-stocks>
 #include <multicolors>
+
+#undef REQUIRE_PLUGIN
+#include <store>
 #include <lastrequest>
 #include <dice>
 #include <stamm>
@@ -18,14 +21,17 @@
 #include <hide>
 #include <zombie>
 
-#undef REQUIRE_PLUGIN
-#include <store>
-
 #pragma newdecls required
 
 #define PL_NAME "Jail"
 
 bool g_bStore = false;
+bool g_bHosties = false;
+bool g_bDice = false;
+bool g_bStamm = false;
+// bool g_bGlow = false;
+bool g_bHide = false;
+bool g_bZombie = false;
 
 Handle g_hOnMySQLConnect = null;
 Database g_dDB = null;
@@ -177,11 +183,110 @@ public void OnPluginStart()
 	{
 		AddCommandListener(Command_Radio, g_sCMDs[i]);
 	}
+
+    g_bStore = LibraryExists("store");
+    g_bHosties = LibraryExists("hosties");
+    g_bDice = LibraryExists("dice");
+    g_bStamm = LibraryExists("stamm");
+    // g_bGlow = LibraryExists("glow");
+    g_bHide = LibraryExists("hide");
+    g_bZombie = LibraryExists("zombie");
 }
 
 public void OnAllPluginsLoaded()
 {
-    g_bStore = LibraryExists("store");
+    if (LibraryExists("store"))
+    {
+        g_bStore = true;
+    }
+    else if (LibraryExists("hosties"))
+    {
+        g_bHosties = true;
+    }
+    else if (LibraryExists("dice"))
+    {
+        g_bDice = true;
+    }
+    else if (LibraryExists("stamm"))
+    {
+        g_bStamm = true;
+    }
+    /* else if (LibraryExists("glow"))
+    {
+        g_bGlow = true;
+    } */
+    else if (LibraryExists("hide"))
+    {
+        g_bHide = true;
+    }
+    else if (LibraryExists("zombie"))
+    {
+        g_bZombie = true;
+    }
+}
+
+public void OnLibraryAdded(const char[] name)
+{
+    if (StrEqual(name, "store"))
+    {
+        g_bStore = true;
+    }
+    else if (StrEqual(name, "hosties"))
+    {
+        g_bHosties = true;
+    }
+    else if (StrEqual(name, "dice"))
+    {
+        g_bDice = true;
+    }
+    else if (StrEqual(name, "stamm"))
+    {
+        g_bStamm = true;
+    }
+    /* else if (StrEqual(name, "glow"))
+    {
+        g_bGlow = true;
+    } */
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = true;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = true;
+    }
+}
+
+public void OnLibraryRemoved(const char[] name)
+{
+    if (StrEqual(name, "store"))
+    {
+        g_bStore = false;
+    }
+    else if (StrEqual(name, "hosties"))
+    {
+        g_bHosties = false;
+    }
+    else if (StrEqual(name, "dice"))
+    {
+        g_bDice = false;
+    }
+    else if (StrEqual(name, "stamm"))
+    {
+        g_bStamm = false;
+    }
+    /* else if (StrEqual(name, "glow"))
+    {
+        g_bGlow = false;
+    } */
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = false;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = false;
+    }
 }
 
 public void OnConfigsExecuted()
@@ -206,18 +311,20 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
 {
     Freedayteams_RoundStart();
     Freekill_RoundStart();
-#if defined _stamm_included
-    LrStammpunkte_RoundStart();
-#endif
+    if(g_bStamm)
+    {
+        LrStammpunkte_RoundStart();
+    }
 }
 
 public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
     Teamdamage_RoundEnd();
 
-#if defined _stamm_included
-    LrStammpunkte_RoundEnd();
-#endif
+    if(g_bStamm)
+    {
+        LrStammpunkte_RoundEnd();
+    }
     
     LoopClients(client)
     {
@@ -247,7 +354,14 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
         ResetFreekill(client);
         VoiceMenu_ResetSettings(client);
 
-        if (!Zombie_IsActive() && !Hide_IsActive())
+        bool bValid = true;
+
+        if ((g_bZombie && Zombie_IsActive()) || (g_bHide && Hide_IsActive()))
+        {
+            bValid = false;
+        }
+
+        if (bValid)
         {
             Spawnweapons_PlayerSpawn(client);
             CTBoost_PlayerSpawn(client);
@@ -257,9 +371,11 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
 
 public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast)
 {
-#if defined _stamm_included
-    LrStammpunkte_PlayerDeath();
-#endif
+    if(g_bStamm)
+    {
+        LrStammpunkte_PlayerDeath();
+    }
+
 
     int client = GetClientOfUserId(event.GetInt("userid"));
     int attacker = GetClientOfUserId(event.GetInt("attacker"));

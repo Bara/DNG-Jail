@@ -4,6 +4,8 @@
 #include <cstrike>
 #include <dng-jail>
 #include <sourcecomms>
+
+#undef REQUIRE_PLUGIN
 #include <dice>
 #include <hide>
 #include <zombie>
@@ -25,6 +27,10 @@ int g_iRagdoll[MAXPLAYERS+1] = {-1, ...};
 
 UserMsg g_uFade;
 int g_iCamera[MAXPLAYERS + 1] = { -1, ... };
+
+bool g_bZombie = false;
+bool g_bHide = false;
+bool g_bDice = false;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -62,6 +68,58 @@ public void OnPluginStart()
     RegAdminCmd("sm_knockout", Command_Knockout, ADMFLAG_GENERIC);
     
     HookEvent("player_spawn", Event_PlayerSpawn);
+
+    g_bHide = LibraryExists("hide");
+    g_bZombie = LibraryExists("zombie");
+    g_bDice = LibraryExists("dice");
+}
+
+public void OnAllPluginsLoaded()
+{
+    if(LibraryExists("dice"))
+    {
+        g_bDice = true;
+    }
+    else if(LibraryExists("hide"))
+    {
+        g_bHide = true;
+    }
+    else if(LibraryExists("zombie"))
+    {
+        g_bZombie = true;
+    }
+}
+
+public void OnLibraryAdded(const char[] name)
+{
+    if (StrEqual(name, "dice"))
+    {
+        g_bDice = true;
+    }
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = true;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = true;
+    }
+}
+
+public void OnLibraryRemoved(const char[] name)
+{
+    if (StrEqual(name, "dice"))
+    {
+        g_bDice = false;
+    }
+    else if (StrEqual(name, "hide"))
+    {
+        g_bHide = false;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = false;
+    }
 }
 
 public void OnClientDisconnect(int client)
@@ -135,7 +193,7 @@ public Action Command_Knockout(int client, int args)
 
 bool KnockoutPlayer(int client)
 {
-    if (Hide_IsActive() || Zombie_IsActive())
+    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
     {
         return false;
     }
@@ -282,7 +340,7 @@ public void Frame_WaitTick(any userid)
         g_iCamera[client] = false;
         PerformBlind(client, 0);
 
-        if(!Dice_LoseAll(client))
+        if(g_bDice && !Dice_LoseAll(client))
         {
             GivePlayerItem(client, "weapon_knife");
         }

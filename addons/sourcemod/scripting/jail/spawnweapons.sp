@@ -48,7 +48,15 @@ public Action WeaponTimer(Handle timer, any client)
 	if(IsClientValid(client) && g_hWeaponTimer[client] != null && IsPlayerAlive(client))
 	{
 		int weapon = -1;
-		if(!Dice_LoseAll(client) && GetPlayerWeaponSlot(client, CS_SLOT_KNIFE) == -1)
+
+		bool bGive = true;
+		
+		if (g_bDice && Dice_LoseAll(client))
+		{
+			bGive = false;
+		}
+
+		if(bGive && GetPlayerWeaponSlot(client, CS_SLOT_KNIFE) == -1)
 		{
 			weapon = GivePlayerItem(client, "weapon_knife");
 			EquipPlayerWeapon(client, weapon);

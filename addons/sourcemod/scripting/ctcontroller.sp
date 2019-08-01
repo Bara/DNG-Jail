@@ -3,7 +3,6 @@
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
-#include <stamm>
 #include <sourcecomms>
 #include <emitsoundany>
 #include <multicolors>
@@ -12,6 +11,9 @@
 #include <autoexecconfig>
 #include <calladmin>
 #include <SteamWorks>
+
+#undef REQUIRE_PLUGIN
+#include <stamm>
 #include <hide>
 #include <zombie>
 #include <knockout>
@@ -53,6 +55,10 @@ Handle g_hOnValidCheck = null;
 
 char g_sSymbols[25][1] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+bool g_bStamm = false;
+bool g_bHide = false;
+bool g_bZombie = false;
+bool g_bKnockout = false;
 
 #include "ctcontroller/sql.sp"
 #include "ctcontroller/stocks.sp"
@@ -61,254 +67,319 @@ char g_sSymbols[25][1] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
 
 public Plugin myinfo =
 {
-	name = "CT Controller",
-	author = "Bara",
-	description = "",
-	version = "1.0.0",
-	url = "github.com/Bara"
+    name = "CT Controller",
+    author = "Bara",
+    description = "",
+    version = "1.0.0",
+    url = "github.com/Bara"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	g_hOnPlayerCheck = CreateGlobalForward("CTC_OnPlayerCheck", ET_Event, Param_Cell);
-	g_hOnValidCheck = CreateGlobalForward("CTC_OnValidCheck", ET_Event, Param_Cell, Param_CellByRef);
+    g_hOnPlayerCheck = CreateGlobalForward("CTC_OnPlayerCheck", ET_Event, Param_Cell);
+    g_hOnValidCheck = CreateGlobalForward("CTC_OnValidCheck", ET_Event, Param_Cell, Param_CellByRef);
 
-	CreateNative("CTC_IsClientValidCT", Native_IsClientValidCT);
-	CreateNative("CTC_HasClientCTBan", Native_HasClientCTBan);
-	CreateNative("CTC_GetClientBanReason", Native_GetClientBanReason);
-	
-	RegPluginLibrary("ctcontroller");
-	
-	return APLRes_Success;
+    CreateNative("CTC_IsClientValidCT", Native_IsClientValidCT);
+    CreateNative("CTC_HasClientCTBan", Native_HasClientCTBan);
+    CreateNative("CTC_GetClientBanReason", Native_GetClientBanReason);
+    
+    RegPluginLibrary("ctcontroller");
+    
+    return APLRes_Success;
 }
 
 public void OnPluginStart()
 {
-	AutoExecConfig_SetCreateDirectory(true);
-	AutoExecConfig_SetCreateFile(true);
-	AutoExecConfig_SetFile("ctcontroller");
-	g_cTime = AutoExecConfig_CreateConVar("ct_controller_menu_time", "10", "Time in seconds to show a menu");
-	g_cStammPoints = AutoExecConfig_CreateConVar("ct_controller_stamm_points", "500", "Stamm points to play as ct (if the player isn't verified). 0 = Disabled (Verify + Stammpoints Check)", _, true, 0.0);
-	g_cWebhook = AutoExecConfig_CreateConVar("ct_controller_discord_webhook", "ctcontroller", "Config key from configs/discord.cfg.");
-	g_cColor = AutoExecConfig_CreateConVar("ct_controller_discord_color", "#ff6347", "Discord/Slack attachment color.");
-	AutoExecConfig_ExecuteFile();
-	AutoExecConfig_CleanFile();
+    AutoExecConfig_SetCreateDirectory(true);
+    AutoExecConfig_SetCreateFile(true);
+    AutoExecConfig_SetFile("ctcontroller");
+    g_cTime = AutoExecConfig_CreateConVar("ct_controller_menu_time", "10", "Time in seconds to show a menu");
+    g_cStammPoints = AutoExecConfig_CreateConVar("ct_controller_stamm_points", "500", "Stamm points to play as ct (if the player isn't verified). 0 = Disabled (Verify + Stammpoints Check)", _, true, 0.0);
+    g_cWebhook = AutoExecConfig_CreateConVar("ct_controller_discord_webhook", "ctcontroller", "Config key from configs/discord.cfg.");
+    g_cColor = AutoExecConfig_CreateConVar("ct_controller_discord_color", "#ff6347", "Discord/Slack attachment color.");
+    AutoExecConfig_ExecuteFile();
+    AutoExecConfig_CleanFile();
 
-	RegConsoleCmd("sm_checkvalid", Command_CheckValid);
+    RegConsoleCmd("sm_checkvalid", Command_CheckValid);
 
-	// List commands
-	RegConsoleCmd("sm_ctlist", Command_CTList);
-	RegConsoleCmd("sm_ctbanlist", Command_CTBanList);
+    // List commands
+    RegConsoleCmd("sm_ctlist", Command_CTList);
+    RegConsoleCmd("sm_ctbanlist", Command_CTBanList);
 
-	// Verify commands
-	RegAdminCmd("sm_verct", Command_VerifyCT, ADMFLAG_BAN);
-	RegAdminCmd("sm_vertmpct", Command_VerifyTempCT, ADMFLAG_UNBAN);
+    // Verify commands
+    RegAdminCmd("sm_verct", Command_VerifyCT, ADMFLAG_BAN);
+    RegAdminCmd("sm_vertmpct", Command_VerifyTempCT, ADMFLAG_UNBAN);
 
-	// CT (un-) ban commands
-	RegAdminCmd("sm_ctban", Command_CTBan, ADMFLAG_BAN);
-	RegAdminCmd("sm_ctunban", Command_CTUnBan, ADMFLAG_UNBAN);
+    // CT (un-) ban commands
+    RegAdminCmd("sm_ctban", Command_CTBan, ADMFLAG_BAN);
+    RegAdminCmd("sm_ctunban", Command_CTUnBan, ADMFLAG_UNBAN);
 
-	HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);
-	HookEvent("player_spawn", Event_PlayerSpawn);
-	HookEvent("round_prestart", Event_RoundStart, EventHookMode_Pre);
-	HookEvent("round_end", Event_RoundEnd, EventHookMode_PostNoCopy);
+    HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);
+    HookEvent("player_spawn", Event_PlayerSpawn);
+    HookEvent("round_prestart", Event_RoundStart, EventHookMode_Pre);
+    HookEvent("round_end", Event_RoundEnd, EventHookMode_PostNoCopy);
 
-	g_cGraceTime = FindConVar("mp_join_grace_time");
+    g_cGraceTime = FindConVar("mp_join_grace_time");
 
-	AddCommandListener(Command_CheckJoin, "jointeam");
-	
-	LoadTranslations("common.phrases");
-	LoadTranslations("ctcontroller.phrases");
-	
-	ConnectToSQL();
-	
-	CreateTimer(0.5, Timer_CheckClients, _, TIMER_REPEAT);
+    AddCommandListener(Command_CheckJoin, "jointeam");
+    
+    LoadTranslations("common.phrases");
+    LoadTranslations("ctcontroller.phrases");
+    
+    ConnectToSQL();
+    
+    CreateTimer(0.5, Timer_CheckClients, _, TIMER_REPEAT);
 
-	CSetPrefix("{darkred}[CT Controller]{default}");
+    CSetPrefix("{darkred}[CT Controller]{default}");
+
+    g_bStamm = LibraryExists("stamm");
+    g_bHide = LibraryExists("hide");
+    g_bZombie = LibraryExists("zombie");
+    g_bKnockout = LibraryExists("knockout");
+}
+
+public void OnAllPluginsLoaded()
+{
+    if(LibraryExists("hide"))
+    {
+        g_bHide = true;
+    }
+    else if(LibraryExists("zombie"))
+    {
+        g_bZombie = true;
+    }
+    else if(LibraryExists("knockout"))
+    {
+        g_bKnockout = true;
+    }
+    else if(LibraryExists("stamm"))
+    {
+        g_bStamm = true;
+    }
+}
+
+public void OnLibraryAdded(const char[] name)
+{
+    if (StrEqual(name, "hide"))
+    {
+        g_bHide = true;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = true;
+    }
+    else if (StrEqual(name, "knockout"))
+    {
+        g_bKnockout = true;
+    }
+    else if (StrEqual(name, "stamm"))
+    {
+        g_bStamm = true;
+    }
+}
+
+public void OnLibraryRemoved(const char[] name)
+{
+    if (StrEqual(name, "hide"))
+    {
+        g_bHide = false;
+    }
+    else if (StrEqual(name, "zombie"))
+    {
+        g_bZombie = false;
+    }
+    else if (StrEqual(name, "knockout"))
+    {
+        g_bKnockout = false;
+    }
+    else if (StrEqual(name, "stamm"))
+    {
+        g_bStamm = false;
+    }
 }
 
 public int Native_IsClientValidCT(Handle plugin, int numParams)
 {
-	int client = GetNativeCell(1);
+    int client = GetNativeCell(1);
 
-	return IsValidCT(client);
+    return IsValidCT(client);
 }
 
 public int Native_HasClientCTBan(Handle plugin, int numParams)
 {
-	int client = GetNativeCell(1);
-	
-	return g_bBanned[client];
+    int client = GetNativeCell(1);
+    
+    return g_bBanned[client];
 }
 
 public int Native_GetClientBanReason(Handle plugin, int numParams)
 {
-	int client = GetNativeCell(1);
+    int client = GetNativeCell(1);
 
-	SetNativeString(2, g_sReason[client], GetNativeCell(3));
+    SetNativeString(2, g_sReason[client], GetNativeCell(3));
 
-	return g_bBanned[client];
+    return g_bBanned[client];
 }
 
 public void OnClientPostAdminCheck(int client)
 {
-	if (GetClientAuthId(client, AuthId_SteamID64, g_sClientID[client], sizeof(g_sClientID[])))
-		LoadClient(client);
+    if (GetClientAuthId(client, AuthId_SteamID64, g_sClientID[client], sizeof(g_sClientID[])))
+        LoadClient(client);
 }
 
 public void OnMapStart()
 {
-	PrecacheSoundAny(SOUND, true);
-	
-	ValidRound_ResetRoundStuff();
+    PrecacheSoundAny(SOUND, true);
+    
+    ValidRound_ResetRoundStuff();
 }
 
 public void OnClientDisconnect(int client)
 {
-	g_bReady[client] = false;
-	
-	ValidRound_ResetClientStuff(client);
+    g_bReady[client] = false;
+    
+    ValidRound_ResetClientStuff(client);
 }
 
 public Action Event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
 {
-	int client = GetClientOfUserId(event.GetInt("userid"));
-	
-	g_bReady[client] = false;
+    int client = GetClientOfUserId(event.GetInt("userid"));
+    
+    g_bReady[client] = false;
 }
 
 public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 {
-	int client = GetClientOfUserId(event.GetInt("userid"));
-	
-	if(IsClientValid(client))
-	{
-		int team = GetClientTeam(client);
-		
-		if(team != CS_TEAM_CT)
-		{
-			return Plugin_Continue;
-		}
-		
-		if(IsValidCT(client))
-		{
-			return Plugin_Continue;
-		}
-		
-		PlayBlockSound(client);
-		
-		if(GetClientTeam(client) == CS_TEAM_CT)
-		{
-			Action res = Plugin_Continue;
-			Call_StartForward(g_hOnPlayerCheck);
-			Call_PushCell(client);
-			Call_Finish(res);
+    int client = GetClientOfUserId(event.GetInt("userid"));
+    
+    if(IsClientValid(client))
+    {
+        int team = GetClientTeam(client);
+        
+        if(team != CS_TEAM_CT)
+        {
+            return Plugin_Continue;
+        }
+        
+        if(IsValidCT(client))
+        {
+            return Plugin_Continue;
+        }
+        
+        PlayBlockSound(client);
+        
+        if(GetClientTeam(client) == CS_TEAM_CT)
+        {
+            Action res = Plugin_Continue;
+            Call_StartForward(g_hOnPlayerCheck);
+            Call_PushCell(client);
+            Call_Finish(res);
 
-			if (res == Plugin_Handled || res == Plugin_Stop)
-			{
-				return Plugin_Continue;
-			}
+            if (res == Plugin_Handled || res == Plugin_Stop)
+            {
+                return Plugin_Continue;
+            }
 
-			ForcePlayerSuicide(client);
-			ChangeClientTeam(client, CS_TEAM_T);
-		}
-		return Plugin_Handled;
-	}
-	
-	return Plugin_Continue;
+            ForcePlayerSuicide(client);
+            ChangeClientTeam(client, CS_TEAM_T);
+        }
+        return Plugin_Handled;
+    }
+    
+    return Plugin_Continue;
 }
 
 public Action Command_CheckValid(int client, int args)
 {
-	LoopClients(i)
-	{
-		if(bLogMessage && bDebug)
-		{
-			LogMessage("Spieler: \"%L\" - g_bReady: %d - CTC_HasFlags(b): %d - g_bBanned: %d - SourceComms_GetClientMuteType: %d - g_bVerify: %d - STAMM_GetClientPoints: %d", i, g_bReady[i], CTC_HasFlags(i, "b"), g_bBanned[i], SourceComms_GetClientMuteType(i), g_bVerify[i], STAMM_GetClientPoints(i));
-		}
-		
-		IsValidCT(i, true);
-	}
+    LoopClients(i)
+    {
+        if(bLogMessage && bDebug)
+        {
+            LogMessage("Spieler: \"%L\" - g_bReady: %d - CTC_HasFlags(b): %d - g_bBanned: %d - SourceComms_GetClientMuteType: %d - g_bVerify: %d - STAMM_GetClientPoints: %d", i, g_bReady[i], CTC_HasFlags(i, "b"), g_bBanned[i], SourceComms_GetClientMuteType(i), g_bVerify[i], STAMM_GetClientPoints(i));
+        }
+        
+        IsValidCT(i, true);
+    }
 }
 
 public Action Command_CheckJoin(int client, const char[] command, int args)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
-	{
-		return Plugin_Continue;
-	}
+    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
+    {
+        return Plugin_Continue;
+    }
 
-	if(IsClientValid(client))
-	{
-		char sTeam[2];
-		GetCmdArg(1, sTeam, sizeof(sTeam));
-		int iTeam = StringToInt(sTeam);
-		
-		ValidRound_JoinTeam(client, iTeam);
-		
-		if(iTeam != CS_TEAM_CT)
-		{
-			return Plugin_Continue;
-		}
-		
-		if(iTeam == 0)
-		{
-			PlayBlockSound(client);
-			return Plugin_Handled;
-		}
-		
-		if(IsValidCT(client))
-		{
-			return Plugin_Continue;
-		}
-		
-		PlayBlockSound(client);
-		return Plugin_Handled;
-	}
-	
-	return Plugin_Continue;
+    if(IsClientValid(client))
+    {
+        char sTeam[2];
+        GetCmdArg(1, sTeam, sizeof(sTeam));
+        int iTeam = StringToInt(sTeam);
+        
+        ValidRound_JoinTeam(client, iTeam);
+        
+        if(iTeam != CS_TEAM_CT)
+        {
+            return Plugin_Continue;
+        }
+        
+        if(iTeam == 0)
+        {
+            PlayBlockSound(client);
+            return Plugin_Handled;
+        }
+        
+        if(IsValidCT(client))
+        {
+            return Plugin_Continue;
+        }
+        
+        PlayBlockSound(client);
+        return Plugin_Handled;
+    }
+    
+    return Plugin_Continue;
 }
 
 public Action Timer_CheckClients(Handle timer)
 {
-	LoopClients(i)
-	{
-		if(IsClientValid(i))
-		{
-			int team = GetClientTeam(i);
-			
-			if(team != CS_TEAM_CT)
-			{
-				continue;
-			}
-			
-			if(IsValidCT(i))
-				continue;
-			
-			PlayBlockSound(i);
-			
-			if(GetClientTeam(i) == CS_TEAM_CT)
-			{
-				Action res = Plugin_Continue;
-				Call_StartForward(g_hOnPlayerCheck);
-				Call_PushCell(i);
-				Call_Finish(res);
+    LoopClients(i)
+    {
+        if(IsClientValid(i))
+        {
+            int team = GetClientTeam(i);
+            
+            if(team != CS_TEAM_CT)
+            {
+                continue;
+            }
+            
+            if(IsValidCT(i))
+                continue;
+            
+            PlayBlockSound(i);
+            
+            if(GetClientTeam(i) == CS_TEAM_CT)
+            {
+                Action res = Plugin_Continue;
+                Call_StartForward(g_hOnPlayerCheck);
+                Call_PushCell(i);
+                Call_Finish(res);
 
-				if (res == Plugin_Handled || res == Plugin_Stop)
-				{
-					return Plugin_Continue;
-				}
+                if (res == Plugin_Handled || res == Plugin_Stop)
+                {
+                    return Plugin_Continue;
+                }
 
-				ForcePlayerSuicide(i);
-				ChangeClientTeam(i, CS_TEAM_T);
-			}
-		}
-	}
-	return Plugin_Continue;
+                ForcePlayerSuicide(i);
+                ChangeClientTeam(i, CS_TEAM_T);
+            }
+        }
+    }
+    return Plugin_Continue;
 }
 
 public int Panel_DeleteHandle(Menu menu, MenuAction action, int param1, int param2)
 {
-	if (action == MenuAction_End)
-		delete menu;
+    if (action == MenuAction_End)
+        delete menu;
 }
