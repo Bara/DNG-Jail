@@ -386,17 +386,14 @@ bool IsValidCT(int client, bool blockMessage = false)
         return false;
     }
     
-    if(g_bKnockout && !IsClientKnockout(client) && SourceComms_GetClientMuteType(client) != bNot)
+    bool bSkip = false;
+
+    if (g_bKnockout && IsClientKnockout(client))
     {
-        if (!blockMessage)
-        {
-            LogMessage("\"%L\" tried to join ct! (Rejected: SourceComms_GetClientMuteType != bNot)", client);
-            CPrintToChat(client, "{lightblue}Stummgeschaltene Spieler {default}können kein CT spielen. Melde dich dafür bitte {lightblue}im Forum{default}.");
-        }
-        return false;
+        bSkip = true;
     }
 
-    if(!IsClientKnockout(client) && SourceComms_GetClientMuteType(client) != bNot)
+    if(bSkip && SourceComms_GetClientMuteType(client) != bNot)
     {
         if (!blockMessage)
         {
