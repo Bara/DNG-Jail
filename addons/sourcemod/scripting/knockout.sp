@@ -323,7 +323,6 @@ public Action Timer_Delete(Handle timer, any userid)
         
         g_iCamera[client] = -1;
         g_iRagdoll[client] = -1;
-        g_bKnockout[client] = false;
         
         RequestFrame(Frame_WaitTick, GetClientUserId(client));
     }
@@ -340,13 +339,23 @@ public void Frame_WaitTick(any userid)
         g_iCamera[client] = false;
         PerformBlind(client, 0);
 
-        if(g_bDice && !Dice_LoseAll(client))
+        bool bValid = true;
+
+        if(g_bDice && Dice_LoseAll(client))
         {
-            GivePlayerItem(client, "weapon_knife");
+            bValid = false;
+        }
+
+        if (bValid)
+        {
+            int iKnife = GivePlayerItem(client, "weapon_knife");
+            EquipPlayerWeapon(client, iKnife);
         }
 
         SetEntityRenderMode(client, RENDER_TRANSCOLOR);
         SetEntityRenderColor(client, 255, 255, 255);
+        
+        g_bKnockout[client] = false;
     }
 }
 
