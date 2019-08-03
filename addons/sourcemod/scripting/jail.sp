@@ -311,6 +311,8 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
 {
     Freedayteams_RoundStart();
     Freekill_RoundStart();
+    TeamDamage_Reset();
+
     if(g_bStamm)
     {
         LrStammpunkte_RoundStart();
@@ -319,7 +321,7 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
 
 public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
-    Teamdamage_RoundEnd();
+    TeamDamage_Reset();
 
     if(g_bStamm)
     {

@@ -30,7 +30,7 @@ void Teamdamage_OnPluginStart()
 	g_cvTeamdamage = FindConVar("mp_teammates_are_enemies");
 }
 
-void Teamdamage_RoundEnd()
+void TeamDamage_Reset()
 {
 	g_cvTeamdamage.SetBool(false);
 }
