@@ -1,6 +1,7 @@
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
+#include <cstrike>
 #include <smlib>
 #include <hosties>
 #include <lastrequest>
@@ -555,7 +556,18 @@ public FruitNinja_Countdown(Handle:LR_Array, iIndexInArray)
 		SetArrayCell(LR_Array, iIndexInArray, --countdown, _:Block_Global1);	
 		
 		new PrisonerGun = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+		if (IsValidEntity(PrisonerGun))
+		{
+			EquipPlayerWeapon(LR_Player_Prisoner, PrisonerGun);
+		}
+
 		new GuardGun = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+		if (IsValidEntity(GuardGun))
+		{
+			EquipPlayerWeapon(LR_Player_Guard, GuardGun);
+		}
 		
 		FruitNinjaRunning	= 1;
 		FruitNinjaStarted	= GetEngineTime();

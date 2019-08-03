@@ -295,8 +295,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_m4a1");
 			
 			CPrintToChatAll("{default}M4A1 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 1:
 		{
@@ -304,8 +302,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_ak47");
 			
 			CPrintToChatAll("{default}AK47 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 2:
 		{
@@ -313,8 +309,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_sg556");
 			
 			CPrintToChatAll("{default}SG556 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 3:
 		{
@@ -322,8 +316,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_aug");
 			
 			CPrintToChatAll("{default}AUG Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 4:
 		{
@@ -331,8 +323,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_famas");
 			
 			CPrintToChatAll("{default}FAMAS Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 5:
 		{
@@ -340,8 +330,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_galilar");
 			
 			CPrintToChatAll("{default}Galil Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 6:
 		{
@@ -349,8 +337,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_m249");
 			
 			CPrintToChatAll("{default}M249 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 7:
 		{
@@ -358,8 +344,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_negev");
 			
 			CPrintToChatAll("{default}Negev Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 8:
 		{
@@ -367,8 +351,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_bizon");
 			
 			CPrintToChatAll("{default}Bizon Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 9:
 		{
@@ -376,8 +358,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_p90");
 			
 			CPrintToChatAll("{default}P90 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 10:
 		{
@@ -385,8 +365,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_mp9");
 			
 			CPrintToChatAll("{default}Mp9 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 11:
 		{
@@ -394,8 +372,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_mp7");
 			
 			CPrintToChatAll("{default}Mp7 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 12:
 		{
@@ -403,8 +379,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_mac10");
 			
 			CPrintToChatAll("{default}Mac10 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 13:
 		{
@@ -412,8 +386,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_ump45");
 			
 			CPrintToChatAll("{default}UMP45 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 14:
 		{
@@ -421,8 +393,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_ssg08");
 			
 			CPrintToChatAll("{default}Scout Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 15:
 		{
@@ -430,8 +400,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_awp");
 			
 			CPrintToChatAll("{default}AWP Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 16:
 		{
@@ -439,8 +407,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_scar20");
 			
 			CPrintToChatAll("{default}SCAR20 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 17:
 		{
@@ -448,8 +414,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_g3sg1");
 			
 			CPrintToChatAll("{default}G3SG1 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 18:
 		{
@@ -457,8 +421,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_glock");
 			
 			CPrintToChatAll("{default}Glock Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 19:
 		{
@@ -466,8 +428,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_elite");
 			
 			CPrintToChatAll("{default}Dualies Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 20:
 		{
@@ -475,8 +435,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_deagle");
 			
 			CPrintToChatAll("{default}Deagle Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 21:
 		{
@@ -484,8 +442,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_tec9");
 			
 			CPrintToChatAll("{default}Tec9 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 22:
 		{
@@ -493,8 +449,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_fiveseven");
 			
 			CPrintToChatAll("{default}Fiveseven Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 23:
 		{
@@ -502,8 +456,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_p250");
 			
 			CPrintToChatAll("{default}P250 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 24:
 		{
@@ -511,8 +463,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_hkp2000");
 			
 			CPrintToChatAll("{default}P2000 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 25:
 		{
@@ -520,8 +470,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_mag7");
 			
 			CPrintToChatAll("{default}Mag7 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 26:
 		{
@@ -529,8 +477,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_nova");
 			
 			CPrintToChatAll("{default}Nova Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 27:
 		{
@@ -538,8 +484,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_sawedoff");
 			
 			CPrintToChatAll("{default}Sawed-Off Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 28:
 		{
@@ -547,8 +491,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_xm1014");
 			
 			CPrintToChatAll("{default}XM1014 Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
 		case 29:
 		{
@@ -556,9 +498,19 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_taser");
 			
 			CPrintToChatAll("{default}Taser Fight has started!");
-			CreateTimer(0.1, Timer_Update);
-			InitializeLR(g_LR_Player_Prisoner);
 		}
+	}
+
+	CreateTimer(0.1, Timer_Update);
+	InitializeLR(g_LR_Player_Prisoner);
+
+	if (IsValidEntity(TWep))
+	{
+		EquipPlayerWeapon(g_LR_Player_Prisoner, TWep);
+	}
+	if (IsValidEntity(CTWep))
+	{
+		EquipPlayerWeapon(g_LR_Player_Guard, CTWep);
 	}
 }
 

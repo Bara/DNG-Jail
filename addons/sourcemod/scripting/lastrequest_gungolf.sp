@@ -298,6 +298,17 @@ public PointMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 							g_Pistol_Guard = GivePlayerItem(g_LR_Player_Guard, "weapon_tec9");
 						}
 					}
+
+					if (IsValidEntity(g_Pistol_Prisoner))
+					{
+						EquipPlayerWeapon(g_LR_Player_Prisoner, g_Pistol_Prisoner);
+					}
+					
+					if (IsValidEntity(g_Pistol_Guard))
+					{
+						EquipPlayerWeapon(g_LR_Player_Guard, g_Pistol_Guard);
+					}
+
 					int iKnife = -1;
 					iKnife = GivePlayerItem(g_LR_Player_Prisoner, "weapon_knife");
 					EquipPlayerWeapon(g_LR_Player_Prisoner, iKnife);

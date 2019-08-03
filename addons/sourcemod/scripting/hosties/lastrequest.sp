@@ -1423,7 +1423,14 @@ CleanupLastRequest(loser, arrayIndex)
 		{
 			SetEntData(winner, g_Offset_Health, 100);
 			StripAllWeapons(winner);
-			GivePlayerItem(winner, "weapon_knife");
+
+			int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(winner, iKnife);
+			}
+
 			if (gShadow_LR_Debug_Enabled == true)
 			{
 				PrintToChatAll("\x01[\x07Entity-Debug\x01] \x06Succesfull CleanUP after NoScope");
@@ -1445,7 +1452,14 @@ CleanupLastRequest(loser, arrayIndex)
 			}	
 			SetEntData(winner, g_Offset_Health, 100);
 			StripAllWeapons(winner);
-			GivePlayerItem(winner, "weapon_knife");
+
+			int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(winner, iKnife);
+			}
+
 			if (gShadow_LR_Debug_Enabled == true)
 			{
 				PrintToChatAll("\x01[\x07Entity-Debug\x01] \x06Succesfull CleanUP after GunToss");
@@ -1460,7 +1474,13 @@ CleanupLastRequest(loser, arrayIndex)
 					UnblockEntity(winner, g_Offset_CollisionGroup);
 					SetEntData(winner, g_Offset_Health, 100);
 					StripAllWeapons(winner);
-					GivePlayerItem(winner, "weapon_knife");
+					
+					int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+					if (IsValidEntity(iKnife))
+					{
+						EquipPlayerWeapon(winner, iKnife);
+					}
 				}	
 			}
 			if (gShadow_LR_Debug_Enabled == true)
@@ -1476,7 +1496,13 @@ CleanupLastRequest(loser, arrayIndex)
 				SetEntityMoveType(winner, MOVETYPE_WALK);
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			
 			new HPdeagle = GetArrayCell(gH_DArray_LR_Partners, arrayIndex, _:Block_Global4);
@@ -1499,7 +1525,13 @@ CleanupLastRequest(loser, arrayIndex)
 				SetEntityMoveType(loser, MOVETYPE_WALK);
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			if (gShadow_LR_Debug_Enabled == true)
 			{
@@ -1533,7 +1565,13 @@ CleanupLastRequest(loser, arrayIndex)
 				
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			if (gShadow_LR_Debug_Enabled == true)
 			{
@@ -1548,7 +1586,13 @@ CleanupLastRequest(loser, arrayIndex)
 			{
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 				
 				if (!gShadow_NoBlock)
 				{				
@@ -1576,7 +1620,13 @@ CleanupLastRequest(loser, arrayIndex)
 						}
 						SetEntData(winner, g_Offset_Health, 100);
 						StripAllWeapons(winner);
-						GivePlayerItem(winner, "weapon_knife");
+				
+						int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+						if (IsValidEntity(iKnife))
+						{
+							EquipPlayerWeapon(winner, iKnife);
+						}
 					}
 				}
 				case Jump_Farthest:
@@ -1586,7 +1636,13 @@ CleanupLastRequest(loser, arrayIndex)
 						SetEntityMoveType(winner, MOVETYPE_WALK);
 						SetEntData(winner, g_Offset_Health, 100);
 						StripAllWeapons(winner);
-						GivePlayerItem(winner, "weapon_knife");
+				
+						int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+						if (IsValidEntity(iKnife))
+						{
+							EquipPlayerWeapon(winner, iKnife);
+						}
 					}               
 				}
 			}
@@ -1605,7 +1661,13 @@ CleanupLastRequest(loser, arrayIndex)
 			{
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			if (gShadow_LR_Debug_Enabled == true)
 			{
@@ -1622,7 +1684,13 @@ CleanupLastRequest(loser, arrayIndex)
 			{
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			if (gShadow_LR_Debug_Enabled == true)
 			{
@@ -1647,7 +1715,13 @@ CleanupLastRequest(loser, arrayIndex)
 			{
 				SetEntData(winner, g_Offset_Health, 100);
 				StripAllWeapons(winner);
-				GivePlayerItem(winner, "weapon_knife");
+				
+				int iKnife = GivePlayerItem(winner, "weapon_knife");
+
+				if (IsValidEntity(iKnife))
+				{
+					EquipPlayerWeapon(winner, iKnife);
+				}
 			}
 			if (gShadow_LR_Debug_Enabled == true)
 			{
@@ -4166,8 +4240,19 @@ InitializeGame(iPartnersIndex)
 			SetEntData(LR_Player_Guard, g_Offset_Health, 100);
 
 			// give knives
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			GivePlayerItem(LR_Player_Guard, "weapon_knife");
+			int iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+			}
+
+			iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, iKnife);
+			}
 
 			// announce LR
 			PrintToChatAll(CHAT_BANNER, "LR KF Start", LR_Player_Prisoner, LR_Player_Guard);
@@ -4295,8 +4380,31 @@ InitializeGame(iPartnersIndex)
 					SetZeroAmmo(LR_Player_Prisoner, Prisoner_Weapon);
 				}
 			}
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(Pistol_Prisoner))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, Pistol_Prisoner);
+			}
+
+			if (IsValidEntity(Pistol_Guard))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, Pistol_Guard);
+			}
+			
+			int iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+			}
+
+			iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, iKnife);
+			}
+
 			SetArrayCell(gH_DArray_LR_Partners, iPartnersIndex, Pistol_Prisoner, _:Block_PrisonerData);
 			SetArrayCell(gH_DArray_LR_Partners, iPartnersIndex, Pistol_Guard, _:Block_GuardData);
 			
@@ -4401,10 +4509,34 @@ InitializeGame(iPartnersIndex)
 			StripAllWeapons(LR_Player_Guard);
 
 			// give knives and deagles
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			GivePlayerItem(LR_Player_Guard, "weapon_knife");
+			int iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+			}
+
+			iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, iKnife);
+			}
+
 			new GTdeagle1 = GivePlayerItem(LR_Player_Prisoner, "weapon_deagle");
+
+			if (IsValidEntity(GTdeagle1))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, GTdeagle1);
+			}
+
 			new GTdeagle2 = GivePlayerItem(LR_Player_Guard, "weapon_deagle");
+
+			if (IsValidEntity(GTdeagle2))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, GTdeagle2);
+			}
+
 			new Prisoner_Weapon = GetEntPropEnt(LR_Player_Guard, Prop_Data, "m_hActiveWeapon");
 			new Guard_Weapon = GetEntPropEnt(LR_Player_Guard, Prop_Data, "m_hActiveWeapon");
 			SetZeroAmmo(LR_Player_Guard, Guard_Weapon);
@@ -4611,8 +4743,19 @@ InitializeGame(iPartnersIndex)
 			SetEntData(LR_Player_Prisoner, g_Offset_Health, 100);
 			SetEntData(LR_Player_Guard, g_Offset_Health, 100);
 
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			GivePlayerItem(LR_Player_Guard, "weapon_knife");
+			int iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, iKnife);
+			}
+
+			iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+			}
 
 			new NoScopeWeapon:WeaponChoice;
 			switch (gShadow_LR_NoScope_Weapon)
@@ -4664,8 +4807,19 @@ InitializeGame(iPartnersIndex)
 						NSW_Guard = CreateEntityByName("weapon_awp");
 						if (g_Game == Game_CSGO)
 						{
-							GivePlayerItem(LR_Player_Prisoner, "weapon_awp");
-							GivePlayerItem(LR_Player_Guard, "weapon_awp");
+							int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_awp");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+							}
+
+							iWeapon = GivePlayerItem(LR_Player_Guard, "weapon_awp");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Guard, iWeapon);
+							}
 						}
 						Picked_NSW[LR_Player_Prisoner] = "weapon_awp";
 						Picked_NSW[LR_Player_Guard] = "weapon_awp";
@@ -4681,8 +4835,19 @@ InitializeGame(iPartnersIndex)
 						}
 						else if (g_Game == Game_CSGO)
 						{
-							GivePlayerItem(LR_Player_Prisoner, "weapon_ssg08");
-							GivePlayerItem(LR_Player_Guard, "weapon_ssg08");
+							int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_ssg08");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+							}
+							
+							iWeapon = GivePlayerItem(LR_Player_Guard, "weapon_ssg08");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Guard, iWeapon);
+							}
 							Picked_NSW[LR_Player_Prisoner] = "weapon_ssg08";
 							Picked_NSW[LR_Player_Guard] = "weapon_ssg08";
 						}
@@ -4698,8 +4863,19 @@ InitializeGame(iPartnersIndex)
 						}
 						else if (g_Game == Game_CSGO)
 						{
-							GivePlayerItem(LR_Player_Prisoner, "weapon_scar20");
-							GivePlayerItem(LR_Player_Guard, "weapon_scar20");
+							int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_scar20");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+							}
+							
+							iWeapon = GivePlayerItem(LR_Player_Guard, "weapon_scar20");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Guard, iWeapon);
+							}
 							Picked_NSW[LR_Player_Prisoner] = "weapon_scar20";
 							Picked_NSW[LR_Player_Guard] = "weapon_scar20";
 						}
@@ -4710,8 +4886,19 @@ InitializeGame(iPartnersIndex)
 						NSW_Guard = CreateEntityByName("weapon_g3sg1");
 						if (g_Game == Game_CSGO)
 						{
-							GivePlayerItem(LR_Player_Prisoner, "weapon_g3sg1");
-							GivePlayerItem(LR_Player_Guard, "weapon_g3sg1");
+							int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_g3sg1");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+							}
+							
+							iWeapon = GivePlayerItem(LR_Player_Guard, "weapon_g3sg1");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Guard, iWeapon);
+							}
 						}
 						Picked_NSW[LR_Player_Prisoner] = "weapon_g3sg1";
 						Picked_NSW[LR_Player_Guard] = "weapon_g3sg1";
@@ -4723,8 +4910,19 @@ InitializeGame(iPartnersIndex)
 						NSW_Guard = CreateEntityByName("weapon_awp");
 						if (g_Game == Game_CSGO)
 						{
-							GivePlayerItem(LR_Player_Prisoner, "weapon_awp");
-							GivePlayerItem(LR_Player_Guard, "weapon_awp");
+							int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_awp");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+							}
+							
+							iWeapon = GivePlayerItem(LR_Player_Guard, "weapon_awp");
+
+							if (IsValidEntity(iWeapon))
+							{
+								EquipPlayerWeapon(LR_Player_Guard, iWeapon);
+							}
 						}
 						Picked_NSW[LR_Player_Prisoner] = "weapon_awp";
 						Picked_NSW[LR_Player_Guard] = "weapon_awp";
@@ -4800,19 +4998,34 @@ InitializeGame(iPartnersIndex)
 			StripAllWeapons(LR_Player_Prisoner);
 
 			// give knife, deagle, and m249
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			new RebelDeagle = GivePlayerItem(LR_Player_Prisoner, "weapon_deagle");
-			GivePlayerItem(LR_Player_Prisoner, "weapon_m249");
-
+			int iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+			if (IsValidEntity(iWeapon))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+			}
+			
+			iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_deagle");
+			
 			// set primary and secondary ammo
-			SetEntData(RebelDeagle, g_Offset_Clip1, 7);
+			SetEntData(iWeapon, g_Offset_Clip1, 7);
 			if(g_Game == Game_CSGO)
 			{
-				SetEntProp(RebelDeagle, Prop_Send, "m_iPrimaryReserveAmmoCount", 42);
+				SetEntProp(iWeapon, Prop_Send, "m_iPrimaryReserveAmmoCount", 42);
+
+				if (IsValidEntity(iWeapon))
+				{
+					EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
+				}
 			}
 			else
 			{
 				SetEntData(LR_Player_Prisoner, g_Offset_Ammo+(1*4), 42);
+			}
+
+			iWeapon = GivePlayerItem(LR_Player_Prisoner, "weapon_negev");
+			if (IsValidEntity(iWeapon))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iWeapon);
 			}
 
 			// find number of alive CTs
@@ -4843,8 +5056,19 @@ InitializeGame(iPartnersIndex)
 			SetArrayCell(gH_DArray_LR_Partners, iPartnersIndex, 0, _:Block_Global3); // M4Mammo
 			
 			// give knives and deagles
-			GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
-			GivePlayerItem(LR_Player_Guard, "weapon_knife");
+			int iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+			}
+			
+			iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, iKnife);
+			}
 			// grab weapon choice
 			new PistolChoice;
 			ResetPack(gH_BuildLR[LR_Player_Prisoner]);
@@ -4962,6 +5186,16 @@ InitializeGame(iPartnersIndex)
 					SetZeroAmmo(LR_Player_Guard, Guard_Weapon);
 					SetZeroAmmo(LR_Player_Prisoner, Prisoner_Weapon);
 				}
+			}
+
+			if (IsValidEntity(Pistol_Prisoner))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, Pistol_Prisoner);
+			}
+
+			if (IsValidEntity(Pistol_Guard))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, Pistol_Guard);
 			}
 
 			if(g_Game == Game_CSGO)
@@ -5102,7 +5336,19 @@ InitializeGame(iPartnersIndex)
 			TeleportEntity(LR_Player_Prisoner, NULL_VECTOR, NULL_VECTOR, Float:{0.0, 0.0, 0.0});
 
 			new Pistol_Prisoner = GivePlayerItem(LR_Player_Prisoner, "weapon_deagle");
+
+			if (IsValidEntity(Pistol_Prisoner))
+			{
+				EquipPlayerWeapon(LR_Player_Prisoner, Pistol_Prisoner);
+			}
+
 			new Pistol_Guard = GivePlayerItem(LR_Player_Guard, "weapon_deagle");
+
+			if (IsValidEntity(Pistol_Guard))
+			{
+				EquipPlayerWeapon(LR_Player_Guard, Pistol_Guard);
+			}
+
 			new Pistol_PrisonerEntRef = EntIndexToEntRef(Pistol_Prisoner);
 			new Pistol_GuardEntRef = EntIndexToEntRef(Pistol_Guard);
 			SetArrayCell(gH_DArray_LR_Partners, iPartnersIndex, Pistol_PrisonerEntRef, _:Block_PrisonerData);
@@ -6322,7 +6568,12 @@ public Action:Timer_ChickenFight(Handle:timer)
 						PrintToChatAll(CHAT_BANNER, "Chicken Fight Win", LR_Player_Prisoner);
 						PrintToChat(LR_Player_Prisoner, "Chicken Fight Kill Loser", LR_Player_Guard);
 						
-						GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+						int iKnife = GivePlayerItem(LR_Player_Prisoner, "weapon_knife");
+
+						if (IsValidEntity(iKnife))
+						{
+							EquipPlayerWeapon(LR_Player_Prisoner, iKnife);
+						}
 						
 						SetEntityRenderColor(LR_Player_Guard, gShadow_LR_ChickenFight_C_Red, gShadow_LR_ChickenFight_C_Green,
 							gShadow_LR_ChickenFight_C_Blue, 255);
@@ -6347,7 +6598,12 @@ public Action:Timer_ChickenFight(Handle:timer)
 						PrintToChatAll(CHAT_BANNER, "Chicken Fight Win", LR_Player_Guard);
 						PrintToChat(LR_Player_Guard, "Chicken Fight Kill Loser", LR_Player_Prisoner);
 						
-						GivePlayerItem(LR_Player_Guard, "weapon_knife");
+						int iKnife = GivePlayerItem(LR_Player_Guard, "weapon_knife");
+
+						if (IsValidEntity(iKnife))
+						{
+							EquipPlayerWeapon(LR_Player_Guard, iKnife);
+						}
 						
 						SetEntityRenderColor(LR_Player_Prisoner, gShadow_LR_ChickenFight_C_Red, gShadow_LR_ChickenFight_C_Green,
 							gShadow_LR_ChickenFight_C_Blue, 255);

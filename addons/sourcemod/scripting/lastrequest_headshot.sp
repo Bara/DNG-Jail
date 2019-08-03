@@ -195,7 +195,12 @@ public int LR_Stop(int Type, int Prisoner, int Guard)
 			SetEntityGravity(Prisoner, 1.0);
 			SetEntityHealth(Prisoner, 100);
 			RemoveAllWeapons(Prisoner);
-			GivePlayerItem(Prisoner, "weapon_knife");
+			int iKnife = GivePlayerItem(Prisoner, "weapon_knife");
+
+			if (IsValidEntity(iKnife))
+			{
+				EquipPlayerWeapon(Prisoner, iKnife);
+			}
 		}
 	}
 	if (IsClientInGame(Guard))
@@ -205,8 +210,19 @@ public int LR_Stop(int Type, int Prisoner, int Guard)
 			SetEntityGravity(Guard, 1.0);
 			SetEntityHealth(Guard, 100);
 			RemoveAllWeapons(Guard);
-			GivePlayerItem(Guard, "weapon_knife");
-			GivePlayerItem(Guard, "weapon_ak47");
+			int iWeapon = GivePlayerItem(Guard, "weapon_knife");
+
+			if (IsValidEntity(iWeapon))
+			{
+				EquipPlayerWeapon(Guard, iWeapon);
+			}
+			
+			iWeapon = GivePlayerItem(Guard, "weapon_ak47");
+
+			if (IsValidEntity(iWeapon))
+			{
+				EquipPlayerWeapon(Guard, iWeapon);
+			}
 		}
 	}
 }
