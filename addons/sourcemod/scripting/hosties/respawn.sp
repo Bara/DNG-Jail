@@ -61,7 +61,10 @@ public Action:Command_Respawn(client, args)
 
 	for (new i = 0; i < target_count; i++)
 	{
-		PerformRespawn(client, target_list[i]);
+		if (!IsFakeClient(target_list[i]) && !IsClientSourceTV(target_list[i]))
+		{
+			PerformRespawn(client, target_list[i]);
+		}
 	}
 	
 	ShowActivity(client, CHAT_BANNER, "Respawned Target", target_name);
