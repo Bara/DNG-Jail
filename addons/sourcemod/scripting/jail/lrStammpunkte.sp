@@ -93,7 +93,18 @@ void LrStammpunkte_PlayerDeath()
 		}
 		else
 		{
-			CPrintToChatAll("Die Runde muss mindestens 4 Minuten laufen und es müssen mind. 5 Spieler auf dem Server spielen, um extra Store Credits und/oder Stammpunkte zu bekommen.");
+			if (g_cLRPointsMode.IntValue == 1 && g_cLRPointsStammpoints.IntValue > 0)
+			{
+				CPrintToChatAll("Die Runde muss mindestens 4 Minuten laufen und es müssen mind. 5 Spieler auf dem Server spielen, um extra Stammpunkte zu bekommen.");
+			}
+			else if (g_bStore && g_cLRPointsMode.IntValue == 0 && g_cLRPointsStoreCredits.IntValue > 0)
+			{
+				CPrintToChatAll("Die Runde muss mindestens 4 Minuten laufen und es müssen mind. 5 Spieler auf dem Server spielen, um extra Store Credits zu bekommen.");
+			}
+			else
+			{
+				CPrintToChatAll("Die Runde muss mindestens 4 Minuten laufen und es müssen mind. 5 Spieler auf dem Server spielen, um extra Store Credits und Stammpunkte zu bekommen.");
+			}
 		}
 	}
 }
