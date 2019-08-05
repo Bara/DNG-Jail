@@ -393,7 +393,7 @@ bool IsValidCT(int client, bool blockMessage = false)
         bSkip = true;
     }
 
-    if(bSkip && SourceComms_GetClientMuteType(client) != bNot)
+    if(!bSkip && SourceComms_GetClientMuteType(client) != bNot)
     {
         if (!blockMessage)
         {
