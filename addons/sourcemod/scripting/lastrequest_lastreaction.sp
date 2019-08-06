@@ -212,6 +212,19 @@ void OnButtonPress(int client, int button)
 						ForcePlayerSuicide(g_iLRPrisoner);
 					}
 				}
+				else
+				{
+					if (client == g_iLRPrisoner)
+					{
+						CPrintToChatAll("%N hat verloren (falsche Taste)!", g_iLRPrisoner);
+						ForcePlayerSuicide(g_iLRPrisoner);
+					}
+					else if (client == g_iLRGuard)
+					{
+						CPrintToChatAll("%N hat verloren (falsche Taste)!", g_iLRGuard);
+						ForcePlayerSuicide(g_iLRGuard);
+					}
+				}
 			}
 		}
 	}
