@@ -44,25 +44,6 @@ stock bool IsFreezeTime()
     return false;
 }
 
-stock void StripWeapons(int client, bool knife = true)
-{
-    int weapon;
-    
-    for(int i = 0; i < 5; i++) 
-    { 
-        if((weapon = GetPlayerWeaponSlot(client, i)) != -1) 
-        { 
-            SDKHooks_DropWeapon(client, weapon, NULL_VECTOR, NULL_VECTOR); 
-            AcceptEntityInput(weapon, "Kill"); 
-        } 
-    }
-    
-    if(!knife)
-    {
-        GivePlayerItem(client, "weapon_knife");
-    }
-}
-
 stock bool IsClientAdmin(int client)
 {
     if (CheckCommandAccess(client, "sm_admin", ADMFLAG_GENERIC, true) || CheckCommandAccess(client, "sm_admin", ADMFLAG_ROOT, true))
