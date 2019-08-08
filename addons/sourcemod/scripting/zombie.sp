@@ -125,6 +125,8 @@ int g_iVoteCount;
 int g_iRound;
 int g_iMaxRound;
 int g_iTsLR;
+int m_flNextPrimaryAttack = -1;
+int m_flNextSecondaryAttack = -1;
 
 // Handles
 Handle g_hTimerFreeze;
@@ -252,6 +254,17 @@ public void OnPluginStart()
 
 	// Logs
 	SetLogFile(g_sEventsLogFile, "Events", "MyJailbreak");
+
+	m_flNextPrimaryAttack = FindSendPropInfo("CBaseCombatWeapon", "m_flNextPrimaryAttack");
+	m_flNextSecondaryAttack = FindSendPropInfo("CBaseCombatWeapon", "m_flNextSecondaryAttack");
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!IsClientInGame(i))
+			continue;
+
+		OnClientPutInServer(i);
+	}
 }
 
 // ConVarChange for Strings
@@ -866,7 +879,8 @@ public Action Timer_MakeZombie(Handle timer, int userid)
 		SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", gc_fSpeed.FloatValue);
 
 		StripAllPlayerWeapons(client);
-		GivePlayerItem(client, "weapon_knife");
+		int iKnife = GivePlayerItem(client, "weapon_knife");
+		EquipPlayerWeapon(client, iKnife);
 
 		if (gc_bVision.BoolValue)
 		{
@@ -989,7 +1003,8 @@ void ResetEventDay()
 			SetEntityHealth(i, 100);
 		}
 
-		GivePlayerItem(i, "weapon_knife_t");
+		int iKnife = GivePlayerItem(i, "weapon_knife");
+		EquipPlayerWeapon(i, iKnife);
 
 		if (g_bTerrorZombies[i])
 		{
@@ -1080,6 +1095,41 @@ public Action OnTraceAttack(int victim, int &attacker, int &inflictor, float &da
 
 	if (!IsValidClient(victim, true, false) || attacker == victim || !IsValidClient(attacker, true, false))
 		return Plugin_Continue;
+	
+	if (GetClientTeam(attacker) == CS_TEAM_CT)
+	{
+		for(int offset = 0; offset < 128; offset += 4)
+		{
+			int weapon = GetEntDataEnt2(attacker, FindSendPropInfo("CBasePlayer", "m_hMyWeapons") + offset);
+
+			if (IsValidEntity(weapon))
+			{
+				char sWeapon[32];
+				GetEdictClassname(weapon, sWeapon, sizeof(sWeapon));
+
+				if ((StrContains(sWeapon, "knife", false) == -1) && (StrContains(sWeapon, "bayonet", false) == -1))
+				{
+					SetEntDataFloat(weapon, m_flNextPrimaryAttack, GetGameTime() + 300.0);
+					SetEntDataFloat(weapon, m_flNextSecondaryAttack, GetGameTime() + 300.0);
+				}
+			}
+		}
+
+		int iWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+
+		if (IsValidEntity(iWeapon))
+		{
+			char sWeapon[32];
+			GetEdictClassname(iWeapon, sWeapon, sizeof(sWeapon));
+
+			if ((StrContains(sWeapon, "knife", false) == -1) && (StrContains(sWeapon, "bayonet", false) == -1))
+			{
+				return Plugin_Continue;
+			}
+		}
+
+		return Plugin_Handled;
+	}
 
 	if (GetClientTeam(victim) == GetClientTeam(attacker))
 		return Plugin_Handled;
@@ -1218,7 +1268,8 @@ void PrepareDay(bool thisround)
 
 		g_bTerrorZombies[i] = false;
 
-		GivePlayerItem(i, "weapon_knife");
+		int iKnife = GivePlayerItem(i, "weapon_knife");
+		EquipPlayerWeapon(i, iKnife);
 
 		if (GetClientTeam(i) == CS_TEAM_CT)
 		{
