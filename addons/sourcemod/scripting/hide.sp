@@ -119,6 +119,7 @@ int g_iMaxRound;
 int g_iMaxTA;
 int g_iTA[MAXPLAYERS + 1];
 int g_iTsLR;
+int g_iLastAttack[MAXPLAYERS + 1] = { -1, ... };
 
 // Handles
 Handle g_hTimerFreeze;
@@ -217,7 +218,6 @@ public void OnPluginStart()
 	HookEvent("round_start", Event_RoundStart);
 	HookEvent("round_end", Event_RoundEnd);
 	HookEvent("tagrenade_detonate", Event_TA_Detonate);
-	HookEvent("weapon_fire", Event_OnWeaponFire);
 	HookEvent("item_equip", Event_ItemEquip);
 	HookConVarChange(gc_sOverlayStartPath, OnSettingChanged);
 	HookConVarChange(gc_sSoundStartPath, OnSettingChanged);
@@ -848,11 +848,10 @@ public void Event_ItemEquip(Event event, const char[] name, bool dontBroadcast)
 	}
 }
 
-public void Event_OnWeaponFire(Event event, const char[] name, bool dontBroadcast) {
+void OnWeaponFire(int client) {
 	if (!gc_bHPSeekerEnable.BoolValue || g_bIsRoundEnd || !g_bIsHide)
 		return;
 
-	int client = GetClientOfUserId(event.GetInt("userid"));
 	int decreaseHP = gc_iHPSeekerDec.IntValue;
 	int clientHealth = GetClientHealth(client);
 
@@ -982,6 +981,31 @@ public void OnAvailableLR(int Announced)
 	{
 		ResetEventDay();
 	}
+}
+
+public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
+{
+	if (!g_bIsHide)
+		return Plugin_Continue;
+	
+	if (!IsValidClient(client, true, true))
+		return Plugin_Continue;
+
+	if(buttons & IN_ATTACK || buttons & IN_ATTACK2)
+	{
+		if (g_iLastAttack[client] == -1)
+		{
+			g_iLastAttack[client] = GetTime();
+			OnWeaponFire(client);
+		}
+		else if(GetTime() > g_iLastAttack[client])
+		{
+			g_iLastAttack[client] = GetTime();
+			OnWeaponFire(client);
+		}
+	}
+
+	return Plugin_Continue;
 }
 
 void ResetEventDay()
@@ -1140,6 +1164,8 @@ void PrepareDay(bool thisround)
 		{
 			if (!IsValidClient(i, true, false))
 				continue;
+
+			g_iLastAttack[i] = -1;
 
 			if (GetClientTeam(i) == CS_TEAM_CT)
 			{
@@ -1449,3 +1475,4 @@ bool MyJB_CheckVIPFlags(int client, const char[] command, ConVar flags, char[] f
 
 	return CheckCommandAccess(client, command, iFlags);
 }
+
