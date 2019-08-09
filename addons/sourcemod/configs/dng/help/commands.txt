@@ -1,0 +1,55 @@
+!res zum de/aktivieren von Round End Sounds
+!nextmap zeigt die nächste Karte an
+!afk moved ein in Spectator
+!allskins de/aktiviert alle Skins im !ws Menu
+!blockssp blockiert SSP Anfragen
+!call zum rufen eines Supporters
+!claim um Credits für Beitritt in die Steam Gruppe zu bekommen
+!clist/!ctop zeigt die Top Credits Spieler an
+!comms zeigt im Chat ob du ein mute/gag hast
+!credits zeigt ihre Credits im Chat an
+!ctbanlist zeigt alle CT gebannten Spieler auf den Server an
+!ctlist zeigt alle CT verifizierten Spieler an
+!dices um mit Credits gegen anderen Spieler zu würfeln
+!dicesoff um Dices Anfragen zu blocken
+!diceson um Dices Anfragen zu erlauben
+!exit um in DDR das Spiel zu verlassen
+!glove um ein Gloves auszusuchen
+!hide um alle Trails/Auren auszublenden
+!hides um für HideNSeek abzustimmen
+!ilist listet Spieler mit Top Inventar Wert
+!inv um dein Inventar anzuzeigen
+!jackpot/!jp um Jackup mit Credits zu spielen
+!kill um dich selbst zu killen
+!knife um ein Knife auszusuchen
+!lr um ein Last Request auszusuchen
+!lotto um Lotto mit Credits zu spielen
+!myspray zeigt dein aktuelles Spray im Chat an
+!nominate um für eine Map im nächsten Vote abzustimmen
+!pong um Ping Pong gegen Computer oder ein Spieler zu spielen
+!pquit um das Ping Pong Spiel aufzugeben
+!redie um im Redie rum zu laufen
+!reback um den Redie Modus zu verlassen
+!revote um im aktuellen Vote neu abzustimmen
+!rknife um deine Knife Auswahl zu löschen (Vorsichtig!)
+rtv um dein Map Vote/Change zu erzwingen
+!schange um Stamm Features zu de/aktivieren
+!sinfo um eine Übersicht von Stamm zu bekommen
+!slist für eine Liste aller Top Stammspieler zu bekommen
+!snake um ein Snake Spiel zu starten
+!spray um zu sprayen (oder mit E)
+!sprays um ein Spray auszuwählen
+!srank zeigt dein Stamm Rank im Chat an
+!srp/!ssp um Schere Stein Papier zu spielen
+!stamm zeigt deine Stammpunkte im Chat an
+!stopm um die DDR Musik zu deaktivieren
+!store öffnet das Store Menü
+!tetris um Tetris zu spielen
+!tick zeigt den aktuellen Tick an (für Beschwerden hilfreich)
+!time zeigt deine Spielzeit als T/CT/Total an
+!time10 zeigt die Top 10 Spieler der meisten Spieler an
+!tp um im Third Person zu gehen/verlassen
+!unblockssp um SSP Anfragen zu erlauben
+!voice ermöglicht als Toter nützliche Voice Funktionen
+!w um zu Würfeln
+!ws um Skins für alle Waffen zu setzen

@@ -1,0 +1,5 @@
+!glow zum färben von Spielern
+!r/!reset um das DDR Spiel zu beenden/resetten
+!start um den DDR Countdown auf 5 Sekunden zu kürzen
+!td de/aktiviert Team Damage
+!vreset um Verweigern für ein Spieler zurückzusetzen
