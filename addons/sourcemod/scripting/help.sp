@@ -46,9 +46,6 @@ public void Frame_ShowHelpMenu(int userid)
         return;
     }
 
-    Menu menu = new Menu(Menu_HelpMain);
-    menu.SetTitle("dng.xyz - Help");
-
     File fFile = OpenFile(g_sHelp, "rt");
 
     if (fFile == null)
@@ -73,6 +70,9 @@ public void Frame_ShowHelpMenu(int userid)
         delete kvRules;
         return;
     }
+
+    Menu menu = new Menu(Menu_HelpMain);
+    menu.SetTitle("dng.xyz - Help");
 
     do
     {
@@ -161,6 +161,7 @@ public int Menu_HelpMain(Menu menu, MenuAction action, int client, int param)
                 {
                     LogError("Can't open File: %s", sFile);
                     RequestFrame(Frame_ShowHelpMenu, GetClientUserId(client));
+                    delete kvRules;
                     return;
                 }
 
@@ -214,9 +215,6 @@ public void Frame_ShowRulesMenu(int userid)
         return;
     }
 
-    Menu menu = new Menu(Menu_RulesMain);
-    menu.SetTitle("dng.xyz - Rules");
-
     File fFile = OpenFile(g_sRules, "rt");
 
     if (fFile == null)
@@ -241,6 +239,9 @@ public void Frame_ShowRulesMenu(int userid)
         delete kvRules;
         return;
     }
+
+    Menu menu = new Menu(Menu_RulesMain);
+    menu.SetTitle("dng.xyz - Rules");
 
     do
     {
@@ -329,6 +330,7 @@ public int Menu_RulesMain(Menu menu, MenuAction action, int client, int param)
                 {
                     LogError("Can't open File: %s", sFile);
                     RequestFrame(Frame_ShowRulesMenu, GetClientUserId(client));
+                    delete kvRules;
                     return;
                 }
 
