@@ -7,8 +7,6 @@
 
 char g_sFile[PLATFORM_MAX_PATH + 1];
 
-int g_iSite[MAXPLAYERS + 1] = { 0, ... };
-
 public Plugin myinfo =
 {
     name = "Help Menu",
@@ -42,7 +40,7 @@ public void Frame_ShowMenu(int userid)
         return;
     }
 
-    Menu menu = new Menu(Menu_ShowWelcomeMenu);
+    Menu menu = new Menu(Menu_HelpMain);
     menu.SetTitle("dng.xyz - Help");
 
     File fFile = OpenFile(g_sFile, "rt");
@@ -84,10 +82,10 @@ public void Frame_ShowMenu(int userid)
     delete kvRules;
 
     menu.ExitButton = true;
-    menu.DisplayAt(client, g_iSite[client], MENU_TIME_FOREVER);
+    menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int param)
+public int Menu_HelpMain(Menu menu, MenuAction action, int client, int param)
 {
     if (action == MenuAction_Select)
     {
@@ -112,7 +110,6 @@ public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int pa
             delete kvRules;
             return;
         }
-
 
         if (kvRules.JumpToKey(sParam, false))
         {
@@ -149,8 +146,6 @@ public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int pa
             kvRules.GetString("file", sValue, sizeof(sValue));
             if (strlen(sValue) > 0)
             {
-                g_iSite[client] = menu.Selection;
-
                 char sFile[PLATFORM_MAX_PATH + 1];
                 BuildPath(Path_SM, sFile, sizeof(sFile), "configs/dng/help/%s", sValue);
 
@@ -164,7 +159,7 @@ public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int pa
 
                 char sLine[64], sTitle[64];
 
-                Menu rMenu = new Menu(Menu_FileMenu);
+                Menu rMenu = new Menu(Menu_File);
 
                 kvRules.GetString("title", sTitle, sizeof(sTitle));
                 rMenu.SetTitle(sTitle);
@@ -173,11 +168,11 @@ public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int pa
                 {
                     if (strlen(sLine) > 1)
                     {
-                        rMenu.AddItem("", sLine, ITEMDRAW_DISABLED);
+                        rMenu.AddItem("help", sLine, ITEMDRAW_DISABLED);
                     }
                 }
 
-                rMenu.ExitButton = false;
+                rMenu.ExitButton = true;
                 rMenu.ExitBackButton = true;
                 rMenu.Display(client, MENU_TIME_FOREVER);
 
@@ -196,22 +191,25 @@ public int Menu_ShowWelcomeMenu(Menu menu, MenuAction action, int client, int pa
     {
         delete menu;
     }
-
-    return;
 }
 
-public int Menu_FileMenu(Menu menu, MenuAction action, int client, int param)
+public int Menu_File(Menu menu, MenuAction action, int client, int param)
 {
     if (action == MenuAction_Cancel || action == MenuAction_Select || param == MenuCancel_ExitBack)
     {
         if (IsClientValid(client))
         {
-            RequestFrame(Frame_ShowMenu, GetClientUserId(client));
+            char sParam[32];
+            menu.GetItem(param, sParam, sizeof(sParam));
+            
+            if (StrEqual(sParam, "help", false))
+            {
+                RequestFrame(Frame_ShowMenu, GetClientUserId(client));
+            }
         }
     }
     else if (action == MenuAction_End)
     {
         delete menu;
     }
-    return 0;
 }
