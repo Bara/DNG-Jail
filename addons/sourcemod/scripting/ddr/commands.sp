@@ -1,6 +1,6 @@
 public Action cmd_stop(int client, int args)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
+	if (MyJailbreak_IsEventDayRunning())
 	{
 		return;
 	}
@@ -18,7 +18,7 @@ public Action cmd_stop(int client, int args)
 
 public Action cmd_reset(int client, int args)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
+	if (MyJailbreak_IsEventDayRunning())
 	{
 		return Plugin_Handled;
 	}
@@ -40,7 +40,7 @@ public Action cmd_reset(int client, int args)
 
 public Action cmd_start(int client, int args)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
+	if (MyJailbreak_IsEventDayRunning())
 	{
 		return Plugin_Handled;
 	}
@@ -58,7 +58,7 @@ public Action cmd_start(int client, int args)
 
 public Action cmd_stopm(int client, int args)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
+	if (MyJailbreak_IsEventDayRunning())
 	{
 		return;
 	}

@@ -51,7 +51,7 @@ int SpawnNPC(char name[64], char model[512], char defAni[64], float pos[3], floa
 
 public Action NPC_Touch(int npc, int client)
 {
-	if (Hide_IsActive() || Zombie_IsActive())
+	if (MyJailbreak_IsEventDayRunning())
 	{
 		return;
 	}
