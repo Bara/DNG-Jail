@@ -1000,7 +1000,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		}
 		else if(GetTime() > g_iLastAttack[client])
 		{
-			g_iLastAttack[client] = GetTime();
 			OnWeaponFire(client);
 		}
 	}
