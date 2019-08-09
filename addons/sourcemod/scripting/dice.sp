@@ -11,8 +11,7 @@
 
 #undef REQUIRE_PLUGIN
 #include <jail>
-#include <hide>
-#include <zombie>
+#include <myjailbreak>
 #include <knockout>
 #include <lastrequest>
 
@@ -52,8 +51,7 @@ Database g_dDB = null;
 
 bool g_bHosties = false;
 bool g_bJail = false;
-bool g_bHide = false;
-bool g_bZombie = false;
+bool g_bMyJB = false;
 bool g_bKnockout = false;
 
 bool g_bBusy[MAXPLAYERS + 1] = {false, ...};
@@ -109,8 +107,7 @@ public void OnPluginStart()
 
     g_bHosties = LibraryExists("hosties");
     g_bJail = LibraryExists("jail");
-    g_bHide = LibraryExists("hide");
-    g_bZombie = LibraryExists("zombie");
+    g_bMyJB = LibraryExists("myjailbreak");
     g_bKnockout = LibraryExists("knockout");
 }
 
@@ -124,13 +121,9 @@ public void OnAllPluginsLoaded()
     {
         g_bJail = true;
     }
-    else if(LibraryExists("hide"))
+    else if(LibraryExists("myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if(LibraryExists("zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
     else if(LibraryExists("knockout"))
     {
@@ -148,13 +141,9 @@ public void OnLibraryAdded(const char[] name)
     {
         g_bJail = true;
     }
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
     else if (StrEqual(name, "knockout"))
     {
@@ -172,13 +161,9 @@ public void OnLibraryRemoved(const char[] name)
     {
         g_bJail = false;
     }
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = false;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = false;
+        g_bMyJB = false;
     }
     else if (StrEqual(name, "knockout"))
     {
@@ -369,7 +354,7 @@ public Action Command_Dice(int client, int args)
         iOption = StringToInt(sOption);
     }
 
-    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
+    if (g_bMyJB && MyJailbreak_IsEventDayRunning())
     {
         return Plugin_Handled;
     }

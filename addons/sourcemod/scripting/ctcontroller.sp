@@ -14,8 +14,7 @@
 
 #undef REQUIRE_PLUGIN
 #include <stamm>
-#include <hide>
-#include <zombie>
+#include <myjailbreak>
 #include <knockout>
 
 #pragma newdecls required
@@ -56,8 +55,7 @@ Handle g_hOnValidCheck = null;
 char g_sSymbols[25][1] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
 bool g_bStamm = false;
-bool g_bHide = false;
-bool g_bZombie = false;
+bool g_bMyJB = false;
 bool g_bKnockout = false;
 
 #include "ctcontroller/sql.sp"
@@ -133,20 +131,15 @@ public void OnPluginStart()
     CSetPrefix("{darkred}[CT Controller]{default}");
 
     g_bStamm = LibraryExists("stamm");
-    g_bHide = LibraryExists("hide");
-    g_bZombie = LibraryExists("zombie");
+    g_bMyJB = LibraryExists("myjailbreak");
     g_bKnockout = LibraryExists("knockout");
 }
 
 public void OnAllPluginsLoaded()
 {
-    if(LibraryExists("hide"))
+    if(LibraryExists("myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if(LibraryExists("zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
     else if(LibraryExists("knockout"))
     {
@@ -160,13 +153,9 @@ public void OnAllPluginsLoaded()
 
 public void OnLibraryAdded(const char[] name)
 {
-    if (StrEqual(name, "hide"))
+    if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
     else if (StrEqual(name, "knockout"))
     {
@@ -180,13 +169,9 @@ public void OnLibraryAdded(const char[] name)
 
 public void OnLibraryRemoved(const char[] name)
 {
-    if (StrEqual(name, "hide"))
+    if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = false;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = false;
+        g_bMyJB = false;
     }
     else if (StrEqual(name, "knockout"))
     {
@@ -304,7 +289,7 @@ public Action Command_CheckValid(int client, int args)
 
 public Action Command_CheckJoin(int client, const char[] command, int args)
 {
-    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
+    if (g_bMyJB && MyJailbreak_IsEventDayRunning())
     {
         return Plugin_Continue;
     }

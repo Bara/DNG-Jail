@@ -18,8 +18,7 @@
 #include <dice>
 #include <stamm>
 #include <glow>
-#include <hide>
-#include <zombie>
+#include <myjailbreak>
 
 #pragma newdecls required
 
@@ -30,8 +29,7 @@ bool g_bHosties = false;
 bool g_bDice = false;
 bool g_bStamm = false;
 // bool g_bGlow = false;
-bool g_bHide = false;
-bool g_bZombie = false;
+bool g_bMyJB = false;
 
 Handle g_hOnMySQLConnect = null;
 Database g_dDB = null;
@@ -189,8 +187,7 @@ public void OnPluginStart()
     g_bDice = LibraryExists("dice");
     g_bStamm = LibraryExists("stamm");
     // g_bGlow = LibraryExists("glow");
-    g_bHide = LibraryExists("hide");
-    g_bZombie = LibraryExists("zombie");
+    g_bMyJB = LibraryExists("myjailbreak");
 }
 
 public void OnAllPluginsLoaded()
@@ -215,13 +212,9 @@ public void OnAllPluginsLoaded()
     {
         g_bGlow = true;
     } */
-    else if (LibraryExists("hide"))
+    else if (LibraryExists("myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if (LibraryExists("zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
 }
 
@@ -247,13 +240,9 @@ public void OnLibraryAdded(const char[] name)
     {
         g_bGlow = true;
     } */
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
 }
 
@@ -279,13 +268,9 @@ public void OnLibraryRemoved(const char[] name)
     {
         g_bGlow = false;
     } */
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = false;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = false;
+        g_bMyJB = false;
     }
 }
 
@@ -358,7 +343,7 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
 
         bool bValid = true;
 
-        if ((g_bZombie && Zombie_IsActive()) || (g_bHide && Hide_IsActive()))
+        if (g_bMyJB && MyJailbreak_IsEventDayRunning())
         {
             bValid = false;
         }

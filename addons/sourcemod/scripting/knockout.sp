@@ -7,8 +7,7 @@
 
 #undef REQUIRE_PLUGIN
 #include <dice>
-#include <hide>
-#include <zombie>
+#include <myjailbreak>
 
 public Plugin myinfo =
 {
@@ -28,8 +27,7 @@ int g_iRagdoll[MAXPLAYERS+1] = {-1, ...};
 UserMsg g_uFade;
 int g_iCamera[MAXPLAYERS + 1] = { -1, ... };
 
-bool g_bZombie = false;
-bool g_bHide = false;
+bool g_bMyJB = false;
 bool g_bDice = false;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
@@ -69,8 +67,7 @@ public void OnPluginStart()
     
     HookEvent("player_spawn", Event_PlayerSpawn);
 
-    g_bHide = LibraryExists("hide");
-    g_bZombie = LibraryExists("zombie");
+    g_bMyJB = LibraryExists("myjailbreak");
     g_bDice = LibraryExists("dice");
 }
 
@@ -80,13 +77,9 @@ public void OnAllPluginsLoaded()
     {
         g_bDice = true;
     }
-    else if(LibraryExists("hide"))
+    else if(LibraryExists("myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if(LibraryExists("zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
 }
 
@@ -96,13 +89,9 @@ public void OnLibraryAdded(const char[] name)
     {
         g_bDice = true;
     }
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = true;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = true;
+        g_bMyJB = true;
     }
 }
 
@@ -112,13 +101,9 @@ public void OnLibraryRemoved(const char[] name)
     {
         g_bDice = false;
     }
-    else if (StrEqual(name, "hide"))
+    else if (StrEqual(name, "myjailbreak"))
     {
-        g_bHide = false;
-    }
-    else if (StrEqual(name, "zombie"))
-    {
-        g_bZombie = false;
+        g_bMyJB = false;
     }
 }
 
@@ -193,7 +178,7 @@ public Action Command_Knockout(int client, int args)
 
 bool KnockoutPlayer(int client)
 {
-    if ((g_bHide && Hide_IsActive()) || (g_bZombie && Zombie_IsActive()))
+    if (g_bMyJB && MyJailbreak_IsEventDayRunning())
     {
         return false;
     }
