@@ -16,13 +16,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
 
     char sText[128];
     
-    if(iNumber >= 1 && iNumber <= 7)
+    if(iNumber >= 1 && iNumber <= 6)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if(iNumber >= 8 && iNumber <= 11)
+    else if(iNumber >= 7 && iNumber <= 11)
     {
         float fDamage = GetRandomFloat(10.0, 30.0);
         g_fDamage[client] = 1.0 + (fDamage / 100.0);
@@ -33,13 +33,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) moreDamage");
         type = 2;
     }
-    else if (iNumber >= 12 && iNumber <= 16)
+    else if (iNumber >= 12 && iNumber <= 15)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if(iNumber >= 17 && iNumber <= 20)
+    else if(iNumber >= 16 && iNumber <= 20)
     {
         float fDamage = GetRandomFloat(5.0, 15.0);
         g_fDamage[client] = 1.0 + (fDamage / 100.0);
@@ -50,13 +50,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) lessDamage");
         type = 2;
     }
-    else if (iNumber >= 21 && iNumber <= 25)
+    else if (iNumber >= 21 && iNumber <= 24)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if(iNumber >= 26 && iNumber <= 29)
+    else if(iNumber >= 25 && iNumber <= 29)
     {
         g_bCTHeadshot[client] = true;
 
@@ -64,13 +64,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) noHeadshot");
         type = 2;
     }
-    else if (iNumber >= 30 && iNumber <= 34)
+    else if (iNumber >= 30 && iNumber <= 33)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 35 && iNumber <= 38)
+    else if (iNumber >= 34 && iNumber <= 38)
     {
         int iSpeed = GetRandomInt(1, 3);
         SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", (GetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue") + (iSpeed / 10.0)));
@@ -91,13 +91,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 48 && iNumber <= 52)
+    else if (iNumber >= 48 && iNumber <= 51)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 53 && iNumber <= 56)
+    else if (iNumber >= 52 && iNumber <= 56)
     {
         g_bCTRespawn[client] = true;
 
@@ -105,13 +105,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) respawn");
         type = 2;
     }
-    else if (iNumber >= 57 && iNumber <= 71)
+    else if (iNumber >= 57 && iNumber <= 70)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 72 && iNumber <= 75)
+    else if (iNumber >= 71 && iNumber <= 75)
     {
         SetEntProp(client, Prop_Send, "m_bHasHelmet", 1);
 
@@ -119,13 +119,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) helm");
         type = 2;
     }
-    else if (iNumber >= 76 && iNumber <= 80)
+    else if (iNumber >= 76 && iNumber <= 79)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 81 && iNumber <= 84)
+    else if (iNumber >= 80 && iNumber <= 84)
     {
         g_iCount[client] = 0;
 
@@ -133,13 +133,13 @@ int ctDiceOne(int client, Panel panel, int option = -1)
         Format(sOption, sizeof(sOption), "(ct) reroll");
         type = 2;
     }
-    else if (iNumber >= 85 && iNumber <= 98)
+    else if (iNumber >= 85 && iNumber <= 97)
     {
         Format(sText, sizeof(sText), "Du hast beim CT Würfel %snichts%s gewürfelt.", SPECIAL, TEXT);
         Format(sOption, sizeof(sOption), "(ct) nothing");
         type = 1;
     }
-    else if (iNumber >= 99 && iNumber <= 100)
+    else if (iNumber >= 98 && iNumber <= 100)
     {
         bool bSkip = false;
 
