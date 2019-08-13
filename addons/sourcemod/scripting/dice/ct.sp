@@ -73,9 +73,11 @@ int ctDiceOne(int client, Panel panel, int option = -1)
     else if (iNumber >= 34 && iNumber <= 38)
     {
         int iSpeed = GetRandomInt(1, 3);
-        SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", (GetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue") + (iSpeed / 10.0)));
+        float fSpeed = iSpeed / 10.0;
 
-        Format(sText, sizeof(sText), "Du hast beim CT Würfel %sSpeed (%d%)%s gewürfelt.", SPECIAL, (iSpeed * 10), TEXT);
+        SetClientSpeed(client, (GetClientSpeed(client) + fSpeed));
+
+        Format(sText, sizeof(sText), "Du hast beim CT Würfel %sSpeed (%.0f%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
         Format(sOption, sizeof(sOption), "(ct) speed");
         type = 2;
     }

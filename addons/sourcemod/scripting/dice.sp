@@ -899,3 +899,17 @@ public bool FilterOnlyPlayers(int entity, int contentsMask, any data)
         return false;
     }
 }
+
+float GetClientSpeed(int client)
+{
+    return GetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue");
+}
+
+float SetClientSpeed(int client, float speed)
+{
+    SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", speed);
+
+    return GetClientSpeed(client);
+}
+
+

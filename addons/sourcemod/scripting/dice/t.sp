@@ -81,9 +81,12 @@ int tDiceOne(int client, Panel panel, int option = -1)
     else if(iNumber >= 54 && iNumber <= 65)
     {
         // slow
-        SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", 0.65);
+        int iSpeed = GetRandomInt(3, 6);
+        float fSpeed = iSpeed / 10.0;
+
+        SetClientSpeed(client, (GetClientSpeed(client) - fSpeed));
         
-        Format(sText, sizeof(sText), "Du hast beim 1. Würfeln %sSlow%s gewürfelt.", SPECIAL, TEXT);
+        Format(sText, sizeof(sText), "Du hast beim 1. Würfeln %sSlow (+%.0f%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
         Format(sOption, sizeof(sOption), "slow");
         type = 0;
     }
@@ -179,9 +182,12 @@ int tDiceTwo(int client, Panel panel, int option = -1)
     else if(iNumber >= 19 && iNumber <= 24)
     {
         // speed
-        SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", 1.65);
+        int iSpeed = GetRandomInt(3, 6);
+        float fSpeed = iSpeed / 10.0;
+
+        SetClientSpeed(client, (GetClientSpeed(client) + fSpeed));
         
-        Format(sText, sizeof(sText), "Du hast beim 2. Würfeln %sSpeed%s gewürfelt.", SPECIAL, TEXT);
+        Format(sText, sizeof(sText), "Du hast beim 2. Würfeln %sSpeed (+%.0f%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
         Format(sOption, sizeof(sOption), "speed");
         type = 2;
     }
