@@ -30,13 +30,11 @@ public void OnClientAuthorized(int client, const char[] auth)
 {
     if (!IsFakeClient(client) && !IsClientSourceTV(client))
     {
-        LogToFileEx(g_sLog, "\"%N\" with SteamID: %s", client, auth);
-
         int iIndex = g_aWhitelist.FindString(auth);
 
         if (iIndex == -1)
         {
-            KickClient(client, "You are not on the whitelist");
+            KickClient(client, "You are not on the whitelist. Visit us on dng.xyz!");
             LogToFileEx(g_sLog, "\"%N\" (%s) was kicked.", client, auth);
         }
     }
