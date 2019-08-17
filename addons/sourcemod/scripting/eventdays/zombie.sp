@@ -818,7 +818,7 @@ public void Frame_TeleportPlayer(int userid)
 
 	if (IsValidClient(client))
 	{
-		if ((g_bIsZombie && gc_bTeleportSpawn.BoolValue) || !gc_bSpawnCell.BoolValue || !gp_bSmartJailDoors || (gc_bSpawnCell.BoolValue && (SJD_IsCurrentMapConfigured() != true))) // spawn Terrors to CT Spawn
+		if (g_bIsZombie)
 		{
 			TeleportEntity(client, g_fPos, NULL_VECTOR, NULL_VECTOR);
 		}

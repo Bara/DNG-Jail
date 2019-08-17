@@ -614,7 +614,7 @@ public void Frame_TeleportPlayer(int userid)
 
 	if (IsValidClient(client))
 	{
-		if ((g_bIsWar && gc_bTeleportSpawn.BoolValue) || !gc_bSpawnCell.BoolValue || !gp_bSmartJailDoors || (gc_bSpawnCell.BoolValue && (SJD_IsCurrentMapConfigured() != true))) // spawn Terrors to CT Spawn
+		if (g_bIsWar)
 		{
 			TeleportEntity(client, g_fPos, NULL_VECTOR, NULL_VECTOR);
 		}

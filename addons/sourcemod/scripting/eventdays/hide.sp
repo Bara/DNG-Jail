@@ -849,7 +849,7 @@ public void Frame_TeleportPlayer(int userid)
 
 	if (IsValidClient(client))
 	{
-		if ((g_bIsHide && gc_bTeleportSpawn.BoolValue) || !gp_bSmartJailDoors || (gp_bSmartJailDoors && (SJD_IsCurrentMapConfigured() != true)))
+		if (g_bIsHide)
 		{
 			if (!gp_bSmartJailDoors || (SJD_IsCurrentMapConfigured() != true))
 			{
