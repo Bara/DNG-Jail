@@ -86,7 +86,7 @@ int tDiceOne(int client, Panel panel, int option = -1)
 
         SetClientSpeed(client, (GetClientSpeed(client) - fSpeed));
         
-        Format(sText, sizeof(sText), "Du hast beim 1. Würfeln %sSlow (+%.0f%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
+        Format(sText, sizeof(sText), "Du hast beim 1. Würfeln %sSlow (+%.0f%%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
         Format(sOption, sizeof(sOption), "slow");
         type = 0;
     }
@@ -187,7 +187,7 @@ int tDiceTwo(int client, Panel panel, int option = -1)
 
         SetClientSpeed(client, (GetClientSpeed(client) + fSpeed));
         
-        Format(sText, sizeof(sText), "Du hast beim 2. Würfeln %sSpeed (+%.0f%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
+        Format(sText, sizeof(sText), "Du hast beim 2. Würfeln %sSpeed (+%.0f%%)%s gewürfelt.", SPECIAL, (fSpeed * 100), TEXT);
         Format(sOption, sizeof(sOption), "speed");
         type = 2;
     }
