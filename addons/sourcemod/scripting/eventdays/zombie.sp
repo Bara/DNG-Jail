@@ -239,6 +239,7 @@ public void OnPluginStart()
 	// Hooks
 	HookEvent("round_start", Event_RoundStart);
 	HookEvent("round_end", Event_RoundEnd_Pre, EventHookMode_Pre);
+	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("player_hurt", Event_PlayerHurt);
 	HookEvent("player_death", Event_PlayerDeath);
 	HookConVarChange(gc_sOverlayStartPath, OnSettingChanged);
@@ -803,6 +804,24 @@ public void Event_RoundEnd_Pre(Event event, char[] name, bool dontBroadcast)
 
 		CPrintToChatAll("%s %t", g_sPrefix, "zombie_next");
 		PrintCenterTextAll("%t", "zombie_next_nc");
+	}
+}
+
+public Action Event_PlayerSpawn(Event event, char[] name, bool dontBroadcast)
+{
+	RequestFrame(Frame_TeleportPlayer, event.GetInt("userid"));
+}
+
+public void Frame_TeleportPlayer(int userid)
+{
+	int client = GetClientOfUserId(userid);
+
+	if (IsValidClient(client))
+	{
+		if ((g_bIsZombie && gc_bTeleportSpawn.BoolValue) || !gc_bSpawnCell.BoolValue || !gp_bSmartJailDoors || (gc_bSpawnCell.BoolValue && (SJD_IsCurrentMapConfigured() != true))) // spawn Terrors to CT Spawn
+		{
+			TeleportEntity(client, g_fPos, NULL_VECTOR, NULL_VECTOR);
+		}
 	}
 }
 

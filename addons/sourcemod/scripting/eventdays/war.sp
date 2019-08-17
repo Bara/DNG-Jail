@@ -179,6 +179,7 @@ public void OnPluginStart()
 	AutoExecConfig_CleanFile();
 
 	// Hooks
+	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("round_start", Event_RoundStart);
 	HookEvent("round_end", Event_RoundEnd);
 	HookConVarChange(gc_sOverlayStartPath, OnSettingChanged);
@@ -600,6 +601,24 @@ public void Event_RoundStart(Event event, char[] name, bool dontBroadcast)
 
 	PrepareDay(false);
 
+}
+
+public Action Event_PlayerSpawn(Event event, char[] name, bool dontBroadcast)
+{
+	RequestFrame(Frame_TeleportPlayer, event.GetInt("userid"));
+}
+
+public void Frame_TeleportPlayer(int userid)
+{
+	int client = GetClientOfUserId(userid);
+
+	if (IsValidClient(client))
+	{
+		if ((g_bIsWar && gc_bTeleportSpawn.BoolValue) || !gc_bSpawnCell.BoolValue || !gp_bSmartJailDoors || (gc_bSpawnCell.BoolValue && (SJD_IsCurrentMapConfigured() != true))) // spawn Terrors to CT Spawn
+		{
+			TeleportEntity(client, g_fPos, NULL_VECTOR, NULL_VECTOR);
+		}
+	}
 }
 
 // Round End

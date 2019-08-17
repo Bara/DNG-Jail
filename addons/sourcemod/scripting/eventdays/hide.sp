@@ -133,6 +133,10 @@ char g_sEventsLogFile[PLATFORM_MAX_PATH];
 char g_sSkyName[256];
 char g_sOverlayStartPath[256];
 
+// Floats
+float g_fPosT[3];
+float g_fPosCT[3];
+
 // Info
 public Plugin myinfo = {
 	name = "MyJailbreak - HideInTheDark",
@@ -219,6 +223,7 @@ public void OnPluginStart()
 	HookEvent("round_end", Event_RoundEnd);
 	HookEvent("tagrenade_detonate", Event_TA_Detonate);
 	HookEvent("item_equip", Event_ItemEquip);
+	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookConVarChange(gc_sOverlayStartPath, OnSettingChanged);
 	HookConVarChange(gc_sSoundStartPath, OnSettingChanged);
 	HookConVarChange(gc_sPrefix, OnSettingChanged);
@@ -831,6 +836,37 @@ public void Event_TA_Detonate(Event event, const char[] name, bool dontBroadcast
 	}
 }
 
+
+
+public Action Event_PlayerSpawn(Event event, char[] name, bool dontBroadcast)
+{
+	RequestFrame(Frame_TeleportPlayer, event.GetInt("userid"));
+}
+
+public void Frame_TeleportPlayer(int userid)
+{
+	int client = GetClientOfUserId(userid);
+
+	if (IsValidClient(client))
+	{
+		if ((g_bIsHide && gc_bTeleportSpawn.BoolValue) || !gp_bSmartJailDoors || (gp_bSmartJailDoors && (SJD_IsCurrentMapConfigured() != true)))
+		{
+			if (!gp_bSmartJailDoors || (SJD_IsCurrentMapConfigured() != true))
+			{
+				TeleportEntity(client, g_fPosCT, NULL_VECTOR, NULL_VECTOR);
+			}
+			else if (GetClientTeam(client) == CS_TEAM_T)
+			{
+				TeleportEntity(client, g_fPosT, NULL_VECTOR, NULL_VECTOR);
+			}
+			else if (GetClientTeam(client) == CS_TEAM_CT)
+			{
+				TeleportEntity(client, g_fPosCT, NULL_VECTOR, NULL_VECTOR);
+			}
+		}
+	}
+}
+
 public void Event_ItemEquip(Event event, const char[] name, bool dontBroadcast) 
 {
 	if (!g_bIsHide)
@@ -1184,7 +1220,6 @@ void PrepareDay(bool thisround)
 
 		if (RandomCT && RandomT)
 		{
-			float g_fPosT[3], g_fPosCT[3];
 			GetClientAbsOrigin(RandomT, g_fPosT);
 			GetClientAbsOrigin(RandomCT, g_fPosCT);
 			g_fPosT[2] = g_fPosT[2] + 5;
