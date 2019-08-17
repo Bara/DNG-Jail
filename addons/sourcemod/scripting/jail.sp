@@ -55,11 +55,14 @@ ConVar g_cEnableExtraPointsTag = null;
 ConVar g_cEnableNewBeacon = null;
 ConVar g_cNewBeaconPoints = null;
 
+bool g_bCanSeeName[MAXPLAYERS+1] = { false, ... };
+Handle g_hResetCanSeeName[MAXPLAYERS+1] = { null, ... };
+
 int g_iMyWeapons = -1;
 
 char g_sCMDs[][] = {"coverme", "takepoint", "holdpos", "regroup", "followme", "takingfire", "go", "fallback", "sticktog",
-	"getinpos", "stormfront", "report", "roger", "enemyspot", "needbackup", "sectorclear", "inposition", "reportingin",
-	"getout", "negative","enemydown", "compliment", "thanks", "cheer"};
+    "getinpos", "stormfront", "report", "roger", "enemyspot", "needbackup", "sectorclear", "inposition", "reportingin",
+    "getout", "negative","enemydown", "compliment", "thanks", "cheer"};
 
 #include "jail/ergeben.sp"
 #include "jail/verweigern.sp"
@@ -178,9 +181,9 @@ public void OnPluginStart()
     CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
 
     for(int i; i < sizeof(g_sCMDs); i++)
-	{
-		AddCommandListener(Command_Radio, g_sCMDs[i]);
-	}
+    {
+        AddCommandListener(Command_Radio, g_sCMDs[i]);
+    }
 
     g_bStore = LibraryExists("store");
     g_bHosties = LibraryExists("hosties");
@@ -276,8 +279,8 @@ public void OnLibraryRemoved(const char[] name)
 
 public void OnConfigsExecuted()
 {
-	ConVar ignoreGrenade = FindConVar("sv_ignoregrenaderadio");
-	ignoreGrenade.SetInt(1);
+    ConVar ignoreGrenade = FindConVar("sv_ignoregrenaderadio");
+    ignoreGrenade.SetInt(1);
 }
 
 public void OnMapStart()
@@ -398,11 +401,14 @@ public void OnClientDisconnect(int client)
     ResetSpawnweapons(client);
     ResetClientLrStammpunkte(client);
     NewBeacon_OnClientDisconnect(client);
+
+    g_bCanSeeName[client] = false;
+    delete g_hResetCanSeeName[client];
 }
 
 public Action Command_Radio(int client, const char[] command, int args) 
 {
-	return Plugin_Handled;
+    return Plugin_Handled;
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon)
@@ -421,9 +427,9 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
         CS_SetClientContributionScore(client, 0);
     }
     
-    if(IsPlayerAlive(client) && g_bFreeday[client])
+    if(IsPlayerAlive(client))
     {
-        if(buttons & IN_JUMP)
+        if(g_bFreeday[client] && buttons & IN_JUMP)
         {
             if(!(GetEntityMoveType(client) & MOVETYPE_LADDER) && !(GetEntityFlags(client) & FL_ONGROUND))
             {
@@ -435,7 +441,45 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
                 }
             }
         }
+        else if (buttons & IN_USE)
+        {
+            GetAimTarget(client);
+        }
     }
 
     return Plugin_Continue;
+}
+
+void GetAimTarget(int client)
+{
+    if(!g_bCanSeeName[client])
+    {
+        char sWeapon[32];
+        GetClientWeapon(client, sWeapon, sizeof(sWeapon));
+        
+        if(StrContains(sWeapon, "knife", false) != -1 || StrContains(sWeapon, "bayonet", false) != -1)
+        {
+            int iTarget = GetClientAimTarget(client, true);
+            
+            if(iTarget != -1)
+            {
+                int iTargetTeam = GetClientTeam(iTarget);
+                
+                char sTeam[24];
+                sTeam = iTargetTeam == CS_TEAM_CT ? "{darkblue}CT" : "{darkred}T";
+                
+                CPrintToChat(client, "%s{default}: {green}%N", sTeam, iTarget);
+                
+                g_bCanSeeName[client] = true;
+                g_hResetCanSeeName[client] = CreateTimer(2.0, Timer_ResetCanSeeName, client);
+            }
+        }
+    }
+}
+
+public Action Timer_ResetCanSeeName(Handle timer, any client)
+{
+    g_bCanSeeName[client] = false;
+    
+    g_hResetCanSeeName[client] = null;
 }
