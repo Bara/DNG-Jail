@@ -46,8 +46,8 @@ public int Native_GetRedieStatus(Handle plugin, int numParams)
 
 public void OnPluginStart()
 {
-	RegAdminCmd("sm_redie", Command_redie, ADMFLAG_CUSTOM4);
-	RegAdminCmd("sm_reback", Command_reback, ADMFLAG_CUSTOM4);
+	RegConsoleCmd("sm_redie", Command_redie);
+	RegConsoleCmd("sm_reback", Command_reback);
 	
 	HookEvent("round_start", RoundStart);
 	HookEvent("round_end", RoundEnd);
@@ -271,10 +271,6 @@ public Action Timer_FixSolids(Handle timer, int userid)
 		SetEntProp(client, Prop_Data, "m_CollisionGroup", 1);
 		SetEntProp(client, Prop_Data, "m_nSolidType", 0);
 		SetEntProp(client, Prop_Send, "m_usSolidFlags", 4);
-
-		CPrintToChat(client, "m_CollisionGroup: %d", GetEntProp(client, Prop_Data, "m_CollisionGroup"));
-		CPrintToChat(client, "m_nSolidType: %d", GetEntProp(client, Prop_Data, "m_nSolidType"));
-		CPrintToChat(client, "m_usSolidFlags: %d", GetEntProp(client, Prop_Send, "m_usSolidFlags"));
 	}
 }
 
