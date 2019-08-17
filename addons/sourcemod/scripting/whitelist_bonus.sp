@@ -138,6 +138,8 @@ public void Query_GetClientPlaytime(Database db, DBResultSet results, const char
             iCredits = 250;
         }
 
+        LogMessage("\"%L\" has become his bonus as jail tester", client);
+
         if (iPoints > 0)
         {
             STAMM_AddClientPoints(client, iPoints);
