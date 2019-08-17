@@ -1094,6 +1094,15 @@ public LastRequest_PlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 {
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	new target = GetClientOfUserId(GetEventInt(event, "userid"));
+
+	decl String:weapon[32];
+	GetEventString(event, "weapon", weapon, 32);
+	new bool:bIsItAKnife = false;
+
+	if (StrContains(weapon, "knife", false) != -1 || StrContains(weapon, "bayonet", false) != -1)
+	{
+		bIsItAKnife = true;
+	}
 	
 	if (Local_IsClientInLR(attacker) || Local_IsClientInLR(target))
 	{
@@ -1114,7 +1123,7 @@ public LastRequest_PlayerHurt(Handle:event, const String:name[], bool:dontBroadc
             attacker != LR_Player_Prisoner && attacker != LR_Player_Guard)
 			{
 				// take action for rebelers
-				if (!g_bIsARebel[attacker] && (GetClientTeam(attacker) == CS_TEAM_T))
+				if (!bIsItAKnife && !g_bIsARebel[attacker] && (GetClientTeam(attacker) == CS_TEAM_T))
 				{
 					g_bIsARebel[attacker] = true;
 					if (gShadow_Announce_Rebel && IsClientInGame(attacker))
@@ -1146,10 +1155,6 @@ public LastRequest_PlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 			if ((attacker == LR_Player_Prisoner || attacker == LR_Player_Guard) && \
             (target == LR_Player_Prisoner || target == LR_Player_Guard))
 			{
-				decl String:weapon[32];
-				GetEventString(event, "weapon", weapon, 32);
-				new bool:bIsItAKnife = StrEqual(weapon, "knife");
-				
 				switch (type)
 				{
 					case LR_KnifeFight, LR_ChickenFight:
@@ -1201,7 +1206,7 @@ public LastRequest_PlayerHurt(Handle:event, const String:name[], bool:dontBroadc
 		}
 	}
 	// if a T attacks a CT and there's no last requests active
-	else if (attacker && target && (GetClientTeam(attacker) == CS_TEAM_T) && (GetClientTeam(target) == CS_TEAM_CT) \
+	else if (!bIsItAKnife && attacker && target && (GetClientTeam(attacker) == CS_TEAM_T) && (GetClientTeam(target) == CS_TEAM_CT) \
 		&& !g_bIsARebel[attacker] && g_bRoundInProgress)
 	{
 		g_bIsARebel[attacker] = true;
@@ -1734,8 +1739,22 @@ CleanupLastRequest(loser, arrayIndex)
 public LastRequest_BulletImpact(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(event, "userid"));
+
 	if (!g_bIsARebel[attacker] && gShadow_RebelOnImpact && (GetClientTeam(attacker) == CS_TEAM_T) && !Local_IsClientInLR(attacker))
 	{
+		int iEntity = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+
+		if (IsValidEntity(iEntity))
+		{
+			char sClass[32];
+			GetEntityClassname(iEntity, sClass, sizeof(sClass));
+
+			if (StrContains(sClass, "knife", false) != -1 || StrContains(sClass, "bayonet", false) != -1)
+			{
+				return;
+			}
+		}
+
 		g_bIsARebel[attacker] = true;
 		
 		if (gShadow_ColorRebels)

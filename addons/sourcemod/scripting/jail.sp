@@ -54,6 +54,7 @@ ConVar g_cEnableExtraPointsCT = null;
 ConVar g_cEnableExtraPointsTag = null;
 ConVar g_cEnableNewBeacon = null;
 ConVar g_cNewBeaconPoints = null;
+ConVar g_cHideTName = null;
 
 bool g_bCanSeeName[MAXPLAYERS+1] = { false, ... };
 Handle g_hResetCanSeeName[MAXPLAYERS+1] = { null, ... };
@@ -168,6 +169,7 @@ public void OnPluginStart()
     g_cLRPointsStoreCredits = AutoExecConfig_CreateConVar("jail_lr_points_store_credits", "10", "How much store credits after lr win? ( 0 = Disabled)");
 #endif
     g_cLRPointsStammpoints = AutoExecConfig_CreateConVar("jail_lr_points_stammpoints", "10", "How much stammpoints after lr win? ( 0 = Disabled)");
+    g_cHideTName = AutoExecConfig_CreateConVar("jail_hide_t_name", "1", "Hide T Name in Killfeed?");
 
     AutoExecConfig_ExecuteFile();
     AutoExecConfig_CleanFile();
@@ -366,8 +368,8 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
         LrStammpunkte_PlayerDeath();
     }
 
-
-    int client = GetClientOfUserId(event.GetInt("userid"));
+    int userid = event.GetInt("userid");
+    int client = GetClientOfUserId(userid);
     int attacker = GetClientOfUserId(event.GetInt("attacker"));
     
     if(IsClientValid(client))
@@ -376,8 +378,39 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
         if(IsClientValid(attacker))
         {
             Freekill_PlayerDeath(client, attacker);
+
+            if (g_cHideTName.BoolValue)
+            {
+                char sWeapon[32];
+                GetEventString(event, "weapon", sWeapon, sizeof(sWeapon));
+
+                if (StrContains(sWeapon, "knife", false) != -1 || StrContains(sWeapon, "bayonet", false) != -1)
+                {
+                    return Plugin_Continue;
+                }
+
+                int team = GetClientTeam(attacker);
+
+                if (team == CS_TEAM_T)
+                {
+                    Event eEvent = CreateEvent("player_death", true);
+
+                    eEvent.SetInt("userid", userid);
+                    eEvent.SetInt("attacker", userid);
+                    eEvent.SetString("weapon", sWeapon);
+                    eEvent.SetBool("headshot", GetEventBool(event, "headshot"));
+                    eEvent.SetInt("dominated", GetEventInt(event, "dominated"));
+                    eEvent.SetInt("revenge", GetEventInt(event, "revenge"));
+                    eEvent.Fire(false);
+                    eEvent.BroadcastDisabled = true;
+                    
+                    return Plugin_Handled;
+                }
+            }
         }
     }
+
+    return Plugin_Continue;
 }
 
 public Action Event_PlayerHurt(Event event, const char[] name, bool dontBroadcast)
