@@ -1749,7 +1749,7 @@ public LastRequest_BulletImpact(Handle:event, const String:name[], bool:dontBroa
 			char sClass[32];
 			GetEntityClassname(iEntity, sClass, sizeof(sClass));
 
-			if (StrContains(sClass, "knife", false) != -1 || StrContains(sClass, "bayonet", false) != -1)
+			if (StrContains(sClass, "knife", false) == -1 || StrContains(sClass, "bayonet", false) == -1)
 			{
 				return;
 			}

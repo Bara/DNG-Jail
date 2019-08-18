@@ -144,7 +144,7 @@ public void OnPluginStart()
     HookEvent("round_start", Event_RoundStart);
     HookEvent("round_end", Event_RoundEnd);
     HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Post);
-    HookEvent("player_death", Event_PlayerDeath);
+    HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
     HookEvent("player_hurt", Event_PlayerHurt);
     
     AutoExecConfig_SetCreateDirectory(true);
@@ -384,7 +384,7 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
                 char sWeapon[32];
                 GetEventString(event, "weapon", sWeapon, sizeof(sWeapon));
 
-                if (StrContains(sWeapon, "knife", false) != -1 || StrContains(sWeapon, "bayonet", false) != -1)
+                if (StrContains(sWeapon, "knife", false) == -1 || StrContains(sWeapon, "bayonet", false) == -1)
                 {
                     return Plugin_Continue;
                 }
@@ -402,7 +402,7 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
                     eEvent.SetInt("dominated", GetEventInt(event, "dominated"));
                     eEvent.SetInt("revenge", GetEventInt(event, "revenge"));
                     eEvent.Fire(false);
-                    eEvent.BroadcastDisabled = true;
+                    event.BroadcastDisabled = true;
                     
                     return Plugin_Handled;
                 }
