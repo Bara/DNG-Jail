@@ -639,7 +639,7 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
     
     if (IsClientValid(attacker))
     {
-        if (GetClientTeam(attacker) == CS_TEAM_T && g_bAssassine[attacker] && (StrContains(sWeapon, "knife", false) != -1 || StrContains(sWeapon, "bayonet", false) != -1))
+        if (GetClientTeam(attacker) == CS_TEAM_T && g_bAssassine[attacker] && (StrContains(sWeapon, "awp", false) == -1))
         {
             event.BroadcastDisabled = true;
             return Plugin_Changed;
