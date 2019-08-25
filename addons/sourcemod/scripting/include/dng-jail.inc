@@ -8,10 +8,10 @@
 #pragma deprecated OB mit MultiColors ersetzen - Einfacher mit mehr Funktionen
 #define OB "[\DNG\x01]"
 
-// #define TAG "{darkblue}[DNG]{default}"
-#define TAGT "{darkblue}[DNG] {default}%T"
+// #define TAG "{green}[DNG]{default}"
+#define TAGT "{green}[DNG] {default}%T"
 #define TEXT "{default}"
-#define SPECIAL "{lightgreen}"
+#define SPECIAL "{green}"
 #define ADMFLAG_VIP ADMFLAG_CUSTOM6
 #define DNG_BASE "DNG"
 

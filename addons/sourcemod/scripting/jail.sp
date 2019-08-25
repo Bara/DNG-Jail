@@ -180,7 +180,7 @@ public void OnPluginStart()
         OnClientCookiesCached(client);
     }
 
-    CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
+    CSetPrefix("{green}[%s]{default}", DNG_BASE);
 
     for(int i; i < sizeof(g_sCMDs); i++)
     {

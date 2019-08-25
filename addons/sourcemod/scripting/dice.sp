@@ -103,7 +103,7 @@ public void OnPluginStart()
         SDKHook(i, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
     }
 
-    CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
+    CSetPrefix("{green}[%s]{default}", DNG_BASE);
 
     g_bHosties = LibraryExists("hosties");
     g_bJail = LibraryExists("jail");

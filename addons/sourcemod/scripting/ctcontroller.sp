@@ -128,7 +128,7 @@ public void OnPluginStart()
     
     CreateTimer(0.5, Timer_CheckClients, _, TIMER_REPEAT);
 
-    CSetPrefix("{darkred}[CT Controller]{default}");
+    CSetPrefix("{green}[CT Controller]{default}");
 
     g_bStamm = LibraryExists("stamm");
     g_bMyJB = LibraryExists("myjailbreak");

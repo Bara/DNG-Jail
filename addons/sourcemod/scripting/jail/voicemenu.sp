@@ -46,12 +46,12 @@ public Action Timer_SetVoiceState(Handle timer)
 	{
 		int team = GetClientTeam(client);
 		
-		if((team == CS_TEAM_CT || team == CS_TEAM_T) && !IsPlayerAlive(client))
+		if((team == CS_TEAM_CT || team == CS_TEAM_T || team == CS_TEAM_SPECTATOR) && !IsPlayerAlive(client))
 		{
 			LoopClients(i)
 			{
 				int iTeam2 = GetClientTeam(i);
-				if(iTeam2 == CS_TEAM_CT || iTeam2 == CS_TEAM_T)
+				if(iTeam2 == CS_TEAM_CT || iTeam2 == CS_TEAM_T || team == CS_TEAM_SPECTATOR)
 				{
 					if(g_bMuteAlive[client])
 					{

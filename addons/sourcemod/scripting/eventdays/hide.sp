@@ -171,7 +171,7 @@ public void OnPluginStart()
 
 	// Client Commands
 	RegConsoleCmd("sm_sethide", Command_SetHide, "Allows the Admin or Warden to set hide as next round");
-	RegConsoleCmd("sm_hide", Command_VoteHide, "Allows players to vote for a hide");
+	RegConsoleCmd("sm_hides", Command_VoteHide, "Allows players to vote for a hide");
 
 	// AutoExecConfig
 	AutoExecConfig_SetFile("Hide", "MyJailbreak/EventDays");
