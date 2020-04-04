@@ -7,6 +7,11 @@ Handle g_hErgebenTimer[MAXPLAYERS+1] =  { null, ... };
 
 public Action Command_ergeben(int client, int args)
 {
+	if (!g_cEnableErgeben.BoolValue)
+	{
+		return Plugin_Handled;
+	}
+
 	if(IsClientValid(client))
 	{
 		if(GetClientTeam(client) == CS_TEAM_T && IsPlayerAlive(client))
@@ -88,6 +93,11 @@ public Action ErgebenTimer(Handle timer, any client)
 
 public Action OnWeaponCanUseErgeben(int client, int weapon)
 {
+	if (!g_cEnableErgeben.BoolValue)
+	{
+		return Plugin_Continue;
+	}
+	
 	if(g_bErgeben[client])
 	{
 		return Plugin_Handled;

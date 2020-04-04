@@ -10,9 +10,9 @@
 #include <autoexecconfig>
 
 #undef REQUIRE_PLUGIN
-#include <jail>
+// #tryinclude <jail>
+// #tryinclude <knockout>
 #include <myjailbreak>
-#include <knockout>
 #include <lastrequest>
 
 #pragma newdecls required

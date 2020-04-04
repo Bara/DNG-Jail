@@ -76,7 +76,6 @@ public OnPluginStart()
 	AddMenuItem(hMenu, "M27", "Nova Fight");
 	AddMenuItem(hMenu, "M28", "Sawed-Off Fight");
 	AddMenuItem(hMenu, "M29", "XM1014 Fight");
-	AddMenuItem(hMenu, "M30", "Taser Fight");
 	SetMenuExitButton(hMenu, true);
 
 	CSetPrefix("{darkblue}[%s]{default}", DNG_BASE);
@@ -211,10 +210,6 @@ public MenuHandler(Handle:menu, MenuAction:action, param1, param2)
 		if(param2 == 28) // XM1014
 		{
 			LR_AfterMenu(28);
-		}
-		if(param2 == 29) // Taser
-		{
-			LR_AfterMenu(29);
 		}
 	}
 }
@@ -491,13 +486,6 @@ public LR_AfterMenu(weapon)
 			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_xm1014");
 			
 			CPrintToChatAll("{default}XM1014 Fight has started!");
-		}
-		case 29:
-		{
-			TWep = GivePlayerItem(g_LR_Player_Prisoner, "weapon_taser");
-			CTWep = GivePlayerItem(g_LR_Player_Guard, "weapon_taser");
-			
-			CPrintToChatAll("{default}Taser Fight has started!");
 		}
 	}
 

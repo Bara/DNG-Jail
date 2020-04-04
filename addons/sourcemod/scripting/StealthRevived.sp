@@ -55,7 +55,6 @@
 #tryinclude <sendproxy>
 #tryinclude <ptah>
 #tryinclude <SteamWorks>
-#tryinclude <SteamTools>
 
 /****************************************************************************************************
 	DEFINES
@@ -293,17 +292,19 @@ public Action ExecuteStringCommand(int iClient, char szMessage[1024])
 
 public Action Event_PlayerTeam_Pre(Event evGlobal, char[] szEvent, bool bDontBroadcast)
 {
+	evGlobal.BroadcastDisabled = true;
+
 	int iUserId = evGlobal.GetInt("userid");
 	int iClient = GetClientOfUserId(iUserId);
 	
 	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient) || view_as<bool>(evGlobal.GetInt("disconnect")) || IsFakeClient(iClient)) {
-		return Plugin_Continue;
+		return Plugin_Changed;
 	}
 	
 	int iTeam = evGlobal.GetInt("team");
 	
 	if (iTeam == GetClientTeam(iClient)) {
-		return Plugin_Continue;
+		return Plugin_Changed;
 	}
 	
 	int iOldTeam = evGlobal.GetInt("oldteam");
@@ -312,7 +313,7 @@ public Action Event_PlayerTeam_Pre(Event evGlobal, char[] szEvent, bool bDontBro
 	
 	if (evNewTeam == null) {
 		SetFailState("Failed to create player_team event");
-		return Plugin_Continue;
+		return Plugin_Changed;
 	}
 	
 	evNewTeam.SetInt("userid", iUserId);
@@ -325,12 +326,13 @@ public Action Event_PlayerTeam_Pre(Event evGlobal, char[] szEvent, bool bDontBro
 	if (iTeam > 1) {
 		g_bStealthed[iClient] = false;
 	} else {
+		evNewTeam.BroadcastDisabled = true;
 		evNewTeam.FireToClient(iClient);
 	}
 	
 	CreateTimer(0.01, Timer_DelayedTeam, evNewTeam);
 	
-	return Plugin_Continue;
+	return Plugin_Changed;
 }
 
 public Action Timer_DelayedTeam(Handle hTimer, Event evNewTeam)
@@ -339,6 +341,7 @@ public Action Timer_DelayedTeam(Handle hTimer, Event evNewTeam)
 	int iClient = GetClientOfUserId(iUserId);
 	
 	if (!IsValidClient(iClient)) {
+		evNewTeam.BroadcastDisabled = true;
 		evNewTeam.Cancel();
 		evNewTeam = null;
 		return Plugin_Stop;
@@ -639,7 +642,7 @@ stock bool PrintCustomStatus(int iClient)
 
 public void CacheInformation(any anything)
 {
-	bool bSecure = false; bool bSteamWorks; bool bSteamTools;
+	bool bSecure = false; bool bSteamWorks;
 	char szStatus[512]; char szBuffer[512]; ServerCommandEx(szStatus, sizeof(szStatus), "status");
 	
 	g_iTickRate = RoundToZero(1.0 / GetTickInterval());
@@ -648,26 +651,22 @@ public void CacheInformation(any anything)
 	g_cvHostName.GetString(g_szHostName, sizeof(g_szHostName));
 	g_iServerPort = g_cvHostPort.IntValue;
 	
-	#if defined _SteamWorks_Included || defined _steamtools_included
+	#if defined _SteamWorks_Included
 	bSteamWorks = LibraryExists("SteamWorks");
-	bSteamTools = LibraryExists("SteamTools");
 	
-	if (bSteamWorks || bSteamTools) {
+	if (bSteamWorks) {
 		int iSIP[4];
 		
 		if (bSteamWorks) {
 			SteamWorks_GetPublicIP(iSIP);
 			bSecure = SteamWorks_IsVACEnabled();
-		} else if (bSteamTools) {
-			Steam_GetPublicIP(iSIP);
-			bSecure = Steam_IsVACEnabled();
 		}
 		
 		Format(g_szServerIP, sizeof(g_szServerIP), "%d.%d.%d.%d", iSIP[0], iSIP[1], iSIP[2], iSIP[3]);
 	}
 	#endif
 	
-	if (!bSteamWorks && !bSteamTools) {
+	if (!bSteamWorks) {
 		int iServerIP = g_cvHostIP.IntValue;
 		Format(g_szServerIP, sizeof(g_szServerIP), "%d.%d.%d.%d", iServerIP >>> 24 & 255, iServerIP >>> 16 & 255, iServerIP >>> 8 & 255, iServerIP & 255);
 	}
@@ -683,14 +682,14 @@ public void CacheInformation(any anything)
 		if (iMatches < 1) {
 			delete rRegex;
 			
-			if (!bSteamWorks && !bSteamTools) {
+			if (!bSteamWorks) {
 				bSecure = false;
 			}
 			
 			rRegex = CompileRegex("version (.*?) insecure");
 			iMatches = rRegex.Match(szStatus);
 			
-		} else if (!bSteamWorks && !bSteamTools) {
+		} else if (!bSteamWorks) {
 			bSecure = true;
 		}
 		

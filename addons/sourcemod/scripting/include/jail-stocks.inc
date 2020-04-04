@@ -9,11 +9,10 @@
 #define OB "[\DNG\x01]"
 
 // #define TAG "{green}[DNG]{default}"
-#define TAGT "{green}[DNG] {default}%T"
+// #define TAGT "{green}[DNG] {default}%T"
 #define TEXT "{default}"
 #define SPECIAL "{green}"
 #define ADMFLAG_VIP ADMFLAG_CUSTOM6
-#define DNG_BASE "DNG"
 
 #define LoopClients(%1) for(int %1 = 1; %1 <= MaxClients; %1++) if(IsClientValid(%1))
 #define LoopAllClients(%1) for(int %1 = 1; %1 <= MaxClients; %1++) if(IsClientValid(%1, true))

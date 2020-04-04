@@ -7,6 +7,11 @@ Handle g_hVerweigernTimer[MAXPLAYERS + 1] =  { null, ... };
 
 public Action Command_vreset(int client, int args)
 {
+	if (!g_cEnableVerweigern.BoolValue)
+	{
+		return Plugin_Handled;
+	}
+	
 	if(IsClientValid(client))
 	{
 		if(GetClientTeam(client) == CS_TEAM_CT || CheckCommandAccess(client, "sm_admin", ADMFLAG_GENERIC))
@@ -58,6 +63,11 @@ stock int Client_FindByName(const char[] name, bool partOfName = true, bool case
 
 public Action Command_verweigern(int client, int args)
 {
+	if (!g_cEnableVerweigern.BoolValue)
+	{
+		return Plugin_Handled;
+	}
+	
 	if(IsClientValid(client))
 	{
 		if(GetClientTeam(client) == CS_TEAM_T && IsPlayerAlive(client))

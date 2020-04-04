@@ -5,7 +5,7 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <cstrike>
-#include <dng-jail>
+#include <jail-stocks>
 #include <clientprefs>
 #include <autoexecconfig>
 #include <emitsoundany>
@@ -40,6 +40,8 @@ ConVar g_cCTBoostHealth = null;
 ConVar g_cCTBoostHealthMulti = null;
 ConVar g_cCTBoostArmor = null;
 ConVar g_cCTBoostHelm = null;
+ConVar g_cEnableVerweigern = null;
+ConVar g_cEnableErgeben = null;
 ConVar g_cEnableFreeday = null;
 ConVar g_cEnableFreedayTeams = null;
 ConVar g_cEnableShowDamage = null;
@@ -55,11 +57,19 @@ ConVar g_cEnableExtraPointsTag = null;
 ConVar g_cEnableNewBeacon = null;
 ConVar g_cNewBeaconPoints = null;
 ConVar g_cHideTName = null;
+ConVar g_cCustomTeamMessage = null;
+ConVar g_cSetTeamName = null;
+ConVar g_cPluginTag = null;
+ConVar g_cPTag = null;
+ConVar g_cPDomain = null;
+ConVar g_cPlayAsCT = null;
 
 bool g_bCanSeeName[MAXPLAYERS+1] = { false, ... };
 Handle g_hResetCanSeeName[MAXPLAYERS+1] = { null, ... };
 
 int g_iMyWeapons = -1;
+
+int g_iJoin[MAXPLAYERS + 1] = { -1 , ... };
 
 char g_sCMDs[][] = {"coverme", "takepoint", "holdpos", "regroup", "followme", "takingfire", "go", "fallback", "sticktog",
     "getinpos", "stormfront", "report", "roger", "enemyspot", "needbackup", "sectorclear", "inposition", "reportingin",
@@ -144,12 +154,15 @@ public void OnPluginStart()
     HookEvent("round_start", Event_RoundStart);
     HookEvent("round_end", Event_RoundEnd);
     HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Post);
+    HookEvent("player_team", Event_PlayerTeam, EventHookMode_Post);
     HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
     HookEvent("player_hurt", Event_PlayerHurt);
     
     AutoExecConfig_SetCreateDirectory(true);
     AutoExecConfig_SetCreateFile(true);
     AutoExecConfig_SetFile("jail");
+    g_cEnableVerweigern = AutoExecConfig_CreateConVar("jail_enable_verweigern", "1", "Enable Verweigern?", _, true, 0.0, true, 1.0);
+    g_cEnableErgeben = AutoExecConfig_CreateConVar("jail_enable_ergeben", "1", "Enable Ergeben?", _, true, 0.0, true, 1.0);
     g_cEnableCTBoost = AutoExecConfig_CreateConVar("jail_enable_ctboost", "1", "Enable CT Boost?", _, true, 0.0, true, 1.0);
     g_cCTBoostHealth = AutoExecConfig_CreateConVar("jail_enable_ctboost_health", "1", "Enable Health CT Boost?", _, true, 0.0, true, 1.0);
     g_cCTBoostHealthMulti = AutoExecConfig_CreateConVar("jail_ctboot_health_multi", "10.2842", "Faktor for CT Boost Health");
@@ -170,6 +183,12 @@ public void OnPluginStart()
 #endif
     g_cLRPointsStammpoints = AutoExecConfig_CreateConVar("jail_lr_points_stammpoints", "10", "How much stammpoints after lr win? ( 0 = Disabled)");
     g_cHideTName = AutoExecConfig_CreateConVar("jail_hide_t_name", "1", "Hide T Name in Killfeed?");
+    g_cCustomTeamMessage = AutoExecConfig_CreateConVar("jail_custom_team_message", "1", "Print custom team message on team join?", _, true, 0.0, true, 1.0);
+    g_cSetTeamName = AutoExecConfig_CreateConVar("jail_set_team_name", "1", "Set team names?", _, true, 0.0, true, 1.0);
+    g_cPluginTag = AutoExecConfig_CreateConVar("jail_plugin_tag", "{green}[Jail]");
+    g_cPTag = AutoExecConfig_CreateConVar("jail_points_tag", "#DNG", "Which tag must be in the name to get more points?");
+    g_cPDomain = AutoExecConfig_CreateConVar("jail_points_domain", "dng.xyz", "Which domain must be in the name to get more points?");
+    g_cPlayAsCT = AutoExecConfig_CreateConVar("jail_point_as_ct", "50", "How much extra points (in percent) for playing as ct?");
 
     AutoExecConfig_ExecuteFile();
     AutoExecConfig_CleanFile();
@@ -179,8 +198,6 @@ public void OnPluginStart()
     {
         OnClientCookiesCached(client);
     }
-
-    CSetPrefix("{green}[%s]{default}", DNG_BASE);
 
     for(int i; i < sizeof(g_sCMDs); i++)
     {
@@ -283,12 +300,35 @@ public void OnConfigsExecuted()
 {
     ConVar ignoreGrenade = FindConVar("sv_ignoregrenaderadio");
     ignoreGrenade.SetInt(1);
+    
+    if (g_cSetTeamName.BoolValue)
+    {
+        ConVar cvar = FindConVar("mp_teamname_1");
+
+        if (cvar != null)
+        {
+            cvar.SetString("Wärter");
+        }
+
+        cvar = FindConVar("mp_teamname_2");
+
+        if (cvar != null)
+        {
+            cvar.SetString("Gefangenen");
+        }
+    }
+
+    char sTag[32];
+    g_cPluginTag.GetString(sTag, sizeof(sTag));
+    CSetPrefix(sTag);
 }
 
 public void OnMapStart()
 {
     Freeday_OnMapStart();
     Freekill_OnMapStart();
+
+    
 }
 
 public void OnClientCookiesCached(int client)
@@ -359,6 +399,34 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
             CTBoost_PlayerSpawn(client);
         }
     }
+}
+
+public Action Event_PlayerTeam(Event event, const char[] name, bool dontBroadcast)
+{
+    if (!g_cCustomTeamMessage.BoolValue)
+    {
+        return Plugin_Continue;
+    }
+
+    int client = GetClientOfUserId(event.GetInt("userid"));
+
+    if (IsClientValid(client) && (g_iJoin[client] == -1 || GetTime() > g_iJoin[client]))
+    {
+        int team = event.GetInt("team");
+
+        if (team == CS_TEAM_CT)
+        {
+            CPrintToChatAll("{lightgreen}%N {default}betritt das {darkblue}Wärter {default}Team", client);
+        }
+        else if (team == CS_TEAM_T)
+        {
+            CPrintToChatAll("{lightgreen}%N {default}betritt das {darkred}Gefangenen {default}Team", client);
+        }
+
+        g_iJoin[client] = GetTime();
+    }
+
+    return Plugin_Continue;
 }
 
 public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast)
