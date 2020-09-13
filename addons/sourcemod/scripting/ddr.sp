@@ -133,8 +133,6 @@ public void OnPluginStart()
     {
         OnClientPutInServer(i);
     }
-    
-    // CSetPrefix("{darkred}[%s]{default}", DNG_BASE);
 }
 
 public void OnPluginEnd()
